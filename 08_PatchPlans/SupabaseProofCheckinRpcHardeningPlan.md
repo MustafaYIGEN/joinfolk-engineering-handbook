@@ -24,6 +24,8 @@ No final exploitability or final priority is claimed. Backend/RPC/RLS/storage/au
 - Remediation status: Not accepted.
 - Priority status: Not final.
 - Production vulnerability status: Not claimed.
+- Implementation status: Blocked pending explicit patch scope approval.
+- Target status: Future working target accepted, not historical canonical.
 - Canonical status: false.
 
 ## 4. Scope
@@ -55,18 +57,26 @@ Related functions for boundary comparison:
 - `undo_checkin_ticket_v2`
 - `undo_checkin_ticket_v2_unsafe`
 
-## 5. Source-Path Assumption
+## 5. Current Target-Path Decision
 
 This draft is based on production SQL/operator evidence plus handbook audits.
 
-The local implementation target is not yet canonical. `C:\dev\hostos\supabase` is the primary plausible backend source for current audit purposes, but it is not canonical until competing Supabase directories are classified.
+Likely future target: C:\dev\hostos\supabase\migrations.
 
-Competing Supabase paths exist:
+Decision basis: the operator accepted `C:\dev\hostos\supabase\migrations` as the future working target for future accepted backend migration work.
 
-- `C:\dev\joinfolk-web\supabase`
-- `C:\dev\hostos\apps\mobile\supabase`
+This is a future working target decision, not proof of historical sole canonical source.
 
-This draft must not be treated as implementation-ready until the target Supabase source path is named and verified. Production SQL evidence outranks local source assumptions for production-state claims.
+Split-source provenance remains relevant, especially mobile proof-specific helper history.
+
+Competing Supabase paths remain relevant:
+
+- `C:\dev\joinfolk-web\supabase`, which strongly implicates host identity transfer / ops provenance.
+- `C:\dev\hostos\apps\mobile\supabase`, which strongly implicates proof-specific helper provenance.
+
+Production SQL/RPC evidence remains stronger than local source assumptions for production-state claims. Database Functions / RPC evidence is separate from Edge Function deployment evidence. Manual confirmation found no deployed Supabase Edge Functions visible in Dashboard.
+
+Implementation remains blocked until explicit patch scope approval. No migration or SQL is authorized by this plan update.
 
 ## 6. Non-Goals
 
@@ -106,6 +116,12 @@ Proof-related function concern evidence:
 - `ensure_ticket_checkin_proof_v1` had broad grants observed: anon, authenticated, public, and service_role. Keyword scan lacked `auth.uid()`, `host_id`, staff, and `event_staff_assignments`. It accepts caller-provided `p_event_id`, `p_user_id`, `p_ticket_id`, `p_method`, and `p_proof_ref`.
 - `record_checkin_proof_v1` had broad grants shown in the broad grant matrix. Keyword scan lacked `auth.uid()`, `host_id`, staff, and `event_staff_assignments`. It accepts caller-provided `p_event_id`, `p_user_id`, `p_method`, `p_ticket_id`, `p_proof_ref`, and `p_session_id`.
 - `remove_ticket_checkin_proof_v1` keyword scan lacked `auth.uid()`, `host_id`, staff, and `event_staff_assignments`. It accepts `p_event_id`, `p_user_id`, and `p_ticket_id`.
+
+Proof-helper provenance caveat:
+
+- Production proof-specific helpers exist in the supplied Database Functions / RPC evidence.
+- Local migration provenance strongly implicates `C:\dev\hostos\apps\mobile\supabase` for proof-specific helper history.
+- The likely future target remains `C:\dev\hostos\supabase\migrations`, but this plan must not ignore mobile provenance when designing any future accepted patch.
 
 Prior focused classification:
 
@@ -200,6 +216,9 @@ Before promoting this draft, verify:
 This strategy is conceptual only and is not approved for execution.
 
 - Verify active usage and external reachability.
+- Review production SQL/RPC evidence before any future migration draft is considered.
+- Treat `C:\dev\hostos\supabase\migrations` as the default future migration draft target only after explicit patch scope approval.
+- Preserve the split-source provenance caveat when designing any future patch, especially mobile proof-specific helper history.
 - Identify whether proof-related functions should be classified as internal-only helper RPCs, authenticated-only RPCs, host/staff gated RPCs, or replaced by the current scanner path.
 - Require caller authority checks for any proof-state mutation.
 - Require backend auth context for mutation paths.
@@ -281,12 +300,18 @@ This draft does not authorize deployment.
 
 Deployment safety gates before any future accepted work:
 
+- Explicit patch scope approval granted.
 - Production reachability and active-use evidence reviewed.
+- Production SQL/RPC evidence reviewed for the specific change.
 - Security invariants accepted.
 - Backward compatibility impact reviewed.
 - Local/staging test plan accepted.
 - Rollback/recovery approach documented.
+- Rollback/safety note documented before any migration draft.
 - Separate migration/SQL patch plan approved later if needed.
+- No SQL or migration may be written unless explicit patch scope is approved.
+- Any future migration draft should default to `C:\dev\hostos\supabase\migrations` after approval.
+- `C:\dev\joinfolk-web\supabase` and `C:\dev\hostos\apps\mobile\supabase` must not be modified unless separately approved.
 - Production rollout owner identified.
 
 ## 21. Manual Verification Checklist
@@ -314,17 +339,22 @@ Manual verification items before promoting this draft:
 - Are any older clients still using deprecated or unsafe check-in/proof paths?
 - Should proof generation be coupled only to successful scanner check-in?
 - Which execute grants are required for backward compatibility?
-- Which Supabase source tree should receive any future accepted proof check-in RPC hardening migration?
+- Which mobile proof-specific helper provenance should be reviewed before drafting any hostos-targeted migration?
+- Are `joinfolk-web\supabase` and mobile `supabase` historical, component-owned, or active split-source inputs for this domain?
 
 ## 23. Acceptance Criteria for Promoting This Draft
 
 This draft can be considered for promotion only after:
 
-- Canonical target Supabase source path is confirmed.
+- Future working target decision is reaffirmed for `C:\dev\hostos\supabase\migrations`, or superseded by a later decision.
+- Explicit patch scope approval is granted.
 - Production reachability is confirmed.
 - Active-use/caller-path is confirmed.
+- Production SQL/RPC evidence is reviewed for the specific change.
+- Split-source provenance is reviewed, especially mobile proof-specific helper history.
 - Security invariants are accepted.
 - Backward compatibility impact is reviewed.
+- Rollback/safety note is accepted.
 - Manual/staging test plan is accepted.
 - A separate migration/SQL patch plan is approved later if needed.
 - The team explicitly accepts a Candidate P0 / Candidate P1 classification based on verified evidence.
@@ -339,6 +369,7 @@ For this draft:
 - No production mutation was performed by Codex.
 - Supabase CLI was not run.
 - No migrations were run or generated.
+- No migration or SQL is authorized by this plan update.
 - No SQL fixes were written.
 - No ready-to-run SQL was written.
 - No Supabase/backend code was modified.
