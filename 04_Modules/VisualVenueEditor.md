@@ -6,7 +6,7 @@
 - Version: 0.2
 - Owner: Mustafa / JoinFolk
 - Last reviewed: TBD
-- Source confidence: User-stated + Prior audit summary + Proposed P0C-C plan
+- Source confidence: User-stated + Prior audit summary
 - canonical: false
 
 ## 2. Purpose

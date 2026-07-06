@@ -4,7 +4,8 @@
 - Version: 0.2
 - Owner: Mustafa / JoinFolk
 - Last reviewed: TBD
-- Source confidence: Draft
+- Source confidence: User-stated + Prior audit summary
+- canonical: false
 
 ## Purpose
 

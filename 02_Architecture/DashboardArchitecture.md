@@ -4,7 +4,7 @@
 - Version: 0.2
 - Owner: Mustafa / JoinFolk
 - Last reviewed: TBD
-- Source confidence: User-stated + Prior dashboard audit summary
+- Source confidence: User-stated + Prior audit summary
 - canonical: false
 
 ## Purpose
