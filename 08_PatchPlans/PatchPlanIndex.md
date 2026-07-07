@@ -45,6 +45,23 @@ Patch plans may feed ADRs or be created from accepted ADRs. Exact ADR-to-patch w
 
 Patch plans must not be treated as accepted architecture decisions.
 
+### Recent PP-01 Security Patch Plan
+
+The following Draft / Proposed patch plan is indexed as a future implementation planning artifact. It does not authorize implementation, SQL, migration creation, production access, Supabase CLI actions, dashboard actions, source changes, or production mutation.
+
+| Patch plan | Patch plan status | Implementation status | Source decisions | Risk area | Next gate | Blocked actions |
+| --- | --- | --- | --- | --- | --- | --- |
+| `08_PatchPlans/SecurityDefinerAndFunctionGrantHardeningPatchPlan.md` | Draft / Proposed | Not authorized | `09_Decisions/SecurityDefinerAndFunctionGrantHardeningDecision.md`; `09_Decisions/RLSPolicyAndGrantMatrixClassification.md`; `09_Decisions/SupabaseMigrationSourceOfTruthDecision.md` | P0/P1 security hardening candidate | Owner approval before implementation prompt | No SQL; no migration; no production mutation; no source change. |
+
+### Current Execution Order
+
+1. Index reconciliation.
+2. SecurityDefinerAndFunctionGrantHardeningPatchPlan owner review.
+3. Sanitized function inventory / dependency classification.
+4. Owner-approved implementation prompt only after inventory and rollback plan.
+5. Verification report after implementation.
+6. Feature/runtime completeness audit after security P0/P1 gate is under control.
+
 ## 7. Relationship to Status / Backlog
 
 Patch plans may feed status/backlog tracking after verification. Exact status values, backlog handoff, owner model, due-date model, and remediation status model are Unknown / Needs verification.

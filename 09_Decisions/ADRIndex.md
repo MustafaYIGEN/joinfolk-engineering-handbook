@@ -59,6 +59,19 @@ ADRs may be required for database or security-sensitive decisions. Exact databas
 
 Production SQL, migrations, functions, RLS, storage, and auth changes must not happen without explicit approval.
 
+### Recent PP-01 Security Decision Records
+
+The following Draft / Proposed / Not implemented decision records are indexed as PP-01 follow-up governance artifacts. They do not authorize implementation, production access, SQL, migrations, Supabase CLI actions, source changes, or launch-readiness claims.
+
+| Decision record | Decision status | Implementation status | Domain | Relationship to PP-01 | Next artifact or dependent patch plan |
+| --- | --- | --- | --- | --- | --- |
+| `09_Decisions/SecurityDefinerAndFunctionGrantHardeningDecision.md` | Draft / Proposed / Not implemented | Not authorized | Security | Classifies broad function EXECUTE grants, SECURITY DEFINER posture, missing proconfig/search_path candidates, and future verifier role implications from PP-01 metadata evidence. | `08_PatchPlans/SecurityDefinerAndFunctionGrantHardeningPatchPlan.md` |
+| `09_Decisions/RLSDisabledRelationTriageDecision.md` | Draft / Proposed / Not implemented | Not authorized | RLS | Defines triage classes for PP-01 RLS-disabled backup/legacy/view relation findings before any RLS/grant patching. | `09_Decisions/RLSPolicyAndGrantMatrixClassification.md`; future `RLSDisabledRelationPatchPlan.md` only after classification and owner approval. |
+| `09_Decisions/RLSPolicyAndGrantMatrixClassification.md` | Draft / Proposed / Not implemented | Not authorized | RLS | Defines combined table grant, RLS state, policy, relation class, caller-role, and app dependency classification required by PP-01 evidence gaps. | Future `RLSGrantMatrixPatchPlan.md` only after matrix classification and owner approval. |
+| `09_Decisions/StorageBucketExposureDecision.md` | Draft / Proposed / Not implemented | Not authorized | Storage | Defines storage bucket public/private, storage policy, operation, signed URL, and media exposure classification for PP-01 storage evidence gaps. | Future `StorageBucketExposurePatchPlan.md` only after bucket/policy classification and owner approval. |
+| `09_Decisions/EdgeFunctionDeploymentInventoryDecision.md` | Draft / Proposed / Not implemented | Not authorized | Edge | Defines deployment inventory, endpoint exposure, auth/CORS/webhook, secret boundary, and runtime dependency classification for PP-01 Edge Function evidence gaps. | Future `EdgeFunctionDeploymentPatchPlan.md` only after deployment inventory classification and owner approval. |
+| `09_Decisions/SupabaseMigrationSourceOfTruthDecision.md` | Draft / Proposed / Not implemented | Not authorized | Migration provenance | Defines migration provenance, drift, source-of-truth, rollback, and release-governance classification for unresolved PP-01 migration evidence. | Required input to future SQL/migration patch plans, including `08_PatchPlans/SecurityDefinerAndFunctionGrantHardeningPatchPlan.md`. |
+
 ## 10. ADR Authority Model
 
 ### What an ADR may define
