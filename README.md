@@ -21,6 +21,8 @@ It is separate from the JoinFolk dashboard, mobile, web, and Supabase repositori
 
 Application code is evidence. It is not automatically truth.
 
+Governance starts at `00_Governance/GovernanceIndex.md`. The repository/source-of-truth map is `00_Governance/RepositoryTopologyAndSourceOfTruth.md`; it defines handbook lifecycle, patch/change control, do-not-touch boundaries, spec status handling, repository topology, and the rule that local source evidence is not production proof.
+
 ## Core Workflow
 
 All non-trivial engineering work should follow this sequence:
@@ -33,6 +35,8 @@ All non-trivial engineering work should follow this sequence:
 6. Accepted Change
 
 Work must not skip from assumption directly to patch.
+
+Implementation still requires an explicit owner-approved prompt or status gate. The intended navigation path is README.md -> `00_Governance/GovernanceIndex.md` -> `00_Governance/RepositoryTopologyAndSourceOfTruth.md` -> audits, decisions, patch plans, and status gates.
 
 ## Authority Model
 
