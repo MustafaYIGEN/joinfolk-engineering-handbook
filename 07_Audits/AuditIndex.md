@@ -158,6 +158,16 @@ Database audits may review database-facing specifications and verification needs
 
 Security audits may review security-sensitive domains, authority boundaries, RLS/RPC/storage/auth concepts, public exposure, and frontend UX limits. Exact process and findings are Unknown / Needs verification.
 
+### Recent PP-01 Security Function Grant Classification
+
+| Audit artifact | Audit status | Implementation status | Domain | Relationship to PP-01 | Next gate |
+| --- | --- | --- | --- | --- | --- |
+| `07_Audits/SecurityDefinerFunctionGrantInventoryClassification.md` | Draft / Preliminary | Not authorized | Security / RPC / SECURITY DEFINER / function EXECUTE grants | Classifies known SECURITY DEFINER missing proconfig/search_path candidates and function EXECUTE grant hardening candidates from PP-01 metadata evidence. | Owner review of classification completeness, rollback requirements, and verification requirements before any implementation prompt. |
+
+This audit artifact does not authorize SQL, migration creation, production access, Supabase CLI, dashboard action, verification queries, RPC/function invocation, source changes, or launch-readiness claims.
+
+Unknown security-impacting function exposure remains a launch-readiness blocker until classified, patched, or explicitly accepted/deferred by owner.
+
 ### Operations audit
 
 Operations audits may review build/release, testing, monitoring/logging, and incident response draft boundaries. Exact process and findings are Unknown / Needs verification.
