@@ -47,20 +47,26 @@ Patch plans must not be treated as accepted architecture decisions.
 
 ### Recent PP-01 Security Patch Plan
 
-The following Draft / Proposed patch plan is indexed as a future implementation planning artifact. It does not authorize implementation, SQL, migration creation, production access, Supabase CLI actions, dashboard actions, source changes, or production mutation.
+The following Draft / Proposed patch plans are indexed as future implementation planning artifacts. They do not authorize implementation, SQL, migration creation, production access, Supabase CLI actions, dashboard actions, source changes, or production mutation.
 
-| Patch plan | Patch plan status | Implementation status | Source decisions | Risk area | Next gate | Blocked actions |
+| Patch plan | Patch plan status | Implementation status | Source decisions / related gates | Risk area | Next gate | Blocked actions |
 | --- | --- | --- | --- | --- | --- | --- |
 | `08_PatchPlans/SecurityDefinerAndFunctionGrantHardeningPatchPlan.md` | Draft / Proposed | Not authorized | `09_Decisions/SecurityDefinerAndFunctionGrantHardeningDecision.md`; `09_Decisions/RLSPolicyAndGrantMatrixClassification.md`; `09_Decisions/SupabaseMigrationSourceOfTruthDecision.md` | P0/P1 security hardening candidate | Owner approval before implementation prompt | No SQL; no migration; no production mutation; no source change. |
+| `08_PatchPlans/SecurityDefinerFunctionGrantMetadataCollectionPlan.md` | Draft / Proposed | Not authorized | Follows `00_Status/SecurityDefinerFunctionGrantClassificationCompletenessReview.md` and `00_Status/SecurityDefinerFunctionGrantMetadataCollectionApprovalGate.md` | P0/P1 security metadata prerequisite | Owner review of collected metadata report before implementation | No SQL; no migration; no production mutation; no source change; no RPC invocation; no private row/storage object inspection. |
+
+`07_Audits/SecurityDefinerFunctionGrantCollectedMetadataReport.md` is an audit/evidence artifact, not a patch plan. It informs patch planning but does not authorize implementation; local source, migration, and call-site evidence does not prove production behavior, and production metadata remains TBD until approved production metadata collection is performed.
 
 ### Current Execution Order
 
-1. Index reconciliation.
-2. SecurityDefinerAndFunctionGrantHardeningPatchPlan owner review.
-3. Sanitized function inventory / dependency classification.
-4. Owner-approved implementation prompt only after inventory and rollback plan.
-5. Verification report after implementation.
-6. Feature/runtime completeness audit after security P0/P1 gate is under control.
+1. Hardening decision and hardening patch plan created.
+2. Owner preparation gate completed.
+3. Inventory classification completed.
+4. Classification completeness review completed.
+5. Metadata collection plan created.
+6. Bounded metadata collection approval gate completed.
+7. Collected metadata report shell created and local-only evidence added.
+8. Remaining step: owner review of local-only evidence and unresolved production metadata gaps.
+9. Implementation remains blocked until collected metadata, rollback plan, and verification plan are owner-approved.
 
 ## 7. Relationship to Status / Backlog
 
