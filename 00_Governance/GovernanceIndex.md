@@ -77,6 +77,10 @@ Governance docs do not themselves authorize implementation.
 
 Governance docs define the rules under which later work may be approved.
 
+`00_Status/StatusIndex.md` is the status/gate/report index. It maps status reports, owner gates, production verification reports, hardening gap registers, and required next gates.
+
+Status artifacts record evidence, blockers, approval gates, and next required actions. They do not authorize implementation by themselves.
+
 ## 6. Relationship to Repository Topology
 
 `RepositoryTopologyAndSourceOfTruth.md` is the source-of-truth for aliases and evidence boundaries.
@@ -172,4 +176,4 @@ A separate owner-approved implementation prompt is required for any app/dashboar
 - No secret or environment variable value was inspected, copied, printed, rotated, or changed.
 - No credentials, hostnames, full project refs, service_role keys, database passwords, connection strings, webhook secrets, API keys, environment variable values, or secrets were included.
 - No files were staged or committed.
-- Only `00_Governance/GovernanceIndex.md` was created/modified.
+- Only `README.md` and `00_Governance/GovernanceIndex.md` were modified.
