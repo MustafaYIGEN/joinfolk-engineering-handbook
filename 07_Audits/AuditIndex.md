@@ -163,10 +163,11 @@ Security audits may review security-sensitive domains, authority boundaries, RLS
 | Audit artifact | Audit status | Implementation status | Domain | Relationship to PP-01 | Next gate |
 | --- | --- | --- | --- | --- | --- |
 | `07_Audits/SecurityDefinerFunctionGrantInventoryClassification.md` | Draft / Preliminary | Not authorized | Security / RPC / SECURITY DEFINER / function EXECUTE grants | Classifies known SECURITY DEFINER missing proconfig/search_path candidates and function EXECUTE grant hardening candidates from PP-01 metadata evidence. | Owner review of classification completeness, rollback requirements, and verification requirements before any implementation prompt. |
+| `07_Audits/SecurityDefinerFunctionGrantCollectedMetadataReport.md` | Draft / Local-only evidence added | Not authorized | Security / RPC / SECURITY DEFINER / function EXECUTE grants | Extends `07_Audits/SecurityDefinerFunctionGrantInventoryClassification.md` with local-only migration/source/call-site evidence; production metadata collection was not executed and unresolved production metadata remains TBD pending approved collection. | Owner review of local-only evidence, remaining production metadata gaps, rollback requirements, and verification requirements before any implementation prompt. |
 
-This audit artifact does not authorize SQL, migration creation, production access, Supabase CLI, dashboard action, verification queries, RPC/function invocation, source changes, or launch-readiness claims.
+These audit artifacts do not authorize SQL, migration creation, production access, Supabase CLI, dashboard action, verification queries, RPC/function invocation, source changes, or launch-readiness claims.
 
-Unknown security-impacting function exposure remains a launch-readiness blocker until classified, patched, or explicitly accepted/deferred by owner.
+Unknown security-impacting function exposure remains a launch-readiness blocker until classified, patched, or explicitly accepted/deferred by owner. Security/function grant hardening is not complete, and local source evidence does not prove production behavior.
 
 ### Operations audit
 
