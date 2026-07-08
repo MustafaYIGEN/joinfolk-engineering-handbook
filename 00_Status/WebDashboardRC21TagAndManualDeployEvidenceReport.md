@@ -93,8 +93,8 @@ WA-04 guest negative QA:
 
 | Field | Result |
 | --- | --- |
-| Guest direct access to `/events/:id` | PASS — login required |
-| Guest direct access to `/staff/scan/:eventId` | PASS — login required |
+| Guest direct access to `/events/:id` | PASS - login required |
+| Guest direct access to `/staff/scan/:eventId` | PASS - login required |
 
 ## 6. Remaining Gaps
 
