@@ -53,8 +53,8 @@ Explicitly not changed:
 
 | Actor | Required evidence |
 | --- | --- |
-| Event host owner | `events.id = eventId`, `events.host_id = session.user.id`, `events.created_under_persona = "host"` |
-| Assigned staff user | `event_staff_assignments.event_id = eventId`, `event_staff_assignments.staff_user_id = session.user.id` |
+| Event host owner | `events.id = eventId`, `events.host_id = current authenticated user id`, `events.created_under_persona = "host"` |
+| Assigned staff user | `event_staff_assignments.event_id = eventId`, `event_staff_assignments.staff_user_id = current authenticated user id` |
 
 Unauthorized users should see:
 
@@ -112,9 +112,7 @@ Manual QA must verify:
 
 ## 8. Remaining Release Blockers
 
-WA-04 remains open.
-
-WA-04 concerns dashboard event nested tab owner authorization coverage and must be resolved or proven before production release/deploy.
+WA-04 code patch and evidence report are complete. Manual negative QA remains pending where not separately proven.
 
 Cloudflare Git repository connection remains unresolved; current successful live test used manual deployment. Permanent Git-based production deployment evidence is still required before final launch process closure.
 
@@ -127,5 +125,5 @@ Cloudflare Git repository connection remains unresolved; current successful live
 - No production mutation was executed by this handbook task.
 - No Cloudflare setting was changed by this handbook task.
 - No Supabase CLI was run by this handbook task.
-- No files were staged or committed by this handbook task.
+- Only this handbook report file was staged and committed in the handbook repository.
 - Only `00_Status/WA03StaffScannerAuthorizationPatchReport.md` was created.
