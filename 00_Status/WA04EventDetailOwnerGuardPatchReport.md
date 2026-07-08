@@ -10,6 +10,7 @@
 - Patch repository: `C:\dev\joinfolk-web`
 - Patch branch: `refactor/joinfolk-stabilization-p0`
 - Patch commit: `7b39a04 fix(dashboard): guard event detail routes by owner`
+- Follow-up patch commit: `65bd5e3 fix(dashboard): align event owner guard filters`
 - Previous related patch: `691a294 fix(dashboard): guard staff scanner event access`
 - Patch date: 2026-07-08
 
@@ -78,6 +79,37 @@ Expected result:
 | Standard authenticated user | Already blocked from dashboard by `HostGuard` |
 | Guest | Already blocked by `AuthGuard` |
 
+WA-04 was completed through two code commits:
+
+- `7b39a04 fix(dashboard): guard event detail routes by owner`
+- `65bd5e3 fix(dashboard): align event owner guard filters`
+
+## 4.1 Follow-up Filter Alignment
+
+After the route guard was added, some valid host-owned dashboard events appeared in the event list but did not open in event detail.
+
+Root cause:
+`fetchHostEvents()` allowed normal dashboard events where `event_type IS NULL` using:
+
+```ts
+.or("event_type.is.null,event_type.neq.city_memory")
+```
+
+But `EventOwnerGuard` used:
+
+```ts
+.not("event_type", "eq", "city_memory")
+```
+
+This could reject valid `event_type = NULL` rows.
+
+Follow-up fix:
+`EventOwnerGuard` now uses the same event_type filter as `fetchHostEvents()`:
+
+```ts
+.or("event_type.is.null,event_type.neq.city_memory")
+```
+
 ## 5. Verification Evidence
 
 Terminal evidence provided:
@@ -99,12 +131,19 @@ Terminal evidence provided:
 | Push | `691a294..7b39a04 refactor/joinfolk-stabilization-p0 -> refactor/joinfolk-stabilization-p0` |
 | Post-push status | clean |
 | Remote branch HEAD | `origin/refactor/joinfolk-stabilization-p0 = 7b39a04` |
+| Follow-up diff stat | `dashboard/src/components/EventOwnerGuard.tsx | 2 +-` |
+| Follow-up build | `npm --prefix dashboard run build` PASS |
+| Follow-up build modules | 314 modules transformed |
+| Follow-up build result | `built in 2.92s` |
+| Follow-up commit | `65bd5e3 fix(dashboard): align event owner guard filters` |
+| Follow-up push | `7b39a04..65bd5e3 refactor/joinfolk-stabilization-p0 -> refactor/joinfolk-stabilization-p0` |
+| Final remote branch HEAD | `origin/refactor/joinfolk-stabilization-p0 = 65bd5e3` |
 
 ## 6. Gap Resolution Status
 
 | Gap | Status | Reason |
 | --- | --- | --- |
-| WA-04 | Code patched; awaiting manual negative QA | The `/events/:id` route now uses the existing owner guard before mounting event detail child tabs. Manual negative authorization QA is still required before full closure. |
+| WA-04 | Code patched through route guard and filter alignment; awaiting manual negative QA | The `/events/:id` route now uses the existing owner guard before mounting event detail child tabs, and the guard filter was aligned with the host event list filter. Manual negative authorization QA is still required before full closure. |
 
 ## 7. Required Manual QA
 
