@@ -10,6 +10,7 @@
 - Patch repository: `C:\dev\joinfolk-web`
 - Patch branch: `refactor/joinfolk-stabilization-p0`
 - Patch commit: `691a294 fix(dashboard): guard staff scanner event access`
+- Follow-up commit: `cf7e829 fix(dashboard): harden staff scanner authorization`
 - Patch date: 2026-07-08
 
 ## 2. Original Gap
@@ -18,6 +19,14 @@ WA-03 identified that web staff route-level authorization was unclear.
 
 Specific risk:
 `/staff/scan/:eventId` was protected by authentication but did not prove page-level event-specific staff or host authorization before showing scanner guidance/title.
+
+After initial WA-03 patch, live QA found that an authenticated user who was neither event host nor assigned staff still saw scanner guidance on the deployed surface. DB verification for user `80362115-0203-4544-beda-b8b043f17e7b` and event `8fcf1064-8e1d-443e-8307-2c032568284b` returned:
+- is_host_owner: false
+- is_assigned_staff: false
+- expected_staff_scan_access: DENY
+
+Follow-up fix:
+`StaffScannerPage.tsx` now uses `supabase.auth.getUser()`, treats missing user and query errors as denied, and keeps deny-by-default behavior before rendering event title or scanner guidance.
 
 ## 3. Patch Scope
 
@@ -69,6 +78,14 @@ Terminal evidence provided:
 | Commit | `691a294 fix(dashboard): guard staff scanner event access` |
 | Push | `86dba59..691a294 refactor/joinfolk-stabilization-p0 -> refactor/joinfolk-stabilization-p0` |
 | Post-push status | clean |
+| Follow-up commit | `cf7e829 fix(dashboard): harden staff scanner authorization` |
+| Follow-up push | `65bd5e3..cf7e829 refactor/joinfolk-stabilization-p0 -> refactor/joinfolk-stabilization-p0` |
+| Follow-up build | `npm --prefix dashboard run build` PASS |
+| Build modules | 314 modules transformed |
+| Build result | `built in 2.95s` |
+| Live manual deployment method | Cloudflare Pages manual upload from `dashboard/dist` via Yol B |
+| Live negative QA | PASS |
+| Live negative QA result | `Access denied` / `You are not assigned to this event scanner.` |
 
 Known non-blocking build warning:
 
@@ -79,7 +96,7 @@ Known non-blocking build warning:
 
 | Gap | Status | Reason |
 | --- | --- | --- |
-| WA-03 | Code patched; awaiting manual negative QA | Event-specific host/staff access check was added to the web scanner route. Manual negative authorization QA is still required before full closure. |
+| WA-03 | Code patched and live negative QA passed | Code patched and live negative QA passed for guest and unassigned authenticated user; assigned-staff positive QA remains optional/manual if separately required. |
 
 ## 7. Required Manual QA
 
@@ -99,7 +116,7 @@ WA-04 remains open.
 
 WA-04 concerns dashboard event nested tab owner authorization coverage and must be resolved or proven before production release/deploy.
 
-Cloudflare production deploy remains blocked until release gates are clean.
+Cloudflare Git repository connection remains unresolved; current successful live test used manual deployment. Permanent Git-based production deployment evidence is still required before final launch process closure.
 
 ## 9. No-Modification Confirmation
 
