@@ -88,10 +88,17 @@ Terminal evidence provided:
 | Route diff | `/events/:id` route wrapped with `EventOwnerGuard` |
 | Modified file count | 1 |
 | Modified file | `dashboard/src/App.tsx` |
+| Mojibake scan on added lines | PASS / empty |
+| Console/AUDIT scan on added lines | PASS / empty |
+| `npm --prefix dashboard run build` | PASS |
+| Build modules | 314 modules transformed |
+| Build result | `built in 2.92s` |
+| Diff stat | `dashboard/src/App.tsx | 2 +-` |
 | Commit | `7b39a04 fix(dashboard): guard event detail routes by owner` |
 | Previous related patch | `691a294 fix(dashboard): guard staff scanner event access` |
-
-Build evidence should remain attached to the release checklist if separately produced. This handbook task did not run builds or tests.
+| Push | `691a294..7b39a04 refactor/joinfolk-stabilization-p0 -> refactor/joinfolk-stabilization-p0` |
+| Post-push status | clean |
+| Remote branch HEAD | `origin/refactor/joinfolk-stabilization-p0 = 7b39a04` |
 
 ## 6. Gap Resolution Status
 
@@ -117,7 +124,7 @@ WA-03 has been patched but remains awaiting manual negative QA.
 
 WA-04 has been patched but remains awaiting manual negative QA.
 
-WA-06 semi-pro/pro semantics still require owner review or closure.
+WA-06 semi-pro/pro semantics remain an owner-review item and are not closed by this WA-04 patch.
 
 Cloudflare production deploy remains blocked until release gates are clean.
 
@@ -130,5 +137,5 @@ Cloudflare production deploy remains blocked until release gates are clean.
 - No production mutation was executed by this handbook task.
 - No Cloudflare setting was changed by this handbook task.
 - No Supabase CLI was run by this handbook task.
-- No files were staged or committed by this handbook task.
+- Only this handbook report file was staged and committed in the handbook repository.
 - Only `00_Status/WA04EventDetailOwnerGuardPatchReport.md` was created.
