@@ -11,6 +11,8 @@
 - Local repo: `C:\dev\joinfolk-web`
 - Branch: `refactor/joinfolk-stabilization-p0`
 - Current production commit: `e11c5ce fix(dashboard): make venue shared imports repo local`
+- RC-2.2 tag: `joinfolk-v1-rc2.2-web-dashboard`
+- RC-2.2 tag commit: `e11c5cee44959ce20d900eaa5acf28dc4e8f75bb`
 - Previous RC-2.1 tag: `joinfolk-v1-rc2.1-web-dashboard`
 - Previous RC-2.1 tag commit: `cf7e829 fix(dashboard): harden staff scanner authorization`
 - Evidence date: 2026-07-09
@@ -69,7 +71,23 @@ Cloudflare deployment evidence:
 | Alias | `app.join-folk.com` |
 | Deployment URL example | `https://b379896f.joinfolk-dashboard-live.pages.dev` |
 
-## 5. Supabase Environment Fix Evidence
+## 5. RC-2.2 Tag Evidence
+
+Terminal evidence confirmed:
+
+| Check | Result |
+| --- | --- |
+| Local build command | `npm --prefix dashboard run build` |
+| Local build result | PASS |
+| Build modules | 314 modules transformed |
+| Build duration | `built in 2.99s` |
+| Local git status | clean |
+| Tag created | `joinfolk-v1-rc2.2-web-dashboard` |
+| Tag target | `e11c5cee44959ce20d900eaa5acf28dc4e8f75bb` |
+| Tag pushed | PASS |
+| `git tag --points-at HEAD` | `joinfolk-v1-rc2.2-web-dashboard` |
+
+## 6. Supabase Environment Fix Evidence
 
 After Git-backed deploy, the live dashboard initially showed `Invalid API key`.
 
@@ -106,7 +124,7 @@ Bundle verification after fix:
 | Contains `placeholder-key` | False |
 | Contains verified key prefix | True |
 
-## 6. Live QA Evidence
+## 7. Live QA Evidence
 
 WA-03 staff scanner route:
 
@@ -133,10 +151,11 @@ WA-04 event detail owner routes:
 | `/events/8fcf1064-8e1d-443e-8307-2c032568284b/staff` | Opens for host owner | PASS |
 | `/events/8fcf1064-8e1d-443e-8307-2c032568284b/venue` | Opens for host owner | PASS |
 
-## 7. Final Status
+## 8. Final Status
 
 | Item | Status |
 | --- | --- |
+| RC-2.2 web/dashboard checkpoint tag | DONE |
 | Cloudflare Git repository connection | DONE |
 | Git-backed production build | PASS |
 | Repo-local `venue-shared` portability fix | DONE |
@@ -147,7 +166,7 @@ WA-04 event detail owner routes:
 | Manual-only deployment dependency | CLOSED |
 | Full production launch process | Still subject to remaining non-web release gates |
 
-## 8. No-Modification Confirmation
+## 9. No-Modification Confirmation
 
 - No application code was modified by this handbook task.
 - No dashboard/mobile/web code was modified by this handbook task.
