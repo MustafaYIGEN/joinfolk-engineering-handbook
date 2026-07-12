@@ -372,3 +372,22 @@ This report is complete only when:
 - No implementation, admin/support action, storage/media action, messaging action, deletion/export action, refund/payment action, moderation action, RLS/RPC/storage/realtime mutation, Edge Function action, notification action, commerce action, or policy publication was executed.
 - No files were staged or committed.
 - Only `00_Status/PP01EvidenceGapClassificationReport.md` was created/modified.
+
+## 34. Notification Delivery Closure Addendum
+
+Notification-specific closure work now has separate evidence and decision records:
+
+- [07_Audits/NotificationPushReminderContractAudit.md](../07_Audits/NotificationPushReminderContractAudit.md)
+- [09_Decisions/NotificationDeliveryBoundaryDecision.md](../09_Decisions/NotificationDeliveryBoundaryDecision.md)
+- [08_PatchPlans/NotificationDeliveryClosurePatchPlan.md](../08_PatchPlans/NotificationDeliveryClosurePatchPlan.md)
+- [10_Status/NotificationDeliveryStatusGates.md](../10_Status/NotificationDeliveryStatusGates.md)
+
+Current classification for this notification work:
+
+- Server notification authorization, outbox security, scheduler/Vault, policy enforcement, and provider dispatch: PASS.
+- Mobile local reminder implementation: IMPLEMENTED_NOT_RELEASED.
+- Closed-app reminder device delivery: DEVICE_UAT_REQUIRED.
+- Legacy notification RPC Phase B: ROLLOUT_DEPENDENT.
+- Notification domain overall: CONDITIONAL_PASS / NOT_FULLY_CLOSED.
+
+This addendum removes the notification server-delivery path from the unresolved P0-style blocker set, while keeping device UAT and legacy rollout gates open.

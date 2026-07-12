@@ -340,3 +340,23 @@ For this document to become v1.0, JoinFolk must verify and accept:
 - What evidence is required before release readiness or launch readiness can be claimed?
 - What evidence is required before production state can be reported?
 - How should status preserve cross-surface consistency across Mobile, Dashboard, Web/Public, Supabase Backend, and Handbook documents?
+
+## 35. Notification Delivery Status
+
+Notification delivery has moved to a conditional pass state, not a final close.
+
+| Gate | State | Notes |
+|---|---|---|
+| SERVER_NOTIFICATION_RPC_BOUNDARY | PASS | Self-targeted wrapper is the approved mobile-facing RPC. |
+| SERVER_PUSH_OUTBOX_SECURITY | PASS | Outbox is RLS-enabled, service-role constrained, and uses fenced atomic claim/retry semantics. |
+| SERVER_PUSH_SCHEDULER | PASS | Scheduler uses pg_cron + pg_net + Vault and invokes only the internal helper. |
+| SERVER_PUSH_AUTHORIZATION | PASS | push-dispatch requires the dispatch secret before service-role access. |
+| SERVER_PUSH_POLICY_ENFORCEMENT | PASS | Reminder notifications are excluded from server push. |
+| SERVER_PUSH_PROVIDER_DISPATCH | PASS | Guarded Expo dispatch and dead-token cleanup are recorded. |
+| SERVER_PUSH_DEVICE_VISIBILITY | DEVICE_UAT_REQUIRED | Closed-app visible receipt still needs explicit device evidence unless separately proven. |
+| LOCAL_REMINDER_IMPLEMENTATION | IMPLEMENTED_NOT_RELEASED | Local reminder scheduling exists but is not yet accepted as released device evidence. |
+| LOCAL_REMINDER_DEVICE_DELIVERY | DEVICE_UAT_REQUIRED | Closed-app reminder delivery must be confirmed on device. |
+| LEGACY_NOTIFICATION_RPC_PHASE_B | ROLLOUT_DEPENDENT | Legacy authenticated RPC access remains temporary during installed-client rollout. |
+| NOTIFICATION_DOMAIN_OVERALL | CONDITIONAL_PASS / NOT_FULLY_CLOSED | Server delivery is proven; device UAT and legacy RPC Phase B remain open. |
+
+See [NotificationDeliveryStatusGates.md](NotificationDeliveryStatusGates.md) for the canonical status gate record.

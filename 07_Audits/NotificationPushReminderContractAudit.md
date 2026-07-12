@@ -467,3 +467,36 @@ Unreviewed tables/functions must not be treated as safe solely because RLS is en
 - No builds/tests/installs were run.
 - No files were staged or committed.
 - Only `07_Audits/NotificationPushReminderContractAudit.md` was created/modified.
+
+## 28. Notification Delivery Closure Evidence Addendum
+
+### 28.1 Scope
+
+This addendum records the completed notification security and delivery work only. It separates server notification delivery, reminder local scheduling, and legacy RPC rollout state.
+
+Implementation commit anchors:
+
+- Platform notification boundary: `e9a61f55`
+- Mobile self-targeted reminder RPC: `c7f7b3b`
+- Platform push delivery pipeline: `a412d4f8`
+- Mobile local reminder scheduling: `10a4700`
+
+### 28.2 Evidence Labels
+
+| Area | Status | Evidence |
+|---|---|---|
+| RPC authorization boundary for self notification wrapper | PROVEN | Production permission state shows `public.create_my_notification_v1(text,text,text,jsonb,text)` is authenticated- and service_role-executable, uses `auth.uid()`, and does not accept arbitrary `user_id`. Legacy `public.create_notification_v1(uuid,text,text,text,jsonb,text)` remains authenticated-executable only for temporary installed-client compatibility. |
+| Outbox table, RLS, and worker claim/retry security | PROVEN | `public.notification_push_deliveries_v1` exists with RLS enabled, service-role-only table access, no historical backfill, reminder exclusion, atomic claim/retry state transitions, bounded retries, and terminal sent/skipped states. Delivery contract is bounded at-least-once with concurrent duplicate claim prevention. |
+| Edge Function request authorization | PROVEN | `push-dispatch` requires `x-joinfolk-dispatch-secret` before service-role client creation; direct and batch modes share the same privileged request gate; the handler rejects unauthorized requests with HTTP 401. |
+| Scheduler and Vault boundary | PROVEN | `pg_cron`, `pg_net`, and `supabase_vault` are installed; the scheduler helper reads Vault secret names only, holds owner-only execution, and cron invokes only `public.invoke_notification_push_dispatch_v1()`. |
+| Push eligibility and provider dispatch | PROVEN | Reminder notifications are excluded from server push; eligible server notifications use the guarded Expo path, respect user settings and private preview masking, and record terminal delivery outcomes. |
+| Real production dispatch | PROVEN | Production worker runs returned HTTP 200 / succeeded outcomes, including a successful controlled push smoke test and successful terminal outbox state transitions. No private notification payloads were exposed in worker responses. |
+| Mobile local reminder implementation | IMPLEMENTED_NOT_RELEASED | The mobile reminder implementation schedules local Expo notifications using stable reminder identity, numeric local date parsing, 09:00 local device time, persisted schedule mapping, reconciliation, orphan cleanup, fail-closed inspection behavior, and Expo notifications 0.32.17 API compatibility. Focused lint passed. |
+| Local reminder device delivery | DEVICE_UAT_REQUIRED | The reminder scheduler is implemented, but closed-app device-visible delivery still requires device/TestFlight verification. |
+| Legacy RPC Phase B | ROLLOUT_DEPENDENT | `public.create_notification_v1(uuid,text,text,text,jsonb,text)` still retains temporary authenticated access for installed/TestFlight client compatibility and must be revoked only after rollout completion. |
+
+### 28.3 Evidence Still Missing
+
+- Closed-app device UAT proving reminder notifications visibly arrive on-device.
+- Rollout completion evidence showing installed clients no longer call the legacy notification RPC.
+- Any claim of external exactly-once delivery. The accepted guarantee remains bounded at-least-once.

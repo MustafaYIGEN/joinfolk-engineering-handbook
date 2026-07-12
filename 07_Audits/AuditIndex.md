@@ -169,6 +169,12 @@ These audit artifacts do not authorize SQL, migration creation, production acces
 
 Unknown security-impacting function exposure remains a launch-readiness blocker until classified, patched, or explicitly accepted/deferred by owner. Security/function grant hardening is not complete, and local source evidence does not prove production behavior.
 
+### Notification delivery closure audit
+
+| Audit artifact | Audit status | Implementation status | Domain | Relationship to current production evidence | Next gate |
+| --- | --- | --- | --- | --- | --- |
+| `07_Audits/NotificationPushReminderContractAudit.md` | Updated evidence report | Server-side notification delivery proven; reminder local scheduling implemented but not yet device-accepted | Notifications / push / reminders | Records the completed notification security boundary, outbox/scheduler pipeline, guarded Edge dispatch, bounded at-least-once delivery, and the remaining mobile device UAT / legacy RPC rollout gates. | [10_Status/NotificationDeliveryStatusGates.md](../10_Status/NotificationDeliveryStatusGates.md) |
+
 ### Operations audit
 
 Operations audits may review build/release, testing, monitoring/logging, and incident response draft boundaries. Exact process and findings are Unknown / Needs verification.

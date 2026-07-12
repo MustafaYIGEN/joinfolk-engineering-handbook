@@ -401,7 +401,13 @@ For this document to become v1.0, JoinFolk must verify and accept:
 - Architecture, database, and security decision authority.
 - Explicit production-change approval constraints for SQL, migrations, functions, RLS, storage, and auth.
 
-## 39. Open Questions
+## 39. Recent Notification Delivery Decision
+
+| Decision record | Decision status | Implementation status | Domain | Relationship to current notification work | Next artifact |
+| --- | --- | --- | --- | --- | --- |
+| `09_Decisions/NotificationDeliveryBoundaryDecision.md` | Accepted | Server notification delivery is production-proven; reminder local delivery is implemented but not yet device-accepted | Notifications / push / reminders | Locks the server notification boundary, local reminder ownership, dispatch secret requirement, and legacy RPC rollout dependence. | [10_Status/NotificationDeliveryStatusGates.md](../10_Status/NotificationDeliveryStatusGates.md) |
+
+## 40. Open Questions
 
 - What ADR methodology should JoinFolk accept?
 - What ADR template should be accepted?
