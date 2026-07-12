@@ -4,40 +4,40 @@
 
 - Status: Active draft
 - Owner: Mustafa / JoinFolk
-- Scope: password-reset and email-confirmation mobile-first contract closure
+- Scope: password-reset and email-confirmation browser-first contract closure
 - Depends on: `09_Decisions/AuthEmailCanonicalLinkHostDecision.md`
 - Canonical: false
 
 ## 2. Current Gate
 
-Implementation is AUTHORIZED_UNDER_ACCEPTED_PATCH_PLAN, but readiness remains blocked until the target host contract is implemented.
+Implementation is AUTHORIZED_UNDER_ACCEPTED_PATCH_PLAN, but rollout remains open until browser reset UAT and legacy/mobile regression proof are complete.
 
 ## 3. Preconditions
 
-Before rollout completion:
+Before closure:
 
-1. canonical auth-link host decided as `join-folk.com`
-2. Supabase redirect allowlist verified
-3. email template routes verified
-4. live AASA verified on the chosen public host
-5. mobile associated-domain delta identified
-6. exact web fallback owner identified
-7. duplicate auth surface strategy decided for `joinfolk-web`
+1. canonical auth-link host remains `join-folk.com`
+2. Supabase redirect allowlist remains verified
+3. browser-first reset implementation remains deployed on the canonical web route
+4. token-bearing browser reset UAT completes
+5. legacy native recovery regression UAT completes
+6. normal onboarding regression UAT completes
+7. duplicate auth surface strategy remains tracked for `joinfolk-web`
 8. `app.join-folk.com` remains excluded as the current auth email host unless a separate production-surface decision reopens it
 
 ## 4. Accepted Closure Scope
 
 The accepted closure scope is:
 
-1. apply the accepted `join-folk.com` target-host contract
+1. preserve the accepted `join-folk.com` browser-first target-host contract
 2. preserve `www.join-folk.com` as browser fallback during rollout
-3. implement route ownership and fallback contract on the selected web surface
-4. update mobile associated domains if required
-5. implement native confirmation result route
-6. normalize mobile reset result states and success surface
-7. revise AASA to route-specific auth includes while keeping `/login` and `/download` browser-only
-8. update email templates and redirect allowlist to match the selected host
-9. verify installed-app, not-installed, expired, invalid, already-used, and offline states
+3. keep password reset web-only on `/auth/reset-password`
+4. keep email confirmation web-first on `/auth/verified`
+5. preserve native reset as `LEGACY_COMPATIBILITY_ONLY`
+6. preserve recovery/onboarding isolation for legacy native recovery
+7. verify token-bearing browser reset behavior and browser-side password update
+8. verify legacy native recovery and normal onboarding regressions on the new mobile binary
+9. correct email-template reproducibility when a source-controlled template authority is accepted
 10. perform redirect cleanup only after UAT and installed-client verification
 
 ## 5. Verification Categories
@@ -46,27 +46,31 @@ Do not record secrets.
 
 Verification must cover:
 
-- installed iOS app: reset opens native route
-- installed iOS app: confirmation opens native route
-- app absent: web fallback works
-- expired reset
-- already-used reset
-- invalid reset
+- browser reset: valid token-bearing recovery link
+- browser reset: expired recovery link
+- browser reset: invalid recovery link
+- browser reset: already-used recovery link where distinguishable
+- browser reset: offline/network failure
+- browser reset: password update succeeds without automatic app opening
+- browser reset: success page exposes only explicit user-controlled continuation CTAs
+- installed iOS app: legacy native reset route does not redirect into onboarding during recovery
+- installed iOS app: normal onboarding still opens after intentional sign-in when appropriate
+- app absent: canonical web fallback works
 - valid confirmation
 - already-confirmed confirmation
 - expired confirmation
 - invalid confirmation
-- offline/network failure
-- `/login` remains browser-only
-- `/download` remains browser-only
+- `/auth/*` remains browser-only
+- `/login*` remains browser-only
+- `/download*` remains browser-only
 - tokens are not exposed in logs or user-facing raw errors
 
 ## 6. Rollback Boundary
 
 Rollback may restore:
 
-- prior AASA exclusions
-- prior associated-domain host set
+- prior browser reset implementation if a production regression is proven
+- prior mobile reset request behavior only under an explicit legacy rollback decision
 - prior browser fallback ownership
 - prior email template redirects
 
@@ -78,6 +82,7 @@ Cleanup is BLOCKED until reset and confirmation UAT pass and installed clients a
 
 Later cleanup candidates:
 
+- `joinfolk://reset-password`
 - broad `join-folk.com` wildcard redirect entries
 - broad `www.join-folk.com` wildcard redirect entries
 - `app.join-folk.com` auth redirect entries
@@ -88,8 +93,7 @@ Later cleanup candidates:
 ## 8. Prohibited Actions While Blocked
 
 - do not modify auth behavior by assumption
-- do not change AASA before host freeze
-- do not change associated domains before host freeze
+- do not treat AASA for `/claim/*` or `/e/*` as part of the auth-email blocker set
 - do not remove broad redirect coverage before UAT and installed-client verification
-- do not ship a native confirmation result route that is not connected to the final host contract
+- do not ship a native confirmation result route under this browser-first decision
 - do not route auth email links to `app.join-folk.com` under the current architecture

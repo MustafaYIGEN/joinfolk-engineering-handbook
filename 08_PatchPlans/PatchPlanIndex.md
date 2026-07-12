@@ -78,7 +78,7 @@ The following Draft / Proposed patch plans are indexed as future implementation 
 
 | Patch plan | Patch plan status | Implementation status | Source decision | Scope | Next gate |
 | --- | --- | --- | --- | --- | --- |
-| `08_PatchPlans/AuthEmailMobileFirstClosurePatchPlan.md` | Active draft | Authorized under accepted browser-first patch plan | `09_Decisions/AuthEmailCanonicalLinkHostDecision.md` | Browser-first reset completion, web confirmation contract, legacy reset compatibility, and rollout-safe redirect/template cleanup. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |
+| `08_PatchPlans/AuthEmailMobileFirstClosurePatchPlan.md` | Active draft | Browser-first implementation deployed; rollout closure still open | `09_Decisions/AuthEmailCanonicalLinkHostDecision.md` | Browser-first reset UAT, legacy native recovery regression proof, normal onboarding regression proof, and rollout-safe redirect/template cleanup. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |
 
 ## 7. Relationship to Status / Backlog
 

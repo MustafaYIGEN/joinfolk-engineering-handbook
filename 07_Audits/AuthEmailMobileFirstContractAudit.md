@@ -4,7 +4,7 @@
 
 - Status: Draft
 - Owner: Mustafa / JoinFolk
-- Scope: AUTH-EMAIL-01 browser-first auth-email contract reconciliation
+- Scope: AUTH-EMAIL-01 browser-first auth-email contract reconciliation and rollout-state evidence
 - Evidence date: 2026-07-12
 - Source confidence: mixed live-host snapshot, repository inspection, handbook deployment evidence, Dashboard production evidence, and operator UAT
 - Canonical: false
@@ -12,6 +12,11 @@
 ## 2. Scope
 
 This audit is bounded to password-reset and email-confirmation email-link behavior.
+
+Historical note:
+
+- the filename remains `MobileFirst` for continuity
+- the binding architecture recorded by this audit is browser-first
 
 Surfaces inspected:
 
@@ -63,6 +68,14 @@ PROVEN:
 - native confirmation route was not found
 - under the accepted browser-first contract, native confirmation is no longer required
 - native reset route is now `LEGACY_COMPATIBILITY_ONLY`
+- canonical reset request redirect was implemented in mobile commit `43d909a`
+- recovery/onboarding isolation was implemented in mobile commit `5912d60`
+- a successful iOS build containing both mobile auth commits exists:
+  - version: `1.0.0 (24)`
+  - build commit: `4b7fb0e`
+- token-bearing browser reset UAT remains `OPEN`
+- legacy native recovery regression UAT remains `OPEN`
+- normal onboarding regression UAT remains `OPEN`
 
 ### 4.3 Secondary duplicate auth surface
 
@@ -75,9 +88,11 @@ PROVEN:
 
 These remain rollout-dependent cleanup candidates.
 
-## 5. Live Host Snapshot
+## 5. Historical Live Host Snapshot
 
 ### 5.1 Auth route snapshot
+
+This snapshot records the pre-browser-first production defect state that justified the browser-first closure wave. It is historical evidence, not the current binding rollout state.
 
 | URL | Live evidence | Classification |
 | --- | --- | --- |
@@ -179,14 +194,39 @@ Magic Link product usage remains `NOT_PROVEN`.
 - iPhone Mail heading contrast: `VISUAL_FIX_REQUIRED`
 - confirmation flow behavior: `PASS`
 
-### 7.2 Current password-reset problem
+### 7.2 Browser-first rollout state
 
 PROVEN:
 
-- the current reset email attempts to open the mobile application
-- operator rejects this as the target behavior
-- target behavior is browser-only reset completion
-- the web reset route must become the sole new-request recovery surface
+- public auth host: `https://join-folk.com`
+- password reset route: `/auth/reset-password`
+- confirmation route: `/auth/verified`
+- browser-first production web implementation commit: `0df2562a`
+- new password-reset requests target the canonical HTTPS reset route
+- web-only password reset is the binding contract
+
+OPEN:
+
+- token-bearing browser reset production UAT
+- legacy native recovery regression UAT
+- normal onboarding regression UAT
+
+### 7.3 Email delivery and sender domain evidence
+
+PROVEN:
+
+- `CUSTOM_SMTP: PASS`
+- `SPF: PASS`
+- `DKIM: PASS`
+- `DMARC: PASS_MONITORING_POLICY`
+- `DMARC_POLICY: p=none`
+- `AUTH_EMAIL_TEMPLATES: PASS`
+- `AUTH_CONFIRMATION_EMAIL_UAT: PASS`
+
+OPEN / NON-BLOCKING:
+
+- `SOURCE_CONTROLLED_EMAIL_TEMPLATES: OPEN_REPRODUCIBILITY_GAP`
+- `SENDER_AVATAR_BIMI_APPLE: DEFERRED_NON_BLOCKING`
 
 ## 8. Host and Surface Classification
 
@@ -194,25 +234,41 @@ PROVEN:
 - `AUTH_EMAIL_TARGET_HOST: DECIDED_JOIN_FOLK_COM`
 - `AUTH_EMAIL_HOST_READINESS: PARTIAL`
 - `PASSWORD_RESET_TARGET_SURFACE: WEB_ONLY`
-- `PASSWORD_RESET_WEB_FLOW: IMPLEMENTATION_REQUIRED`
+- `PASSWORD_RESET_WEB_IMPLEMENTATION: DEPLOYED`
+- `PASSWORD_RESET_WEB_PRODUCTION_UAT: OPEN`
+- `PASSWORD_RESET_MOBILE_REQUEST_REDIRECT: IMPLEMENTED_PENDING_NEW_BINARY_UAT`
 - `PASSWORD_RESET_NATIVE_ROUTE: LEGACY_COMPATIBILITY_ONLY`
+- `RECOVERY_ONBOARDING_ISOLATION: IMPLEMENTED_PENDING_NEW_BINARY_UAT`
 - `AUTH_CONFIRMATION_SURFACE: WEB_FIRST_PASS`
 - `EMAIL_CONFIRMATION_NATIVE_ROUTE: NOT_REQUIRED_BY_DECISION`
 - `AUTH_AASA_POLICY: AUTH_ROUTES_BROWSER_ONLY`
+- `CUSTOM_SMTP: PASS`
+- `SPF: PASS`
+- `DKIM: PASS`
+- `DMARC: PASS_MONITORING_POLICY`
+- `DMARC_POLICY: p=none`
+- `AUTH_EMAIL_TEMPLATES: PASS`
+- `AUTH_EMAIL_LOGO_ASSET: PASS`
+- `AUTH_CONFIRMATION_EMAIL_UAT: PASS`
 - `AUTH_APP_DOMAIN_FALLBACK: REJECTED_AS_CURRENT_AUTH_EMAIL_HOST`
+- `SOURCE_CONTROLLED_EMAIL_TEMPLATES: OPEN_REPRODUCIBILITY_GAP`
+- `SENDER_AVATAR_BIMI_APPLE: DEFERRED_NON_BLOCKING`
 
-## 9. Remaining Blocker
+## 9. Remaining Open Gates
 
-Exact remaining blocker:
+OPEN:
 
-- the canonical browser reset flow is not yet correctly implemented on `https://join-folk.com/auth/reset-password`
+- token-bearing browser reset production UAT on `https://join-folk.com/auth/reset-password`
+- legacy native recovery regression UAT
+- normal onboarding regression UAT
 
-Supporting open gaps:
+RISK:
 
-- reset page still renders the wrong surface in production
-- reset flow still attempts mobile-app opening today
-- web reset token/session recovery and browser-side password update must be verified and completed
-- iPhone Mail heading contrast needs a visual fix
+- source-controlled email templates remain an open reproducibility gap
+
+DEFERRED:
+
+- sender avatar / BIMI / Apple Branded Mail is non-blocking and deferred
 
 ## 10. Rollout-Dependent Cleanup
 

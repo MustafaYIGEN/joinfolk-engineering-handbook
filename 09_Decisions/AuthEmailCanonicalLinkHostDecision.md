@@ -14,6 +14,12 @@
 - `AUTH_EMAIL_FLOW_MODEL: BROWSER_FIRST`
 - `AUTH_EMAIL_TARGET_HOST: DECIDED_JOIN_FOLK_COM`
 - `AUTH_EMAIL_HOST_READINESS: PARTIAL`
+- `PASSWORD_RESET_TARGET_SURFACE: WEB_ONLY`
+- `PASSWORD_RESET_WEB_IMPLEMENTATION: DEPLOYED`
+- `PASSWORD_RESET_WEB_PRODUCTION_UAT: OPEN`
+- `PASSWORD_RESET_MOBILE_REQUEST_REDIRECT: IMPLEMENTED_PENDING_NEW_BINARY_UAT`
+- `PASSWORD_RESET_NATIVE_ROUTE: LEGACY_COMPATIBILITY_ONLY`
+- `RECOVERY_ONBOARDING_ISOLATION: IMPLEMENTED_PENDING_NEW_BINARY_UAT`
 
 ## 3. Accepted Contract
 
@@ -38,6 +44,7 @@ Binding rules:
 - email confirmation MUST complete on the public web verified page
 - the page MUST visibly state that the email is confirmed
 - native email confirmation is `NOT_REQUIRED_BY_DECISION`
+- `app.join-folk.com` MUST NOT be used as an auth-email host
 
 ## 4. Host Classification
 
@@ -65,15 +72,25 @@ Binding rules:
 
 Host selection is decided. Readiness is not complete.
 
-Current readiness gaps:
+Current readiness/open gates:
 
-- `join-folk.com/auth/reset-password` still renders the wrong surface
-- browser reset flow still needs implementation and verification
-- reset flow currently attempts mobile-app opening and this MUST be removed
+- token-bearing browser reset production UAT remains `OPEN`
+- legacy native recovery regression UAT remains `OPEN`
+- normal onboarding regression UAT remains `OPEN`
 - live `join-folk.com` AASA is still missing, but this is not a blocker for browser-only auth-email completion
-- iPhone Mail heading contrast requires visual correction
+- source-controlled email templates remain an open reproducibility gap
+- sender avatar / BIMI / Apple Branded Mail remains deferred and non-blocking
 
 Native confirmation route is no longer a blocker.
+
+Verified implementation evidence:
+
+- browser-first production web implementation commit: `0df2562a`
+- mobile canonical reset request commit: `43d909a`
+- recovery/onboarding isolation commit: `5912d60`
+- successful iOS build containing both mobile auth commits:
+  - version: `1.0.0 (24)`
+  - build commit: `4b7fb0e`
 
 ## 6. Binding Browser-Only Route Policy
 
