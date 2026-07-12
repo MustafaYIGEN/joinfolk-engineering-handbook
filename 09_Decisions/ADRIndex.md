@@ -430,4 +430,4 @@ For this document to become v1.0, JoinFolk must verify and accept:
 
 | Decision record | Decision status | Implementation status | Domain | Relationship to AUTH-EMAIL-01 | Next artifact |
 | --- | --- | --- | --- | --- | --- |
-| `09_Decisions/AuthEmailCanonicalLinkHostDecision.md` | Blocked | Not authorized | Auth / universal links / reset / confirmation | Freezes the rule that no auth-email implementation proceeds until one canonical host is proven across Cloudflare ownership, AASA, mobile entitlements, and Supabase redirect/template evidence. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |
+| `09_Decisions/AuthEmailCanonicalLinkHostDecision.md` | Blocked | Not authorized | Auth / universal links / reset / confirmation | Freezes the browser-first auth-email contract, decides `join-folk.com` as canonical host, rejects `app.join-folk.com` as the current auth-email surface, and authorizes browser-first closure work under the accepted patch plan. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |

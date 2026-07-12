@@ -363,21 +363,30 @@ See [NotificationDeliveryStatusGates.md](NotificationDeliveryStatusGates.md) for
 
 ## 36. Auth Email Status
 
-AUTH-EMAIL-01 is blocked on canonical host and production configuration evidence.
+AUTH-EMAIL-01 is in active closure under a browser-first contract.
 
 | Gate | State | Notes |
 |---|---|---|
-| AUTH_EMAIL_CURRENT_CONTRACT | FAIL | Current reset and confirmation behavior is split across custom-scheme, web utility routes, and duplicate surfaces. |
-| AUTH_EMAIL_CANONICAL_HOST | BLOCKED_DEPLOYMENT_CONFLICT | Public canonical host not frozen; `app.join-folk.com` is rejected as the current auth email host. |
-| AUTH_PUBLIC_RESET_FALLBACK | PROVEN_BROKEN | `join-folk.com` and `www.join-folk.com` reset routes render the wrong surface. |
-| AUTH_PUBLIC_CONFIRMATION_FALLBACK | PARTIAL | Public web confirmation fallback exists, but canonical host policy is not frozen. |
-| AUTH_APP_DOMAIN_FALLBACK | REJECTED_AS_CURRENT_AUTH_EMAIL_HOST | `app.join-folk.com` is an organizer/dashboard surface and serves invalid live AASA HTML. |
-| AUTH_LIVE_AASA | FAIL | Public hosts are missing AASA and `app.join-folk.com` serves invalid AASA HTML. |
-| PASSWORD_RESET_NATIVE_ROUTE | PARTIAL | Native reset route exists, but ownership and host contract are not frozen. |
-| EMAIL_CONFIRMATION_NATIVE_ROUTE | MISSING | No native confirmation result route was found. |
-| AUTH_AASA_ALIGNMENT | FAIL | Source-controlled AASA excludes `/auth/*`. |
-| AUTH_REDIRECT_ALLOWLIST | DASHBOARD_EVIDENCE_REQUIRED | Dashboard URL configuration evidence missing. |
-| AUTH_EMAIL_TEMPLATES | DASHBOARD_EVIDENCE_REQUIRED | Dashboard template evidence missing. |
-| AUTH_EMAIL_IMPLEMENTATION | BLOCKED UNTIL public canonical host, fallback routes, AASA, redirects and templates are frozen | No implementation should proceed before the host decision is unblocked. |
+| AUTH_EMAIL_CURRENT_CONTRACT | FAIL | Current reset and confirmation behavior remains mixed and not yet aligned to the accepted browser-first contract. |
+| AUTH_EMAIL_FLOW_MODEL | BROWSER_FIRST | Password reset and confirmation are browser-first by decision. |
+| AUTH_EMAIL_TARGET_HOST | DECIDED_JOIN_FOLK_COM | `join-folk.com` is the accepted canonical auth email host. |
+| AUTH_EMAIL_HOST_READINESS | PARTIAL | Host and route contract are decided, but browser reset implementation is still incomplete. |
+| AUTH_REDIRECT_ALLOWLIST | PASS_WITH_LEGACY_CLEANUP_REQUIRED | Exact canonical routes are allowlisted, but legacy and wildcard entries remain cleanup candidates. |
+| AUTH_HOOKS | NONE | No auth hooks are configured. |
+| AUTH_EMAIL_LOGO_ASSET | PASS | Verified canonical logo asset is live on `join-folk.com`. |
+| AUTH_CONFIRMATION_EMAIL_UAT | PASS_WITH_VISUAL_FIX_REQUIRED | Confirmation email flow passed, but iPhone Mail heading contrast needs improvement. |
+| AUTH_CONFIRMATION_SURFACE | WEB_FIRST_PASS | Web confirmation behavior passed operator UAT. |
+| EMAIL_CONFIRMATION_NATIVE_ROUTE | NOT_REQUIRED_BY_DECISION | Native confirmation is no longer a launch blocker. |
+| PASSWORD_RESET_TARGET_SURFACE | WEB_ONLY | New password-reset requests must complete on the public web reset page. |
+| PASSWORD_RESET_WEB_FLOW | IMPLEMENTATION_REQUIRED | Browser reset behavior is not yet correctly implemented in production. |
+| PASSWORD_RESET_NATIVE_ROUTE | LEGACY_COMPATIBILITY_ONLY | Native reset may remain temporarily for legacy email and installed-client compatibility. |
+| AUTH_AASA_POLICY | AUTH_ROUTES_BROWSER_ONLY | Auth routes must remain browser-only and MUST NOT be captured by AASA. |
+| AUTH_EMAIL_TEMPLATES | IMPLEMENTED_UAT_PARTIAL | Templates are saved and functional, but iPhone Mail heading contrast still needs correction. |
+| AUTH_APP_DOMAIN_FALLBACK | REJECTED_AS_CURRENT_AUTH_EMAIL_HOST | `app.join-folk.com` remains an organizer/dashboard surface and is not an auth-email host. |
+| AUTH_PUBLIC_RESET_FALLBACK | PROVEN_BROKEN | `join-folk.com` and `www.join-folk.com` reset routes still render the wrong surface today. |
+| AUTH_PUBLIC_CONFIRMATION_FALLBACK | PARTIAL | Browser confirmation fallback exists and passed operator UAT, but visual polish remains open. |
+| AUTH_LIVE_AASA | FAIL | Live AASA is still missing on `join-folk.com`, but this does not block browser-only auth-email completion. |
+| AUTH_EMAIL_IMPLEMENTATION | AUTHORIZED_UNDER_ACCEPTED_BROWSER_FIRST_PATCH_PLAN | Implementation may proceed under the accepted browser-first patch plan. |
+| AUTH_EMAIL_DOMAIN_OVERALL | ACTIVE_CLOSURE | The domain is not closed yet, but the final browser-first contract is accepted and implementation is active. |
 
 See [AuthEmailStatusGates.md](AuthEmailStatusGates.md) for the canonical gate record.

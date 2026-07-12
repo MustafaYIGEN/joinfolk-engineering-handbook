@@ -179,7 +179,7 @@ Unknown security-impacting function exposure remains a launch-readiness blocker 
 
 | Audit artifact | Audit status | Implementation status | Domain | Relationship to AUTH-EMAIL-01 | Next gate |
 | --- | --- | --- | --- | --- | --- |
-| `07_Audits/AuthEmailMobileFirstContractAudit.md` | Draft evidence audit | Not authorized | Auth / universal links / reset / confirmation | Records the current split auth-email contract, live host/AASA gaps, duplicate surfaces, and canonical-host blocker. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |
+| `07_Audits/AuthEmailMobileFirstContractAudit.md` | Draft evidence audit | Not authorized | Auth / universal links / reset / confirmation | Records the accepted browser-first auth-email contract, production config/UAT evidence, remaining web-reset blocker, and rollout-dependent cleanup. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |
 
 ### Operations audit
 

@@ -1,8 +1,8 @@
-# Auth Email Mobile-First Closure Patch Plan
+﻿# Auth Email Mobile-First Closure Patch Plan
 
 ## 1. Metadata
 
-- Status: Blocked draft
+- Status: Active draft
 - Owner: Mustafa / JoinFolk
 - Scope: password-reset and email-confirmation mobile-first contract closure
 - Depends on: `09_Decisions/AuthEmailCanonicalLinkHostDecision.md`
@@ -10,13 +10,13 @@
 
 ## 2. Current Gate
 
-Implementation is BLOCKED UNTIL the public canonical host, fallback routes, AASA, redirects, and templates are frozen.
+Implementation is AUTHORIZED_UNDER_ACCEPTED_PATCH_PLAN, but readiness remains blocked until the target host contract is implemented.
 
 ## 3. Preconditions
 
-Before any implementation:
+Before rollout completion:
 
-1. canonical auth-link host decided
+1. canonical auth-link host decided as `join-folk.com`
 2. Supabase redirect allowlist verified
 3. email template routes verified
 4. live AASA verified on the chosen public host
@@ -25,28 +25,12 @@ Before any implementation:
 7. duplicate auth surface strategy decided for `joinfolk-web`
 8. `app.join-folk.com` remains excluded as the current auth email host unless a separate production-surface decision reopens it
 
-## 4. Intended Closure Scope
+## 4. Accepted Closure Scope
 
-When unblocked, the smallest safe closure scope is:
+The accepted closure scope is:
 
-1. freeze one canonical host for reset and confirmation
-2. add route-specific AASA support for:
-   - `/auth/reset-password`
-   - `/auth/verified` or final confirmation route
-3. preserve browser-only handling for:
-   - `/login`
-   - `/download`
-4. preserve safe web fallback when app is absent
-5. keep password entry/update on native mobile when app is installed
-6. add native mobile confirmation-result route and state handling
-7. remove raw provider error strings from user-visible auth-email flows
-8. align email templates with the final route contract
-9. retire or isolate duplicate auth surfaces that conflict with the canonical contract
-
-## 5. Ordered Execution Plan
-
-1. capture missing Dashboard URL and email-template evidence
-2. accept canonical public host decision between `join-folk.com` and `www.join-folk.com`
+1. apply the accepted `join-folk.com` target-host contract
+2. preserve `www.join-folk.com` as browser fallback during rollout
 3. implement route ownership and fallback contract on the selected web surface
 4. update mobile associated domains if required
 5. implement native confirmation result route
@@ -54,8 +38,9 @@ When unblocked, the smallest safe closure scope is:
 7. revise AASA to route-specific auth includes while keeping `/login` and `/download` browser-only
 8. update email templates and redirect allowlist to match the selected host
 9. verify installed-app, not-installed, expired, invalid, already-used, and offline states
+10. perform redirect cleanup only after UAT and installed-client verification
 
-## 6. Verification Categories
+## 5. Verification Categories
 
 Do not record secrets.
 
@@ -76,7 +61,7 @@ Verification must cover:
 - `/download` remains browser-only
 - tokens are not exposed in logs or user-facing raw errors
 
-## 7. Rollback Boundary
+## 6. Rollback Boundary
 
 Rollback may restore:
 
@@ -87,11 +72,24 @@ Rollback may restore:
 
 Rollback MUST NOT silently leave a mixed host contract in place.
 
+## 7. Cleanup Register
+
+Cleanup is BLOCKED until reset and confirmation UAT pass and installed clients are verified.
+
+Later cleanup candidates:
+
+- broad `join-folk.com` wildcard redirect entries
+- broad `www.join-folk.com` wildcard redirect entries
+- `app.join-folk.com` auth redirect entries
+- duplicate exact and wildcard redirect coverage
+- Magic Link template if product usage remains absent
+- duplicate auth surfaces in `joinfolk-web`
+
 ## 8. Prohibited Actions While Blocked
 
 - do not modify auth behavior by assumption
 - do not change AASA before host freeze
 - do not change associated domains before host freeze
-- do not change Supabase redirects before Dashboard evidence is captured
+- do not remove broad redirect coverage before UAT and installed-client verification
 - do not ship a native confirmation result route that is not connected to the final host contract
 - do not route auth email links to `app.join-folk.com` under the current architecture

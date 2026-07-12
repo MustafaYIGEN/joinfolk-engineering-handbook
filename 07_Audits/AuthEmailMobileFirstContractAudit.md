@@ -4,14 +4,14 @@
 
 - Status: Draft
 - Owner: Mustafa / JoinFolk
-- Scope: AUTH-EMAIL-01-G1 canonical auth host and production configuration evidence
+- Scope: AUTH-EMAIL-01 browser-first auth-email contract reconciliation
 - Evidence date: 2026-07-12
-- Source confidence: mixed live-host snapshot, repository inspection, handbook deployment evidence, and missing Dashboard-only evidence
+- Source confidence: mixed live-host snapshot, repository inspection, handbook deployment evidence, Dashboard production evidence, and operator UAT
 - Canonical: false
 
 ## 2. Scope
 
-This audit is bounded to the password-reset and email-confirmation contract.
+This audit is bounded to password-reset and email-confirmation email-link behavior.
 
 Surfaces inspected:
 
@@ -19,24 +19,31 @@ Surfaces inspected:
 - `C:\dev\hostos\apps\mobile`
 - `C:\dev\joinfolk-web`
 - `C:\dev\joinfolk-engineering-handbook`
-- Public host snapshots for:
+- live public auth hosts:
   - `join-folk.com`
   - `www.join-folk.com`
   - `app.join-folk.com`
+- Supabase Dashboard production configuration evidence
+- operator email-template UAT evidence
 
-This audit does not authorize implementation, deployment, Supabase mutation, Cloudflare mutation, or AASA changes.
+This audit does not authorize deployment, Supabase mutation, Cloudflare mutation, or application-code edits.
 
-## 3. Approved Product Contract
+## 3. Accepted Product Contract
 
-The approved target contract requires:
+The accepted JoinFolk auth-email contract is now browser-first.
 
-- password reset MUST open native mobile reset flow when the iOS app is installed
-- password entry and update MUST happen on native mobile
-- app-absent flows MUST have safe web fallback
-- email confirmation MUST open a native mobile result surface when the app is installed
-- unrelated `/login` and `/download` routes MUST remain browser-only
-- auth links MUST NOT expose tokens in user-visible errors, logs, analytics, or crash surfaces
-- one canonical auth-link host and one canonical route contract per action MUST exist
+Binding rules:
+
+- password-reset email links MUST complete recovery in the browser
+- password entry and password update MUST occur on the public web reset page
+- the reset flow MUST NOT automatically request opening the mobile app
+- after success, the page MAY offer explicit `Open JoinFolk` or `Sign in` CTAs
+- the native reset route MAY remain temporarily for legacy emails and installed-client compatibility
+- email confirmation MUST complete on the public web verified page
+- the verified page MUST visibly state that the email is confirmed
+- a native confirmation result route is `NOT_REQUIRED_BY_DECISION`
+- `/auth/*`, `/login*`, and `/download*` MUST remain browser-only
+- AASA MUST NOT capture password-reset or confirmation routes
 
 ## 4. Repository Evidence
 
@@ -52,9 +59,10 @@ PROVEN:
 
 PROVEN:
 
-- Native reset route exists at `C:\dev\hostos\apps\mobile\app\reset-password.tsx`
-- Native confirmation route was not found
-- Mobile auth stack includes `sign-in`, `sign-up`, `forgot-password`, `terms`, and `privacy`, but not a confirmation result route
+- native reset route exists at `C:\dev\hostos\apps\mobile\app\reset-password.tsx`
+- native confirmation route was not found
+- under the accepted browser-first contract, native confirmation is no longer required
+- native reset route is now `LEGACY_COMPATIBILITY_ONLY`
 
 ### 4.3 Secondary duplicate auth surface
 
@@ -65,7 +73,7 @@ PROVEN:
 - `C:\dev\joinfolk-web\app\(auth)\reset-password.tsx`
 - `C:\dev\joinfolk-web\app\index.tsx`
 
-These duplicate the auth-email surface and therefore weaken route-contract determinism.
+These remain rollout-dependent cleanup candidates.
 
 ## 5. Live Host Snapshot
 
@@ -73,121 +81,149 @@ These duplicate the auth-email surface and therefore weaken route-contract deter
 
 | URL | Live evidence | Classification |
 | --- | --- | --- |
-| `https://join-folk.com/auth/reset-password` | HTML page opens and is titled `JoinFolk — Email Verified`; live HTTP chain not fully observable from current tool boundary | PROVEN_PRESENT / LIVE_CHAIN_BLOCKED |
-| `https://join-folk.com/auth/verified` | HTML page opens and is titled `JoinFolk — Email Verified` | PROVEN_PRESENT |
-| `https://www.join-folk.com/auth/verified` | HTML page opens and visibly renders an email-verified surface with app-open and dashboard continuation links | PROVEN_PRESENT |
-| `https://www.join-folk.com/auth/reset-password` | direct live fetch chain not fully recovered from current environment | NOT_PROVEN |
-| `https://app.join-folk.com/auth/reset-password` | returns `200 OK` HTML and renders the organizer dashboard shell (`JoinFolk — Organizer Dashboard`) | PROVEN_BROKEN |
-| `https://app.join-folk.com/auth/verified` | returns `200 OK` HTML and renders the organizer dashboard shell (`JoinFolk — Organizer Dashboard`) | PROVEN_BROKEN |
+| `https://join-folk.com/auth/reset-password` | `200 OK`, no redirect, final host `join-folk.com`, renders `JoinFolk — Email Verified`; wrong surface for password reset | PROVEN_BROKEN |
+| `https://www.join-folk.com/auth/reset-password` | `200 OK`, no redirect, final host `www.join-folk.com`, renders `JoinFolk — Email Verified`; wrong surface for password reset | PROVEN_BROKEN |
+| `https://app.join-folk.com/auth/reset-password` | `200 OK`, no redirect, renders organizer dashboard shell; not a suitable end-user auth fallback | PROVEN_DEPLOYMENT_CONFLICT |
+| `https://join-folk.com/auth/verified` | `200 OK`, no redirect, final host `join-folk.com`; web verification fallback surface exists | PARTIAL |
+| `https://www.join-folk.com/auth/verified` | `200 OK`, no redirect, final host `www.join-folk.com`; web verification fallback surface exists | PARTIAL |
+| `https://app.join-folk.com/auth/verified` | `200 OK`, no redirect, renders organizer dashboard shell; not a suitable end-user auth fallback | PROVEN_DEPLOYMENT_CONFLICT |
 
 ### 5.2 AASA snapshot
 
 | URL | Live evidence | Classification |
 | --- | --- | --- |
-| `https://join-folk.com/.well-known/apple-app-site-association` | public fetch returned `404 Not Found` | PROVEN_BROKEN |
-| `https://www.join-folk.com/.well-known/apple-app-site-association` | public fetch returned `404 Not Found` | PROVEN_BROKEN |
-| `https://app.join-folk.com/.well-known/apple-app-site-association` | returns `200 OK` HTML organizer dashboard shell instead of valid AASA JSON | PROVEN_BROKEN |
+| `https://join-folk.com/.well-known/apple-app-site-association` | `404 Not Found`; missing | PROVEN_BROKEN |
+| `https://www.join-folk.com/.well-known/apple-app-site-association` | `404 Not Found`; missing | PROVEN_BROKEN |
+| `https://app.join-folk.com/.well-known/apple-app-site-association` | `200 OK`, `text/html`, organizer dashboard shell instead of valid AASA JSON | PROVEN_DEPLOYMENT_CONFLICT |
 
-The exact live redirect chain, status code history, and response headers for all nine URLs remain partially blocked by the current read-only network/tool boundary.
+Under the accepted browser-first contract, missing AASA remains a separate deep-link deployment gap. It does not block browser-only auth-email completion.
 
-## 6. Cloudflare Ownership Evidence
+### 5.3 Canonical email-logo asset
 
-### 6.1 Handbook production evidence
+PROVEN:
 
-PROVEN from handbook records:
+- local source: `C:\dev\hostos\apps\web\public\joinfolk-email-symbol-512-transparent.png`
+- file type: PNG
+- dimensions: `512 x 512`
+- byte length: `61114`
+- canonical live URL: `https://join-folk.com/joinfolk-email-symbol-512-transparent.png`
+- live verification:
+  - `200 OK`
+  - `Content-Type: image/png`
+  - `Content-Length: 61114`
+  - no redirect
 
-- `joinfolk-web` Cloudflare Pages project owns `join-folk.com` and `www.join-folk.com`
-- `joinfolk-dashboard-live` Cloudflare Pages project owns `app.join-folk.com`
-- `joinfolk-dashboard-live` production source is `MustafaYIGEN/joinfolk-web`, branch `refactor/joinfolk-stabilization-p0`, root `dashboard`, build output `dist`
+The same asset also resolves on `www`, but email templates MUST use the canonical non-`www` URL.
 
-Source documents:
+## 6. Production Configuration Evidence
 
-- `00_Status/CloudflareGitBackedProductionDeployEvidenceReport.md`
-- `09_Decisions/CloudflareProductionSurfaceRoutingDecision.md`
-- `09_Decisions/WebAccessPersonaRoutingDecision.md`
+### 6.1 Supabase URL configuration
 
-### 6.2 Deployment conflict
+PROVEN:
 
-CONFLICT:
-
-- `join-folk.com` and `www.join-folk.com` are governed as marketing/root web domains
-- `app.join-folk.com` is governed as the production application/dashboard surface
-- the current auth routes live in `hostos/apps/web`, while the current production `app.join-folk.com` evidence points to `joinfolk-web/dashboard`
-- therefore live route ownership for `/auth/reset-password` and `/auth/verified` is not frozen to one production project from source evidence alone
-
-## 7. Mobile Associated-Domain Evidence
-
-Committed mobile configuration:
-
-- bundle identifier: `com.joinfolk.app`
-- custom scheme: `joinfolk`
-- associated domains:
-  - `applinks:app.join-folk.com`
-
-Classification:
-
-| Item | State |
-| --- | --- |
-| Current entitlement compatible with `app.join-folk.com` | PROVEN |
-| Current entitlement compatible with `join-folk.com` | MISSING |
-| Current entitlement compatible with `www.join-folk.com` | MISSING |
-| Canonical host frozen for auth email links | BLOCKED |
-| Build/TestFlight required after any associated-domain change | PROVEN |
-
-## 8. Source Conflict Matrix
-
-| Conflict | Evidence | State |
-| --- | --- | --- |
-| Committed mobile reset redirect was custom-scheme | mobile git baseline for `forgot-password.tsx` at commit `2f3d1fe` | PROVEN |
-| Unstaged mobile reset redirect now points to `https://join-folk.com/auth/reset-password` | pre-existing worktree diff in `apps/mobile/app/(auth)/forgot-password.tsx` | PROVEN |
-| Signup confirmation redirect points to `https://join-folk.com/auth/verified` | `apps/mobile/app/(auth)/sign-up.tsx` | PROVEN |
-| Native reset route exists | `apps/mobile/app/reset-password.tsx` | PROVEN |
-| Native confirmation route missing | no mobile `confirm-email` or `verified` route found | PROVEN_BROKEN |
-| Web reset page still performs browser token exchange and browser password update | `apps/web/app/auth/reset-password/page.tsx` | PROVEN_BROKEN |
-| Web verification page is a success-style page, not a stateful confirmation resolver | `apps/web/app/auth/verified/page.tsx` | PROVEN_BROKEN |
-| Duplicate auth surfaces exist in `joinfolk-web` | `joinfolk-web/app/(auth)` and `joinfolk-web/app/index.tsx` | PROVEN_BROKEN |
-| Source-controlled AASA excludes `/auth/*` | both AASA candidates | PROVEN_BROKEN |
-| Associated-domain host does not match current auth-link host used in mobile code | `app.join-folk.com` vs `join-folk.com` | PROVEN_BROKEN |
-
-## 9. Supabase Dashboard Evidence Requirement
-
-DASHBOARD_EVIDENCE_REQUIRED:
-
-- `Auth > URL Configuration > Site URL`
-- `Auth > URL Configuration > Additional Redirect URLs`
-- presence/absence of:
-  - `joinfolk://reset-password`
-  - `https://join-folk.com/auth/reset-password`
-  - `https://www.join-folk.com/auth/reset-password`
-  - `https://app.join-folk.com/auth/reset-password`
+- Site URL: `https://join-folk.com`
+- exact canonical auth-email routes are allowlisted:
   - `https://join-folk.com/auth/verified`
+  - `https://join-folk.com/auth/reset-password`
   - `https://www.join-folk.com/auth/verified`
-  - `https://app.join-folk.com/auth/verified`
-- `Auth > Email Templates > Confirm signup` subject, CTA label, route pattern, branding shape
-- `Auth > Email Templates > Reset password` subject, CTA label, route pattern, branding shape
-- `Auth > Email Templates > Magic Link` enabled/disabled and route behavior
-- `Auth > Hooks` whether any auth hook changes confirmation or recovery routing
+  - `https://www.join-folk.com/auth/reset-password`
+- legacy/mobile compatibility entries remain present:
+  - `joinfolk:///*`
+  - `joinfolk://reset-password`
 
-Until this evidence is captured, redirect allowlist and template alignment remain unproven.
+PROVEN / CLEANUP_REQUIRED:
 
-## 10. Host Decision Result
+- broad wildcard redirect coverage exists for:
+  - `https://join-folk.com/**`
+  - `https://www.join-folk.com/**`
+  - `https://app.join-folk.com/*`
+  - `https://app.join-folk.com/**`
 
-Result: `BLOCKED_DEPLOYMENT_CONFLICT`
+### 6.2 Auth hooks
 
-Reason:
+PROVEN:
 
-- `join-folk.com` has live auth routes, but live AASA is `404` and mobile does not currently declare it
-- `www.join-folk.com` has at least one live auth page, but live AASA is `404` and mobile does not currently declare it
-- `app.join-folk.com` is the only currently entitled mobile host, but its live auth routes and AASA path currently render organizer dashboard HTML instead of an end-user auth recovery surface and valid AASA JSON
-- Supabase redirect allowlist and email template routing are Dashboard-only and currently unverified
-- Cloudflare project ownership proves a production split between marketing/root web and application/dashboard domains, but not a frozen canonical auth-link host
+- no auth hooks are configured
+- no hook currently changes confirmation or recovery routing
 
-## 11. Required Next Gate
+### 6.3 Email templates
 
-AUTH-EMAIL implementation is BLOCKED UNTIL:
+PROVEN:
 
-1. Dashboard URL configuration is recorded
-2. Dashboard email template routing is recorded
-3. live `app.join-folk.com` auth-route/AASA deployment conflict is resolved or ruled out as the canonical host
-4. one canonical auth-link host is frozen against both Cloudflare ownership and mobile entitlements
-5. route-specific AASA policy is designed so `/login` and `/download` remain browser-only
+- Confirm signup template saved
+- Reset password template saved
+- Magic Link template saved
+- all use `{{ .ConfirmationURL }}`
+- all use the verified canonical logo asset URL:
+  - `https://join-folk.com/joinfolk-email-symbol-512-transparent.png`
+
+Recorded subjects:
+
+- Confirm signup: `Confirm your JoinFolk email`
+- Reset password: `Reset your JoinFolk password`
+- Magic Link: `Your JoinFolk magic link`
+
+Magic Link product usage remains `NOT_PROVEN`.
+
+## 7. UAT Evidence
+
+### 7.1 Confirm signup email
+
+- email received: `PASS`
+- verified JoinFolk logo visible: `PASS`
+- Verify email address CTA visible: `PASS`
+- CTA clickable: `PASS`
+- fallback URL visible: `PASS`
+- Gmail rendering: `PASS`
+- iPhone Mail functional layout: `PASS`
+- iPhone Mail heading contrast: `VISUAL_FIX_REQUIRED`
+- confirmation flow behavior: `PASS`
+
+### 7.2 Current password-reset problem
+
+PROVEN:
+
+- the current reset email attempts to open the mobile application
+- operator rejects this as the target behavior
+- target behavior is browser-only reset completion
+- the web reset route must become the sole new-request recovery surface
+
+## 8. Host and Surface Classification
+
+- `AUTH_EMAIL_FLOW_MODEL: BROWSER_FIRST`
+- `AUTH_EMAIL_TARGET_HOST: DECIDED_JOIN_FOLK_COM`
+- `AUTH_EMAIL_HOST_READINESS: PARTIAL`
+- `PASSWORD_RESET_TARGET_SURFACE: WEB_ONLY`
+- `PASSWORD_RESET_WEB_FLOW: IMPLEMENTATION_REQUIRED`
+- `PASSWORD_RESET_NATIVE_ROUTE: LEGACY_COMPATIBILITY_ONLY`
+- `AUTH_CONFIRMATION_SURFACE: WEB_FIRST_PASS`
+- `EMAIL_CONFIRMATION_NATIVE_ROUTE: NOT_REQUIRED_BY_DECISION`
+- `AUTH_AASA_POLICY: AUTH_ROUTES_BROWSER_ONLY`
+- `AUTH_APP_DOMAIN_FALLBACK: REJECTED_AS_CURRENT_AUTH_EMAIL_HOST`
+
+## 9. Remaining Blocker
+
+Exact remaining blocker:
+
+- the canonical browser reset flow is not yet correctly implemented on `https://join-folk.com/auth/reset-password`
+
+Supporting open gaps:
+
+- reset page still renders the wrong surface in production
+- reset flow still attempts mobile-app opening today
+- web reset token/session recovery and browser-side password update must be verified and completed
+- iPhone Mail heading contrast needs a visual fix
+
+## 10. Rollout-Dependent Cleanup
+
+Cleanup is blocked until reset and confirmation UAT pass and installed clients are verified.
+
+Later cleanup candidates:
+
+- `joinfolk://reset-password`
+- broad `joinfolk:///*`
+- duplicate exact and wildcard redirect coverage
+- `app.join-folk.com` auth redirect entries
+- duplicate `joinfolk-web` auth surfaces
+- unused Magic Link product surface
+- legacy mobile reset route
