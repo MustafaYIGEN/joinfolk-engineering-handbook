@@ -74,6 +74,12 @@ The following Draft / Proposed patch plans are indexed as future implementation 
 | --- | --- | --- | --- | --- | --- |
 | `08_PatchPlans/NotificationDeliveryClosurePatchPlan.md` | Draft / Controlled closure plan | Not executed | `09_Decisions/NotificationDeliveryBoundaryDecision.md` | Remaining mobile rollout, closed-app reminder device acceptance, server push regression observation, and legacy RPC Phase B revoke. | [10_Status/NotificationDeliveryStatusGates.md](../10_Status/NotificationDeliveryStatusGates.md) |
 
+### Auth Email Mobile-First Closure Plan
+
+| Patch plan | Patch plan status | Implementation status | Source decision | Scope | Next gate |
+| --- | --- | --- | --- | --- | --- |
+| `08_PatchPlans/AuthEmailMobileFirstClosurePatchPlan.md` | Blocked draft | Not authorized | `09_Decisions/AuthEmailCanonicalLinkHostDecision.md` | Canonical auth-link host freeze, AASA alignment, native confirmation route, safe fallback, and template/redirect alignment. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |
+
 ## 7. Relationship to Status / Backlog
 
 Patch plans may feed status/backlog tracking after verification. Exact status values, backlog handoff, owner model, due-date model, and remediation status model are Unknown / Needs verification.

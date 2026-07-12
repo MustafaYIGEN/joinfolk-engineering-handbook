@@ -175,6 +175,12 @@ Unknown security-impacting function exposure remains a launch-readiness blocker 
 | --- | --- | --- | --- | --- | --- |
 | `07_Audits/NotificationPushReminderContractAudit.md` | Updated evidence report | Server-side notification delivery proven; reminder local scheduling implemented but not yet device-accepted | Notifications / push / reminders | Records the completed notification security boundary, outbox/scheduler pipeline, guarded Edge dispatch, bounded at-least-once delivery, and the remaining mobile device UAT / legacy RPC rollout gates. | [10_Status/NotificationDeliveryStatusGates.md](../10_Status/NotificationDeliveryStatusGates.md) |
 
+### Auth email mobile-first contract audit
+
+| Audit artifact | Audit status | Implementation status | Domain | Relationship to AUTH-EMAIL-01 | Next gate |
+| --- | --- | --- | --- | --- | --- |
+| `07_Audits/AuthEmailMobileFirstContractAudit.md` | Draft evidence audit | Not authorized | Auth / universal links / reset / confirmation | Records the current split auth-email contract, live host/AASA gaps, duplicate surfaces, and canonical-host blocker. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |
+
 ### Operations audit
 
 Operations audits may review build/release, testing, monitoring/logging, and incident response draft boundaries. Exact process and findings are Unknown / Needs verification.

@@ -99,6 +99,7 @@ Release decision labels:
 | RR-GAP-021 | LTS-GAP-001/002/003/004/005/009; PRV policy findings | Legal Policy, Privacy, Payments, Notifications | Legal / trust & safety policy | Web legal placeholders, account deletion promises, refund mismatch, notification settings, diagnostics disclosure, legal identity/impressum are unresolved | Handbook/source-policy synthesis | Legal/compliance-sensitive | Candidate P1 | Legal review required | Qualified legal/product copy review | Create legal/public policy copy pack | PP-02 |
 | RR-GAP-022 | PRD-GAP-008; PRV-GAP-008; DOA commerce auditability | Payments, Privacy, Diagnostics | Payments / refunds / disputes | Commerce/payment/ticket/order/reservation retention, receipts, provider payloads, and revenue auditability need policy/process contract | Prior audits; provider active state unknown | Revenue-sensitive, compliance/audit-sensitive | Candidate P2 | Beta hardening candidate; Legal review required | Payment/provider/support audit decision | Include in commerce/refund/payment pack | PP-04 |
 | RR-GAP-023 | ADRIndex findings; product decision sections across audits | Product contract | Product contract | Many domains require accepted decisions before patches: commerce, deletion, retention, moderation, public content, support powers, lifecycle, roles, legal copy | Handbook synthesis | Product correctness | Candidate P2 | Product decision required | Decision owners and ADR workflow | Create decision records listed in this register | PP-02 |
+| RR-GAP-024 | AUTH-EMAIL-01 | Auth email mobile-first contract audit | Auth email / universal links / fallback routing | Password-reset and email-confirmation flows do not have one frozen public canonical host, public AASA is missing, public reset fallback renders the wrong surface, `app.join-folk.com` is rejected as the current auth email host, native confirmation route is missing, and Supabase redirect/template evidence is not yet captured. | Mixed live/source/handbook evidence; some failures are now proven, while Dashboard evidence remains incomplete | Security-sensitive, product correctness | Candidate P1 | Pre-launch hardening candidate; Product decision required; Production verification required | Canonical public-host decision and Dashboard evidence | Freeze canonical public auth-link host before implementation | PP-11 |
 
 ## 7. Candidate P0 Launch Blocker Review
 
@@ -360,6 +361,7 @@ Planning buckets only; these are not patch authorization:
 - PP-08 Ops/Admin Support Auditability Pack: support/admin visibility, manual overrides, transfer tools, audit logs.
 - PP-09 Media Storage Lifecycle Pack: media hide/delete/moderate, storage object deletion, public URL behavior.
 - PP-10 Messaging Privacy Lifecycle Pack: DM membership, delete/archive, notification previews, report/support visibility.
+- PP-11 Auth Email Mobile-First Closure Pack: canonical auth-link host, AASA alignment, associated domains, native reset/confirmation routing, safe web fallback, and template/redirect alignment.
 
 ## 25. Recommended Decision Records
 

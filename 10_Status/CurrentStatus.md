@@ -360,3 +360,24 @@ Notification delivery has moved to a conditional pass state, not a final close.
 | NOTIFICATION_DOMAIN_OVERALL | CONDITIONAL_PASS / NOT_FULLY_CLOSED | Server delivery is proven; device UAT and legacy RPC Phase B remain open. |
 
 See [NotificationDeliveryStatusGates.md](NotificationDeliveryStatusGates.md) for the canonical status gate record.
+
+## 36. Auth Email Status
+
+AUTH-EMAIL-01 is blocked on canonical host and production configuration evidence.
+
+| Gate | State | Notes |
+|---|---|---|
+| AUTH_EMAIL_CURRENT_CONTRACT | FAIL | Current reset and confirmation behavior is split across custom-scheme, web utility routes, and duplicate surfaces. |
+| AUTH_EMAIL_CANONICAL_HOST | BLOCKED_DEPLOYMENT_CONFLICT | Public canonical host not frozen; `app.join-folk.com` is rejected as the current auth email host. |
+| AUTH_PUBLIC_RESET_FALLBACK | PROVEN_BROKEN | `join-folk.com` and `www.join-folk.com` reset routes render the wrong surface. |
+| AUTH_PUBLIC_CONFIRMATION_FALLBACK | PARTIAL | Public web confirmation fallback exists, but canonical host policy is not frozen. |
+| AUTH_APP_DOMAIN_FALLBACK | REJECTED_AS_CURRENT_AUTH_EMAIL_HOST | `app.join-folk.com` is an organizer/dashboard surface and serves invalid live AASA HTML. |
+| AUTH_LIVE_AASA | FAIL | Public hosts are missing AASA and `app.join-folk.com` serves invalid AASA HTML. |
+| PASSWORD_RESET_NATIVE_ROUTE | PARTIAL | Native reset route exists, but ownership and host contract are not frozen. |
+| EMAIL_CONFIRMATION_NATIVE_ROUTE | MISSING | No native confirmation result route was found. |
+| AUTH_AASA_ALIGNMENT | FAIL | Source-controlled AASA excludes `/auth/*`. |
+| AUTH_REDIRECT_ALLOWLIST | DASHBOARD_EVIDENCE_REQUIRED | Dashboard URL configuration evidence missing. |
+| AUTH_EMAIL_TEMPLATES | DASHBOARD_EVIDENCE_REQUIRED | Dashboard template evidence missing. |
+| AUTH_EMAIL_IMPLEMENTATION | BLOCKED UNTIL public canonical host, fallback routes, AASA, redirects and templates are frozen | No implementation should proceed before the host decision is unblocked. |
+
+See [AuthEmailStatusGates.md](AuthEmailStatusGates.md) for the canonical gate record.

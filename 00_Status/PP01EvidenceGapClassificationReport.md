@@ -391,3 +391,29 @@ Current classification for this notification work:
 - Notification domain overall: CONDITIONAL_PASS / NOT_FULLY_CLOSED.
 
 This addendum removes the notification server-delivery path from the unresolved P0-style blocker set, while keeping device UAT and legacy rollout gates open.
+
+## 35. Auth Email Addendum
+
+AUTH-EMAIL-01 is a separate bounded web/mobile/auth-routing gate.
+
+Current classification:
+
+- AUTH_EMAIL_CURRENT_CONTRACT: FAIL
+- AUTH_EMAIL_CANONICAL_HOST: BLOCKED_DEPLOYMENT_CONFLICT
+- AUTH_PUBLIC_RESET_FALLBACK: PROVEN_BROKEN
+- AUTH_PUBLIC_CONFIRMATION_FALLBACK: PARTIAL
+- AUTH_APP_DOMAIN_FALLBACK: REJECTED_AS_CURRENT_AUTH_EMAIL_HOST
+- AUTH_LIVE_AASA: FAIL
+- PASSWORD_RESET_NATIVE_ROUTE: PARTIAL
+- EMAIL_CONFIRMATION_NATIVE_ROUTE: MISSING
+- AUTH_AASA_ALIGNMENT: FAIL
+- AUTH_REDIRECT_ALLOWLIST: DASHBOARD_EVIDENCE_REQUIRED
+- AUTH_EMAIL_TEMPLATES: DASHBOARD_EVIDENCE_REQUIRED
+- AUTH_EMAIL_IMPLEMENTATION: BLOCKED UNTIL public canonical host, fallback routes, AASA, redirects and templates are frozen
+
+See:
+
+- [07_Audits/AuthEmailMobileFirstContractAudit.md](../07_Audits/AuthEmailMobileFirstContractAudit.md)
+- [09_Decisions/AuthEmailCanonicalLinkHostDecision.md](../09_Decisions/AuthEmailCanonicalLinkHostDecision.md)
+- [08_PatchPlans/AuthEmailMobileFirstClosurePatchPlan.md](../08_PatchPlans/AuthEmailMobileFirstClosurePatchPlan.md)
+- [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md)

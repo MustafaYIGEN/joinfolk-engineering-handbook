@@ -425,3 +425,9 @@ For this document to become v1.0, JoinFolk must verify and accept:
 - What production approval workflow should apply to ADR-driven database, RLS, RPC, storage, auth, or security-sensitive changes?
 - What decision review cadence should be accepted?
 - How should ADRs preserve cross-surface consistency across Mobile, Dashboard, Web/Public, Supabase Backend, and Handbook documents?
+
+## 41. Auth Email Canonical Host Decision
+
+| Decision record | Decision status | Implementation status | Domain | Relationship to AUTH-EMAIL-01 | Next artifact |
+| --- | --- | --- | --- | --- | --- |
+| `09_Decisions/AuthEmailCanonicalLinkHostDecision.md` | Blocked | Not authorized | Auth / universal links / reset / confirmation | Freezes the rule that no auth-email implementation proceeds until one canonical host is proven across Cloudflare ownership, AASA, mobile entitlements, and Supabase redirect/template evidence. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |
