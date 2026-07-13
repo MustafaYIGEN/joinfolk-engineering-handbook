@@ -80,6 +80,12 @@ The following Draft / Proposed patch plans are indexed as future implementation 
 | --- | --- | --- | --- | --- | --- |
 | `08_PatchPlans/AuthEmailMobileFirstClosurePatchPlan.md` | Active draft | Browser-first implementation deployed; rollout closure still open | `09_Decisions/AuthEmailCanonicalLinkHostDecision.md` | Browser-first reset UAT, legacy native recovery regression proof, normal onboarding regression proof, and rollout-safe redirect/template cleanup. | [10_Status/AuthEmailStatusGates.md](../10_Status/AuthEmailStatusGates.md) |
 
+### Event Visual Cross-Surface Closure Plan
+
+| Patch plan | Patch plan status | Implementation status | Source decision | Scope | Next gate |
+| --- | --- | --- | --- | --- | --- |
+| `08_PatchPlans/EventVisualCrossSurfaceClosurePatchPlan.md` | Draft / Controlled closure plan | Not executed | `09_Decisions/EventVisualCanonicalImageOrVideoDecision.md` | Bounded feed loop fix, host-plus-pro entitlement closure, automatic thumbnail and derivative processing, mobile IMAGE xor VIDEO flows, dashboard parity, and cross-surface compatibility validation. | [10_Status/EventVisualStatusGates.md](../10_Status/EventVisualStatusGates.md) |
+
 ## 7. Relationship to Status / Backlog
 
 Patch plans may feed status/backlog tracking after verification. Exact status values, backlog handoff, owner model, due-date model, and remediation status model are Unknown / Needs verification.

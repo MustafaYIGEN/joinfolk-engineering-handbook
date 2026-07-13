@@ -400,3 +400,23 @@ AUTH-EMAIL-01 is in active closure under a browser-first contract.
 | AUTH_EMAIL_DOMAIN_OVERALL | ACTIVE_CLOSURE | The domain is not closed yet, but the final browser-first contract is accepted and implementation is active. |
 
 See [AuthEmailStatusGates.md](AuthEmailStatusGates.md) for the canonical gate record.
+
+## 37. Event Visual Status
+
+EVENT-VISUAL-01 is now frozen at the decision layer, but implementation and release closure remain open.
+
+| Gate | State | Notes |
+|---|---|---|
+| EVENT_VISUAL_PRODUCT_DECISION | DECIDED | Creator-facing event visuals are IMAGE xor VIDEO by accepted decision. |
+| FEED_VIDEO_LOOP | OPEN_IMPLEMENTATION | Current feed player still initializes `loop = false`; bounded loop-only fix remains open. |
+| HOST_PRO_VIDEO_UI | OPEN_IMPLEMENTATION | Current mobile UI shows video to all host tiers instead of host-plus-pro only. |
+| HOST_PRO_VIDEO_BACKEND_ENFORCEMENT | OPEN_P0 | Backend currently proves event ownership but not host-plus-pro entitlement. |
+| VIDEO_AUTOMATIC_THUMBNAIL | OPEN_P0 | Video events still need a canonical generated static thumbnail boundary. |
+| PUBLIC_VIDEO_TRANSCODING | OPEN_P0 | No proven canonical public derivative pipeline exists yet. |
+| RAW_MOV_PUBLIC_PLAYBACK | BLOCKED_FOR_FINAL_RELEASE | Raw MOV / HEVC / HDR input is not public-launch safe. |
+| MOBILE_VIDEO_CREATE | PARTIAL_LEGACY_MODEL | Mobile still operates as poster image plus optional video. |
+| DASHBOARD_VIDEO_CREATE | MISSING | Dashboard create flow remains image-only. |
+| MOBILE_DASHBOARD_VISUAL_PARITY | OPEN | Both surfaces do not yet support the same canonical visual states. |
+| POSTER_VIDEO_DOMAIN_OVERALL | OPEN | Decision is accepted, but parity, entitlement, and processing remain open. |
+
+See [EventVisualStatusGates.md](EventVisualStatusGates.md) for the canonical gate record.

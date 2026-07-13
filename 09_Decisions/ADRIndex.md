@@ -407,7 +407,13 @@ For this document to become v1.0, JoinFolk must verify and accept:
 | --- | --- | --- | --- | --- | --- |
 | `09_Decisions/NotificationDeliveryBoundaryDecision.md` | Accepted | Server notification delivery is production-proven; reminder local delivery is implemented but not yet device-accepted | Notifications / push / reminders | Locks the server notification boundary, local reminder ownership, dispatch secret requirement, and legacy RPC rollout dependence. | [10_Status/NotificationDeliveryStatusGates.md](../10_Status/NotificationDeliveryStatusGates.md) |
 
-## 40. Open Questions
+## 40. Event Visual Decision
+
+| Decision record | Decision status | Implementation status | Domain | Relationship to current event visual work | Next artifact |
+| --- | --- | --- | --- | --- | --- |
+| `09_Decisions/EventVisualCanonicalImageOrVideoDecision.md` | Accepted | Product contract frozen; implementation and release closure remain open | Event visuals / poster video / feed playback / dashboard parity | Locks IMAGE xor VIDEO, bounded feed loop authority, host-plus-pro entitlement, static fallback requirement, and public derivative requirement without authorizing broad protected-player rewrites. | [10_Status/EventVisualStatusGates.md](../10_Status/EventVisualStatusGates.md) |
+
+## 41. Open Questions
 
 - What ADR methodology should JoinFolk accept?
 - What ADR template should be accepted?
@@ -426,7 +432,7 @@ For this document to become v1.0, JoinFolk must verify and accept:
 - What decision review cadence should be accepted?
 - How should ADRs preserve cross-surface consistency across Mobile, Dashboard, Web/Public, Supabase Backend, and Handbook documents?
 
-## 41. Auth Email Canonical Host Decision
+## 42. Auth Email Canonical Host Decision
 
 | Decision record | Decision status | Implementation status | Domain | Relationship to AUTH-EMAIL-01 | Next artifact |
 | --- | --- | --- | --- | --- | --- |
