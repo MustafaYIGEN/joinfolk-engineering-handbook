@@ -6,7 +6,7 @@
 - Version: 0.3
 - Owner: Mustafa / JoinFolk
 - Last reviewed: 2026-07-14
-- Source confidence: Production evidence exports through wave `10c` result confirmations + handbook synthesis
+- Source confidence: Production evidence exports through wave `10g` result confirmations + handbook synthesis
 - canonical: false
 
 ## 2. Purpose
@@ -22,7 +22,7 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 | PURCHASE_RPC_CANONICALIZATION | BLOCKER | Purchase family function names are runtime-observed, but exact purchase-signature canonicalization remains unresolved, including the two `v4` overloads. |
 | RESERVATION_RPC_CANONICALIZATION | BLOCKER | All three reservation exact signatures are live; reservation function names are runtime-observed, but exact five-argument versus six-argument `v2` use remains unresolved. |
 | SEARCH_USERS_CALLER_DRIFT | BLOCKER | A stale `search_users_v1` caller remains in source while production evidence points to observed `search_users_v2(text, integer)` as the live contract. |
-| DM_BODY_AND_AUTHORITY_REVIEW | BLOCKER | DM family runtime use is proven, but exact bodies, policies, triggers, and authority remain unresolved until `10d` through `10g` are complete. |
+| DM_BODY_AND_AUTHORITY_REVIEW | BLOCKER | `10d` through `10g` are now `COMPLETE_VALIDATED`; the remaining P0 blocker is narrowed to exact live function-body authorization, `auth.uid()` enforcement, participant membership, persona ownership or scope, sender or target-user authorization, mutation impact, and caller-body parity. |
 | PUSH_FINAL_CONTRACT_CLOSURE | OPEN | Cron production linkage is confirmed, but push contract exports `10h` through `10j` remain open. This is P1 stabilization, not a duplicate P0 blocker. |
 | STORAGE_BUCKET_RAW_EXPORT_HYGIENE | OPEN | Production bucket state is result-confirmed: `avatars`, `posters`, `venue-media`, and `venue-posters` are public, while `event-media` and `event-videos` are private. Canonical raw `06a` export remains missing. No storage mutation is authorized. |
 | WAVE_07D_CRON_RAW_EXPORT_HYGIENE | OPEN | `07d` result is confirmed, but canonical raw export status still needs evidence normalization. This is not a control-path blocker. |

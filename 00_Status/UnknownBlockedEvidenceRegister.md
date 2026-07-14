@@ -6,7 +6,7 @@
 - Version: 0.3
 - Owner: Mustafa / JoinFolk
 - Last reviewed: 2026-07-14
-- Source confidence: Production evidence status pack + operator-confirmed result summaries + handbook synthesis
+- Source confidence: Production evidence status pack + operator-confirmed result summaries through `10g` + handbook synthesis
 - canonical: false
 
 ## 2. Purpose
@@ -36,8 +36,8 @@ This register records the exact evidence gaps that still block final DB-to-surfa
 | `10a_search_functions.csv` result confirmed, canonical raw export missing | OPEN | search priority contract is materially confirmed, but not canonically raw-backed |
 | `10b_payment_order_functions.csv` result confirmed, canonical raw export missing | OPEN | payment-order priority contract is materially confirmed, but not canonically raw-backed |
 | `10c_reservation_ticket_checkin_functions.csv` result confirmed, canonical raw export missing | OPEN | reservation and check-in priority contract is materially confirmed, but not canonically raw-backed |
-| `10d` through `10j` priority contract exports | PENDING_EXECUTION | DM and push exact contract closure remains incomplete |
-| DM local body provenance unresolved in current audit | OPEN | DM grant narrowing cannot be classified safely |
+| `10h` through `10j` priority contract exports | PENDING_EXECUTION | push exact contract closure remains incomplete |
+| DM function-body authorization and caller-body parity | OPEN | `10d` through `10g` are `COMPLETE_VALIDATED`, but DM grant narrowing still cannot be classified safely until exact live bodies, `auth.uid()` enforcement, participant membership, persona scope, mutation impact, and caller-body parity are reviewed |
 | storage bucket raw export hygiene | OPEN | no storage mutation is authorized; remaining gap is canonical raw bucket evidence, not missing production-state evidence |
 | realtime product decision | DECIDED: `POLLING_FIRST_V1` | no longer a decision gap; realtime remains deferred post-launch |
 

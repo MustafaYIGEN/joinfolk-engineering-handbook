@@ -108,7 +108,7 @@ The decision must separate user-facing deletion from backend deletion, redaction
 | Data export absence | Export/portability not confirmed. | Not confirmed. | Privacy-sensitive | Decide whether export is supported, support-mediated, or deferred. |
 | Diagnostics/analytics disclosure | Analytics/crash may be described as anonymous; diagnostics may be user-linked. | `app_diagnostics` linkage/payload incomplete. | Privacy-sensitive | Decide diagnostics disclosure and deletion/redaction model. |
 | Media deletion/public URL behavior | Media deletion/storage behavior unresolved. | DB row vs object vs public URL evidence incomplete. | Privacy-sensitive | Decide storage deletion, metadata redaction, and public URL caveats. |
-| DM deletion/archive ambiguity | DM delete/archive semantics unresolved. | Production DM evidence incomplete. | Privacy-sensitive | Decide message deletion and retention semantics. |
+| DM deletion/archive ambiguity | DM delete/archive semantics unresolved. | Production DM structural evidence is now complete, but exact body authorization, caller-body parity, and retention semantics remain unresolved. | Privacy-sensitive | Decide message deletion and retention semantics. |
 | Commerce/ticket/payment retention | Commerce retention unresolved. | Provider/order/ticket retention incomplete. | Revenue-sensitive, compliance/audit-sensitive | Decide retention exceptions and redaction model. |
 | Report/moderation retention | Report/moderation workflow and evidence retention unresolved. | Formal system not confirmed. | Trust/safety-sensitive | Decide safety retention, redaction, appeal, and disclosure boundaries. |
 

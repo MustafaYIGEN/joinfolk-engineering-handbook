@@ -6,7 +6,7 @@
 - Version: 0.3
 - Owner: Mustafa / JoinFolk
 - Last reviewed: 2026-07-14
-- Source confidence: Handbook decisions + canonical production exports through wave 06 + production-result confirmations through wave 10c + read-only local source inspection
+- Source confidence: Handbook decisions + canonical production exports through wave 06 + production-result confirmations through wave 10g + read-only local source inspection
 - canonical: false
 - Implementation status: Not authorized
 - Production mutation status: Not executed
@@ -26,7 +26,7 @@ Evidence used in this audit:
 - Handbook decisions and prior contract audits.
 - Canonical production exports currently normalized under `C:\dev\joinfolk-evidence\db-surface-audit\2026-07-13\exports`.
 - Production export status and manifest files under `C:\dev\joinfolk-evidence\db-surface-audit\2026-07-13`.
-- Additional production-result confirmations for wave `07d`, wave `08`, wave `09`, and wave `10a` through `10c`.
+- Additional production-result confirmations for wave `07d`, wave `08`, wave `09`, and wave `10a` through `10g`, with `10h` through `10j` still pending.
 - Read-only local inspection of `C:\dev\hostos`, `C:\dev\hostos\apps\mobile`, and `C:\dev\joinfolk-web`.
 
 Canonical raw exports currently installed:
@@ -109,7 +109,7 @@ Binding states:
 | 07 | Cron / realtime | `07a` to `07c` are `RESULT_CONFIRMED_BUT_RAW_EXPORT_MISSING`; `07d` is result confirmed with canonical raw export still open | Cron linkage is confirmed; realtime publication facts are confirmed; raw-export hygiene remains open. |
 | 08 | Runtime statistics | `08a`, `08b`, `08d`, and `08e` are result confirmed; `08c` and `08f` raw CSVs exist in Downloads but are not canonically installed | Runtime evidence now exists with limitations; zero function-stat rows are expected because `track_functions = none`. |
 | 09 | Versioned RPC families | result confirmed; raw CSV exists in Downloads but is not canonically installed | Version splits are confirmed; no version is canonical solely by suffix. |
-| 10 | Priority contracts | `PARTIAL_RESULT_CONFIRMED` for `10a` through `10c`; `10d` through `10j` remain `PENDING_EXECUTION` | P0 contract evidence is materially improved, but DM and push closure remains incomplete. |
+| 10 | Priority contracts | `PARTIAL_RESULT_CONFIRMED` for `10a` through `10c`; `10d` through `10g` are `COMPLETE_VALIDATED`; `10h` through `10j` remain `PENDING_EXECUTION` | P0 contract evidence is materially improved; DM structural evidence is now validated and push closure remains incomplete. |
 
 ## 7. Technical Interpretation Rules
 
@@ -148,8 +148,8 @@ purchase,rpc_family,public,purchase_event_ticket,"public.purchase_event_ticket_v
 reservation,rpc_family,public,create_reservation,"public.create_reservation_v1(uuid); public.create_reservation_v2(uuid, text, integer, text, text); public.create_reservation_v2(uuid, text, integer, text, text, uuid)",PARTIAL_RESULT_CONFIRMED,true,true,true,true,true,,OBSERVED_IN_08F,"v1=4; v2-name=50","joinfolk-web/lib/reservations.v1.ts:60 uses v1",MOBILE_RESERVATIONS,PARTIAL_LOCAL_GUARD_COVERAGE,no,unknown,no,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"All three exact reservation signatures are live in production; create_reservation_v1 and create_reservation_v2 function names were runtime-observed, but exact five-argument versus six-argument v2 runtime use remains unresolved",DBSURF-P0-RESERVATION-CANONICALIZATION,"Grant rollback required for any exact signature change",CONSOLIDATE_TO_CANONICAL,"wave 10c confirms live exact signatures; runtime cannot distinguish v2 overloads"
 search,rpc,public,search_users_v2,"public.search_users_v2(text, integer)",PARTIAL_RESULT_CONFIRMED,true,false,false,true,true,,OBSERVED_IN_08F,598,"joinfolk-web/lib/friends.v1.ts:64",WEB_SOCIAL_GRAPH,NOT_REVIEWED,no,unknown,no,LIVE_AUTH_ONLY,P0,"Keep authenticated exposure; resolve all stale v1 callers toward this exact production signature",DBSURF-P0-SEARCH-DRIFT,"Authenticated grant rollback required if changed",KEEP_EXPOSED,"10a result confirmed but raw export missing; runtime supports canonical candidate status"
 search,rpc,public,search_users_v1,"public.search_users_v1(text, integer)",PROD_ABSENT_IN_02_EXPORT,,,,,,NOT_TARGETED_BY_08F,,"joinfolk-web/lib/ticket-claims.v1.ts:304",WEB_TICKET_CLAIMS,LOCAL_PROVENANCE_MISSING,no,unknown,no,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"Remove caller drift first; do not infer DB removal from export absence alone",DBSURF-P0-SEARCH-DRIFT,"If production object later appears, full rollback and compatibility plan required",DEPRECATE_OBSERVE,"production export absence only; stale caller is a technical bug"
-dm,table_family,public,dm_relations,"public.dm_conversations; public.dm_messages; public.dm_participants",LIVE_PROD,,,,,,true,RESULT_CONFIRMED_ONLY,,"joinfolk-web/dashboard/src/lib/dm.ts callers depend on family RPCs",DASHBOARD_DM,NOT_APPLICABLE,policy_driven,unknown,push_indirect,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P1,"Preserve DM backend; verify whether anon-executable RPC grants are relying on body checks or are simply over-broad",DBSURF-P1-DM-AUTHORITY,"RLS or policy rollback required only in a separate authorized wave",UNKNOWN_BLOCKED,"10d through 10g remain pending"
-dm,rpc_family,public,dm_rpcs,"public.dm_archive_conversation_v1(uuid, text); public.dm_delete_message_v1(uuid); public.dm_get_conversations_v1(text, integer, integer); public.dm_get_messages_v1(uuid, integer, timestamp with time zone); public.dm_get_or_create_conversation_v1(uuid, text, text); public.dm_get_unread_count_v1(text); public.dm_mark_read_v1(uuid, text); public.dm_send_message_v1(uuid, text, text)",LIVE_PROD,true,false,true,true,true,,OBSERVED_IN_08F,"archive=0; delete=1; get_conversations=694; get_messages=494; get_or_create=45; unread=35589; mark_read=330; send=171","joinfolk-web/dashboard/src/lib/dm.ts:31,41,51,61,70",DASHBOARD_DM,LOCAL_PROVENANCE_MISSING,no,policy_linked,push_indirect,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P1,"Verify exact body authorization and persona constraints before any grant decision",DBSURF-P1-DM-AUTHORITY,"Full DM RPC ACL rollback required before any later revoke",UNKNOWN_BLOCKED,"runtime proves active family use; 10d through 10g remain pending"
+dm,table_family,public,dm_relations,"public.dm_conversations; public.dm_messages; public.dm_participants; public.dm_conversations_pkey; public.dm_messages_pkey; public.dm_participants_pkey",LIVE_PROD,,,,,,true,COMPLETE_VALIDATED,,"mobile direct table references exist for dm_participants; dashboard DM callers depend on family RPCs",MOBILE_AND_DASHBOARD_DM,NOT_APPLICABLE,internal_ri_only,unknown,push_indirect,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"Preserve DM backend state; exact relations, RLS state, authenticated-only policies, and RI-only trigger structure are production-validated, while RPC body authorization remains unresolved only for the DM RPC family",DBSURF-P0-DM-AUTHORITY,"RLS or policy rollback required only in a separate authorized wave",KEEP_BACKEND_ONLY,"10d COMPLETE_VALIDATED: exact live DM tables and primary-key indexes confirmed; 10f COMPLETE_VALIDATED: authenticated-only participant-scoped policies confirmed; 10g COMPLETE_VALIDATED: no custom JoinFolk DM trigger helper observed"
+dm,rpc_family,public,dm_rpcs,"public.dm_archive_conversation_v1(uuid, text); public.dm_delete_message_v1(uuid); public.dm_get_conversations_v1(text, integer, integer); public.dm_get_messages_v1(uuid, integer, timestamp with time zone); public.dm_get_or_create_conversation_v1(uuid, text, text); public.dm_get_unread_count_v1(text); public.dm_mark_read_v1(uuid, text); public.dm_send_message_v1(uuid, text, text)",LIVE_PROD,true,false,true,true,true,,OBSERVED_IN_08F,"archive=0; delete=1; get_conversations=694; get_messages=494; get_or_create=45; unread=35589; mark_read=330; send=171","hostos/apps/mobile/lib/dm.v1.ts calls all eight RPCs; joinfolk-web/dashboard/src/lib/dm.ts calls get_conversations, get_messages, send_message, mark_read, and get_unread_count",MOBILE_AND_DASHBOARD_DM,NOT_REVIEWED,no,policy_linked,push_indirect,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"Validate exact live body authorization boundary: auth.uid() enforcement, participant membership, persona scope, sender or target-user authorization, mutation impact, and caller-body parity before any grant decision",DBSURF-P0-DM-AUTHORITY,"Full DM RPC ACL rollback required before any later revoke",UNKNOWN_BLOCKED,"10e COMPLETE_VALIDATED: all eight live RPCs are SECURITY DEFINER, anon-executable, and zero-trigger-attached; authenticated table policies create a review boundary, not a proven exploit"
 push,table,public,notification_push_deliveries_v1,"public.notification_push_deliveries_v1",LIVE_PROD,,,,,,true,RESULT_CONFIRMED_ONLY,,"hostos/supabase/functions/push-dispatch/index.ts consumes push RPCs",BACKEND_PUSH_OUTBOX,NOT_APPLICABLE,trigger_source,unknown,edge_and_cron,SERVICE_ONLY_LIVE,P1,"Keep backend-only outbox; confirm final contract with remaining 10h through 10j evidence",DBSURF-P1-PUSH-RUNTIME,"Table privilege rollback required in a separate authorized DB wave only",KEEP_BACKEND_ONLY,"07d cron linkage confirmed; 10h through 10j remain pending"
 push,rpc_family,public,push_delivery_functions,"public.enqueue_notification_push_delivery_v1(); public.claim_notification_push_deliveries_v1(integer, interval); public.record_notification_push_delivery_result_v1(uuid, integer, text, text); public.invoke_notification_push_dispatch_v1()",PARTIAL_RESULT_CONFIRMED,true,false,false,false,mixed,,RESULT_CONFIRMED_ONLY,,"hostos/supabase/functions/push-dispatch/index.ts:180 calls record_notification_push_delivery_result_v1",EDGE_PUSH_DISPATCH,PROVEN_LOCAL_SERVICE_INTERNAL,"enqueue trigger on notifications_v2 proven in 03a",unknown,edge_and_cron,SERVICE_ONLY_LIVE,P1,"Keep backend-only; cron jobs are confirmed and final push contract closure now depends on 10h through 10j",DBSURF-P1-PUSH-RUNTIME,"Service-role or internal rollback required if any function grant changes later",KEEP_BACKEND_ONLY,"07d result confirmed but raw export missing; 10h through 10j pending"
 storage,bucket_family,storage,public_buckets,"avatars; posters; venue-media; venue-posters public; event-media and event-videos private",RESULT_CONFIRMED_BUT_RAW_EXPORT_MISSING,,,,,,,RESULT_CONFIRMED_ONLY,,"joinfolk-web/lib/posterSnapshot.ts; joinfolk-web/lib/event-media.v1.ts; joinfolk-web/dashboard/src/lib/api.ts",MOBILE_WEB_DASHBOARD_MEDIA,NOT_APPLICABLE,no,storage_policy_evidence,possible_edge_usage,STORAGE_BUCKET_RAW_EXPORT_HYGIENE,OPEN,"Production bucket state is result-confirmed; canonical raw 06a export remains missing; no storage mutation is authorized",DBSURF-P1-STORAGE-CONTRACT,"Bucket policy rollback belongs to a separate authorized storage wave",UNKNOWN_BLOCKED,"canonical raw 06a export remains missing"
@@ -201,7 +201,7 @@ This remains a concrete production or source drift bug. Migration toward the pro
 
 Runtime confirms active DM family usage, including very high `dm_get_unread_count_v1` volume.
 
-That is positive keep evidence, not proof that current anon execute is safe. DM body and exact authority review remains blocked until `10d` through `10g` are executed.
+That is positive keep evidence, not proof that current anon execute is safe. `10d` through `10g` are now `COMPLETE_VALIDATED`, which narrows the remaining DM blocker to exact live function-body authorization, `auth.uid()` enforcement, participant membership, persona ownership or scope, sender or target-user authorization, mutation impact, and caller-body parity.
 
 ### 10.6 Realtime is no longer a V1 product decision blocker
 
@@ -233,14 +233,11 @@ The next authorized audit actions are:
 
 1. canonically normalize any missing raw CSVs that already exist in Downloads for `08c`, `08f`, and `09`
 2. collect or normalize result-confirmed but raw-missing evidence for `07d` and `10a` through `10c`
-3. execute the remaining production contract exports:
-   - `10d_dm_relations`
-   - `10e_dm_functions`
-   - `10f_dm_policies`
-   - `10g_dm_triggers`
+3. review DM bodies and exact static caller parity against the now validated `10d` through `10g` structure
+4. execute the remaining production contract exports:
    - `10h_push_contracts`
    - `10i_push_triggers`
    - `10j_push_cron_linkage_note`
-4. run the polling-contract technical verification wave for V1 refresh behavior
+5. run the polling-contract technical verification wave for V1 refresh behavior
 
 No implementation wave should start before those remaining evidence gaps are reviewed against this audit.
