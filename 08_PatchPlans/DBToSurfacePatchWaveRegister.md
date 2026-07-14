@@ -1,0 +1,39 @@
+# DB-to-Surface Patch Wave Register
+
+## 1. Metadata
+
+- Status: Draft
+- Version: 0.3
+- Owner: Mustafa / JoinFolk
+- Last reviewed: 2026-07-14
+- Source confidence: Audit synthesis only
+- canonical: false
+- Implementation status: Not authorized
+
+## 2. Purpose
+
+This register proposes the minimum future patch waves implied by the current evidence.
+
+It does not authorize implementation.
+
+## 3. Proposed Waves
+
+| Wave | Scope | Preconditions | Current status |
+| --- | --- | --- | --- |
+| DBSURF-P0-PAYMENT-AUTHORITY | `mark_order_paid_v1`, `create_commerce_order_v1`, `confirm_order_payment_v1`, `_issue_tickets_from_order_v1`, `expire_stale_orders_v1` | function-body review completed; exact caller inventory completed; canonicalization of `10b` evidence or equivalent reviewed; rollback pack written | BLOCKED |
+| DBSURF-P0-CHECKIN-COMPAT | legacy `check_in_ticket`, `checkin_ticket_v2`, `checkin_ticket_by_id_v2`, unsafe wrappers | compatibility and caller audit completed; exact body review completed; canonicalization of `10c` evidence or equivalent reviewed; rollback pack written | BLOCKED |
+| DBSURF-P0-PURCHASE-CANONICALIZATION | `purchase_event_ticket_v2` through `v5` exact signatures | exact-signature static caller comparison; exact-signature body parity review; `09` family evidence reviewed; `10c` purchase evidence reviewed; purchase family function-name runtime evidence reviewed; exact overload-level runtime ambiguity recorded; rollback pack written | BLOCKED |
+| DBSURF-P0-RESERVATION-CANONICALIZATION | `create_reservation_v1` and both `create_reservation_v2` signatures | exact-signature static caller comparison; exact-signature body parity review; `09` family evidence reviewed; `10c` reservation evidence reviewed; reservation function-name runtime evidence reviewed; exact `v2` overload ambiguity recorded; rollback pack written | BLOCKED |
+| DBSURF-P0-SEARCH-DRIFT | stale `search_users_v1` callers to production `search_users_v2(text, integer)` | `10a` search evidence reviewed; response compatibility verified; caller migration plan and rollback plan written | BLOCKED |
+| DBSURF-P1-DM-AUTHORITY | DM function-body, grant, and route reconciliation | `10d` through `10g` completed; local body provenance recovered; exact caller map completed; rollback pack written | BLOCKED |
+| DBSURF-P1-PUSH-RUNTIME | cron, outbox, dispatcher, and push contract closure | `07d` result reviewed; `10h` through `10j` completed; final caller map completed; rollback pack written | OPEN |
+| DBSURF-P1-STORAGE-CONTRACT | bucket exposure, route ownership, and parity decisions | canonical `06a_buckets.csv` installed; owner decision on bucket exposure; rollback pack written | OPEN |
+| DBSURF-P1-POLLING-CONTRACT-VERIFICATION | verify app-start refresh, foreground/resume refresh, post-mutation refresh, DM unread polling, notification polling, timer pause or stop behavior, duplicate-loop prevention, polling intervals, error and backoff behavior, and explicit refresh | no product decision remains open; test plan and surface inventory prepared | TECHNICAL_VERIFICATION |
+| DBSURF-P2-PRUNING-OBSERVATION | deprecation observation, retention, and later removals | dependency closure complete; retention review complete; approved runtime observation window complete; rollback or recreation definitions preserved | BLOCKED |
+| DBSURF-POSTLAUNCH-REALTIME-ENHANCEMENT | publication membership design, subscription lifecycle, reconnect handling, duplicate-delivery handling, polling fallback retention, rollout and rollback plan | separate product approval; RLS compatibility audit; subscription lifecycle design; rollback plan; production verification plan | DEFERRED_POST_LAUNCH |
+
+## 4. Binding Rule
+
+- No product decision remains open for polling-first V1.
+- No wave above may proceed to implementation until its preconditions are met and a separate owner-approved implementation prompt exists.
+- Realtime is not a V1 launch requirement and belongs only to the deferred post-launch enhancement wave.
