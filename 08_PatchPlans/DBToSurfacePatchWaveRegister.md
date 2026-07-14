@@ -25,7 +25,7 @@ It does not authorize implementation.
 | DBSURF-P0-PURCHASE-CANONICALIZATION | `purchase_event_ticket_v2` through `v5` exact signatures | exact-signature static caller comparison; exact-signature body parity review; `09` family evidence reviewed; `10c` purchase evidence reviewed; purchase family function-name runtime evidence reviewed; exact overload-level runtime ambiguity recorded; rollback pack written | BLOCKED |
 | DBSURF-P0-RESERVATION-CANONICALIZATION | `create_reservation_v1` and both `create_reservation_v2` signatures | exact-signature static caller comparison; exact-signature body parity review; `09` family evidence reviewed; `10c` reservation evidence reviewed; reservation function-name runtime evidence reviewed; exact `v2` overload ambiguity recorded; rollback pack written | BLOCKED |
 | DBSURF-P0-SEARCH-DRIFT | stale `search_users_v1` callers to production `search_users_v2(text, integer)` | `10a` search evidence reviewed; response compatibility verified; caller migration plan and rollback plan written | BLOCKED |
-| DBSURF-P0-DM-AUTHORITY | DM function-body, grant, and route reconciliation | `10d` through `10g` reviewed as `COMPLETE_VALIDATED`; exact live function-body authorization review completed; `auth.uid()`, participant-membership, persona-scope, sender or target-user authorization, and mutation-impact review completed; exact caller map and caller-body parity review completed; rollback pack written | BLOCKED |
+| DBSURF-P0-DM-AUTHORITY | DM exact-signature anon containment with no body, RLS, policy, or caller change | `10d` through `10g` reviewed as `COMPLETE_VALIDATED`; `11a` reviewed as `COMPLETE_VALIDATED`; exact live function-body authorization review completed; `auth.uid()`, participant-membership, persona-scope, sender or target-user authorization, mutation-impact, and exact caller-body parity review completed; exact rollback grants written; migration dry-run, live ACL snapshot, and authenticated-flow verification pack remain required before apply | PATCH_READY |
 | DBSURF-P1-PUSH-RUNTIME | cron, outbox, dispatcher, and push contract closure | `07d` result reviewed; `10h` through `10j` completed; final caller map completed; rollback pack written | OPEN |
 | DBSURF-P1-STORAGE-CONTRACT | bucket exposure, route ownership, and parity decisions | canonical `06a_buckets.csv` installed; owner decision on bucket exposure; rollback pack written | OPEN |
 | DBSURF-P1-POLLING-CONTRACT-VERIFICATION | verify app-start refresh, foreground/resume refresh, post-mutation refresh, DM unread polling, notification polling, timer pause or stop behavior, duplicate-loop prevention, polling intervals, error and backoff behavior, and explicit refresh | no product decision remains open; test plan and surface inventory prepared | TECHNICAL_VERIFICATION |
@@ -37,3 +37,68 @@ It does not authorize implementation.
 - No product decision remains open for polling-first V1.
 - No wave above may proceed to implementation until its preconditions are met and a separate owner-approved implementation prompt exists.
 - Realtime is not a V1 launch requirement and belongs only to the deferred post-launch enhancement wave.
+
+## 5. DM Patch-Ready Scope
+
+`DBSURF-P0-DM-AUTHORITY` is patch-ready only for this exact future DB wave:
+
+- `REVOKE EXECUTE ON FUNCTION public.dm_archive_conversation_v1(uuid,text) FROM anon;`
+- `REVOKE EXECUTE ON FUNCTION public.dm_delete_message_v1(uuid) FROM anon;`
+- `REVOKE EXECUTE ON FUNCTION public.dm_get_conversations_v1(text,integer,integer) FROM anon;`
+- `REVOKE EXECUTE ON FUNCTION public.dm_get_messages_v1(uuid,integer,timestamp with time zone) FROM anon;`
+- `REVOKE EXECUTE ON FUNCTION public.dm_get_or_create_conversation_v1(uuid,text,text) FROM anon;`
+- `REVOKE EXECUTE ON FUNCTION public.dm_get_unread_count_v1(text) FROM anon;`
+- `REVOKE EXECUTE ON FUNCTION public.dm_mark_read_v1(uuid,text) FROM anon;`
+- `REVOKE EXECUTE ON FUNCTION public.dm_send_message_v1(uuid,text,text) FROM anon;`
+
+Required preservation rules for that future wave:
+
+- keep `authenticated` EXECUTE unchanged
+- keep `service_role` EXECUTE unchanged
+- keep `PUBLIC` EXECUTE absent
+- keep function bodies unchanged
+- keep `search_path` unchanged
+- keep RLS and policies unchanged
+- keep callers unchanged in the same patch
+- do not remove any DM RPC
+
+Exact rollback contract for that future wave:
+
+- `GRANT EXECUTE ON FUNCTION public.dm_archive_conversation_v1(uuid,text) TO anon;`
+- `GRANT EXECUTE ON FUNCTION public.dm_delete_message_v1(uuid) TO anon;`
+- `GRANT EXECUTE ON FUNCTION public.dm_get_conversations_v1(text,integer,integer) TO anon;`
+- `GRANT EXECUTE ON FUNCTION public.dm_get_messages_v1(uuid,integer,timestamp with time zone) TO anon;`
+- `GRANT EXECUTE ON FUNCTION public.dm_get_or_create_conversation_v1(uuid,text,text) TO anon;`
+- `GRANT EXECUTE ON FUNCTION public.dm_get_unread_count_v1(text) TO anon;`
+- `GRANT EXECUTE ON FUNCTION public.dm_mark_read_v1(uuid,text) TO anon;`
+- `GRANT EXECUTE ON FUNCTION public.dm_send_message_v1(uuid,text,text) TO anon;`
+
+Required verification before any future production apply:
+
+- migration dry-run
+- exact precondition check for all eight signatures
+- current live ACL snapshot
+- authenticated mobile DM flows:
+  create or open conversation
+  send message
+  load conversations
+  load messages
+  mark read
+  unread count
+- dashboard host DM flows:
+  inbox
+  message load
+  send
+  mark read
+  unread count
+- unauthenticated direct RPC calls fail at the privilege boundary
+- no body replacement
+- no caller change
+- no unexpected service-role regression
+- rollback SQL prepared and validated
+
+Expected failure-mode change for that future wave:
+
+- before: anon can enter the function and receives function-level `AUTH_REQUIRED`
+- after: anon is denied `EXECUTE` before function entry
+- this is expected and acceptable because no legitimate unauthenticated DM caller was confirmed

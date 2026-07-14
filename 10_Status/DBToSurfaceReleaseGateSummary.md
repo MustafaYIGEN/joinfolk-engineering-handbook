@@ -27,9 +27,10 @@ This record summarizes the binding release-gate state for the JoinFolk DB-to-sur
 | RESERVATION_RPC_CANONICALIZATION | BLOCKER | All three reservation exact signatures are live; reservation function names are observed, but exact `create_reservation_v2` overload-level runtime use remains unresolved. |
 | SEARCH_USERS_CALLER_DRIFT | BLOCKER | Stale `search_users_v1` caller drift remains unresolved while `search_users_v2` is live and observed. |
 | DM_CONTRACT_STRUCTURE | PASS | `10d` through `10g` are `COMPLETE_VALIDATED`: exact live DM relations, eight RPC signatures, twelve authenticated-only table policies, and RI-only trigger inventory are now production-backed. |
-| DM_BODY_AUTHORIZATION | BLOCKER | Exact live DM function-body authorization remains unresolved: `auth.uid()` enforcement, participant membership, persona scope, sender or target-user authorization, and mutation impact still require review. |
-| DM_STATIC_CALLER_PARITY | PARTIAL | Mobile statically references all eight DM RPC names; dashboard statically references five. Static source presence does not prove exact production execution ownership or caller-body parity. |
-| DM_BODY_AND_AUTHORITY_REVIEW | P0_NARROWED | DM structural evidence is complete, but exact live body authorization and caller-body parity remain a narrowed P0 blocker. |
+| DM_BODY_AUTHORIZATION | PASS | `11a` is `COMPLETE_VALIDATED`: all eight exact live DM RPC bodies were reviewed in production, all explicitly acquire `auth.uid()`, reject unauthenticated callers, use fixed `search_path = public`, and contain no dynamic SQL. No confirmed body-authorization vulnerability was found. |
+| DM_STATIC_CALLER_PARITY | PASS_WITH_NOTES | Mobile and dashboard active callers match the reviewed production bodies. Wrapper-only `dm_archive_conversation_v1` and `dm_delete_message_v1` have no confirmed active UI caller; direct `dm_participants` reads still exist; some wrappers may run before explicit session resolution; fail-soft wrappers can hide auth errors. These are stabilization notes, not blockers for exact anon containment. |
+| DM_BODY_AND_AUTHORITY_REVIEW | CLOSED | Exact live body review and caller-body parity review are complete. The review is closed; the approved future patch scope remains the exact-signature anon-only containment wave. |
+| DM_ANON_EXECUTE_CONTAINMENT | BLOCKER_UNTIL_APPLIED | The exact-signature `anon` EXECUTE revoke has not yet been applied or verified in production. This is the remaining launch-blocking implementation step until the future patch is executed and post-apply verification succeeds. |
 | PUSH_FINAL_CONTRACT_CLOSURE | OPEN | cron job linkage is confirmed; `10h` through `10j` remain pending. |
 | STORAGE_BUCKET_RAW_EXPORT_HYGIENE | OPEN | Production bucket state is result-confirmed, canonical raw `06a` remains missing, and no storage mutation is authorized. |
 | REALTIME_PRODUCT_CONTRACT | DECIDED | `POLLING_FIRST_V1`; launch non-blocking; realtime is post-launch only. |
@@ -59,11 +60,11 @@ BLOCKER:
 - purchase family exact-signature canonicalization
 - reservation family exact-signature canonicalization
 - search caller drift
-- DM body authorization and caller-body parity review
+- DM anon execute containment remains an implementation blocker until the exact-signature revoke is applied and verified
 
 RISK:
 
-- authenticated-only DM table policies coexist with anon-executable SECURITY DEFINER DM RPCs; that is a review boundary, not a proven exploit
+- authenticated-only DM table policies currently coexist with anon-executable SECURITY DEFINER DM RPCs; this remains redundant privilege surface, not a proven exploit, and the only remaining blocker is implementation of the approved anon-containment wave
 - purchase and reservation runtime evidence is name-level rather than exact overload-level
 
 DECISION REQUIRED:
@@ -76,7 +77,7 @@ The next authorized audit actions are:
 
 1. normalize existing raw Downloads evidence into canonical exports where available for `08c`, `08f`, and `09`
 2. normalize or capture result-confirmed but raw-missing evidence for `07d` and `10a` through `10c`
-3. review exact DM bodies and static caller parity against the now validated `10d` through `10g` evidence
+3. prepare the exact-signature DM anon-containment patch pack and verification matrix without changing function bodies, RLS, policies, authenticated grants, or service-role grants
 4. execute `10h` through `10j`
 5. run the polling-contract technical verification wave
 

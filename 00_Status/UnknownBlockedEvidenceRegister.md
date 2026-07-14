@@ -37,7 +37,8 @@ This register records the exact evidence gaps that still block final DB-to-surfa
 | `10b_payment_order_functions.csv` result confirmed, canonical raw export missing | OPEN | payment-order priority contract is materially confirmed, but not canonically raw-backed |
 | `10c_reservation_ticket_checkin_functions.csv` result confirmed, canonical raw export missing | OPEN | reservation and check-in priority contract is materially confirmed, but not canonically raw-backed |
 | `10h` through `10j` priority contract exports | PENDING_EXECUTION | push exact contract closure remains incomplete |
-| DM function-body authorization and caller-body parity | OPEN | `10d` through `10g` are `COMPLETE_VALIDATED`, but DM grant narrowing still cannot be classified safely until exact live bodies, `auth.uid()` enforcement, participant membership, persona scope, mutation impact, and caller-body parity are reviewed |
+| `11a_dm_p0_function_bodies.csv` canonical raw export | COMPLETE_VALIDATED | exact live DM production-body evidence is now canonical, eight signatures are present exactly once, and source/canonical hashes match |
+| DM function-body authorization and caller-body parity | CLOSED | `11a` is `COMPLETE_VALIDATED`; all eight exact live DM bodies were reviewed, no active caller-body mismatch was confirmed, and no exact function remains `UNKNOWN_PRODUCTION_BODY_MISSING` |
 | storage bucket raw export hygiene | OPEN | no storage mutation is authorized; remaining gap is canonical raw bucket evidence, not missing production-state evidence |
 | realtime product decision | DECIDED: `POLLING_FIRST_V1` | no longer a decision gap; realtime remains deferred post-launch |
 

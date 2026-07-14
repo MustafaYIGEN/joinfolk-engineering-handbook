@@ -22,7 +22,7 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 | PURCHASE_RPC_CANONICALIZATION | BLOCKER | Purchase family function names are runtime-observed, but exact purchase-signature canonicalization remains unresolved, including the two `v4` overloads. |
 | RESERVATION_RPC_CANONICALIZATION | BLOCKER | All three reservation exact signatures are live; reservation function names are runtime-observed, but exact five-argument versus six-argument `v2` use remains unresolved. |
 | SEARCH_USERS_CALLER_DRIFT | BLOCKER | A stale `search_users_v1` caller remains in source while production evidence points to observed `search_users_v2(text, integer)` as the live contract. |
-| DM_BODY_AND_AUTHORITY_REVIEW | BLOCKER | `10d` through `10g` are now `COMPLETE_VALIDATED`; the remaining P0 blocker is narrowed to exact live function-body authorization, `auth.uid()` enforcement, participant membership, persona ownership or scope, sender or target-user authorization, mutation impact, and caller-body parity. |
+| DM_ANON_EXECUTE_CONTAINMENT | BLOCKER_UNTIL_APPLIED | Exact live DM bodies are validated and anon EXECUTE is known redundant, but the exact-signature revoke has not yet been applied or verified in production. |
 | PUSH_FINAL_CONTRACT_CLOSURE | OPEN | Cron production linkage is confirmed, but push contract exports `10h` through `10j` remain open. This is P1 stabilization, not a duplicate P0 blocker. |
 | STORAGE_BUCKET_RAW_EXPORT_HYGIENE | OPEN | Production bucket state is result-confirmed: `avatars`, `posters`, `venue-media`, and `venue-posters` are public, while `event-media` and `event-videos` are private. Canonical raw `06a` export remains missing. No storage mutation is authorized. |
 | WAVE_07D_CRON_RAW_EXPORT_HYGIENE | OPEN | `07d` result is confirmed, but canonical raw export status still needs evidence normalization. This is not a control-path blocker. |
@@ -42,3 +42,10 @@ Launch-ready status must remain blocked until every `BLOCKER` item is either:
 - explicitly deferred or accepted by the owner in a separate release gate.
 
 Evidence-hygiene `OPEN` items do not become P0 launch blockers merely because a canonical raw CSV is still missing when the production result itself is already confirmed.
+
+DM authority is no longer a review blocker in this register:
+
+- `11a` exact production-body evidence is `COMPLETE_VALIDATED`
+- all eight live DM RPC bodies explicitly reject unauthenticated callers
+- no active caller-body mismatch was confirmed
+- the remaining DM work is the exact-signature anon-containment implementation step, which is launch-blocking until applied and verified
