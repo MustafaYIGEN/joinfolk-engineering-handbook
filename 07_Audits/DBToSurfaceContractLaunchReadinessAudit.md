@@ -5,7 +5,7 @@
 - Status: Draft
 - Version: 0.3
 - Owner: Mustafa / JoinFolk
-- Last reviewed: 2026-07-14
+- Last reviewed: 2026-07-16
 - Source confidence: Handbook decisions + canonical production exports through wave 06 + production-result confirmations through wave 10g + read-only local source inspection
 - canonical: false
 - Implementation status: Not authorized
@@ -61,7 +61,7 @@ Execution confirmation and raw-export validation are tracked separately. A confi
 - `mark_order_paid_v1(uuid)` requires immediate function-body and caller review.
 - Legacy `check_in_ticket(text, uuid)` requires compatibility and caller review before any containment or removal decision.
 - Purchase and reservation version splits are confirmed.
-- `search_users_v1` caller drift must be resolved toward production `search_users_v2(text, integer)`.
+- `SEARCH_USERS_CALLER_DRIFT` is closed as `NOT_ACTIVE_RUNTIME`: the earlier blocker was based on incorrect runtime ownership, and the stale `search_users_v1` reference belonged to an inactive root source copy rather than the mobile, dashboard, or web runtime.
 - Backend-only payment confirmation and unsafe check-in functions must remain service-role only.
 - JoinFolk V1 live-update authority is polling-first.
 - Realtime is a post-launch enhancement and remains non-blocking for V1 launch.
@@ -146,8 +146,8 @@ checkin,rpc,public,checkin_ticket_by_id_v2,"public.checkin_ticket_by_id_v2(uuid,
 checkin,rpc,public,checkin_ticket_v2_unsafe,"public.checkin_ticket_v2_unsafe(uuid, text)",LIVE_PROD,true,false,false,false,true,,NOT_TARGETED_BY_08F,,"wrapped by checkin_ticket_v2 in local provenance",BACKEND_INTERNAL,WRAPPER_OVER_UNSAFE_LOCAL,no,unknown,no,SERVICE_ONLY_LIVE,P0,"Keep service-role or internal only; do not expose to clients",DBSURF-P0-CHECKIN-COMPAT,"Service-role rollback required if changed",KEEP_BACKEND_ONLY,"wave 10c confirms live signature; 08f did not target unsafe helper separately"
 purchase,rpc_family,public,purchase_event_ticket,"public.purchase_event_ticket_v2(uuid, uuid); public.purchase_event_ticket_v3(uuid, uuid, integer, boolean, uuid, jsonb, jsonb); public.purchase_event_ticket_v4(uuid, jsonb, boolean, uuid, jsonb); public.purchase_event_ticket_v4(uuid, jsonb, boolean, uuid, uuid[]); public.purchase_event_ticket_v5(uuid, jsonb, boolean, uuid, jsonb)",PARTIAL_RESULT_CONFIRMED,true,true,true,true,true,,OBSERVED_IN_08F,"v2=9; v3=75; v4-name=12; v5=41","joinfolk-web/lib/ticket-sales.v1.ts:130 uses v2; :329 uses v3; no current static caller found for v4 or v5",MOBILE_TICKET_SALES,PARTIAL_LOCAL_GUARD_COVERAGE,no,unknown,no,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"Resolve canonical purchase path; purchase family function names were runtime-observed, but exact overload-level runtime use remains unresolved, especially the two v4 overloads",DBSURF-P0-PURCHASE-CANONICALIZATION,"Grant rollback plus compatibility rollback across all exact signatures required",CONSOLIDATE_TO_CANONICAL,"wave 09 family export confirms live split; runtime is by function name, not overload signature"
 reservation,rpc_family,public,create_reservation,"public.create_reservation_v1(uuid); public.create_reservation_v2(uuid, text, integer, text, text); public.create_reservation_v2(uuid, text, integer, text, text, uuid)",PARTIAL_RESULT_CONFIRMED,true,true,true,true,true,,OBSERVED_IN_08F,"v1=4; v2-name=50","joinfolk-web/lib/reservations.v1.ts:60 uses v1",MOBILE_RESERVATIONS,PARTIAL_LOCAL_GUARD_COVERAGE,no,unknown,no,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"All three exact reservation signatures are live in production; create_reservation_v1 and create_reservation_v2 function names were runtime-observed, but exact five-argument versus six-argument v2 runtime use remains unresolved",DBSURF-P0-RESERVATION-CANONICALIZATION,"Grant rollback required for any exact signature change",CONSOLIDATE_TO_CANONICAL,"wave 10c confirms live exact signatures; runtime cannot distinguish v2 overloads"
-search,rpc,public,search_users_v2,"public.search_users_v2(text, integer)",PARTIAL_RESULT_CONFIRMED,true,false,false,true,true,,OBSERVED_IN_08F,598,"joinfolk-web/lib/friends.v1.ts:64",WEB_SOCIAL_GRAPH,NOT_REVIEWED,no,unknown,no,LIVE_AUTH_ONLY,P0,"Keep authenticated exposure; resolve all stale v1 callers toward this exact production signature",DBSURF-P0-SEARCH-DRIFT,"Authenticated grant rollback required if changed",KEEP_EXPOSED,"10a result confirmed but raw export missing; runtime supports canonical candidate status"
-search,rpc,public,search_users_v1,"public.search_users_v1(text, integer)",PROD_ABSENT_IN_02_EXPORT,,,,,,NOT_TARGETED_BY_08F,,"joinfolk-web/lib/ticket-claims.v1.ts:304",WEB_TICKET_CLAIMS,LOCAL_PROVENANCE_MISSING,no,unknown,no,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"Remove caller drift first; do not infer DB removal from export absence alone",DBSURF-P0-SEARCH-DRIFT,"If production object later appears, full rollback and compatibility plan required",DEPRECATE_OBSERVE,"production export absence only; stale caller is a technical bug"
+search,rpc,public,search_users_v2,"public.search_users_v2(text, integer)",PARTIAL_RESULT_CONFIRMED,true,false,false,true,true,,OBSERVED_IN_08F,598,"hostos/apps/mobile/lib/friends.v1.ts",MOBILE_SEARCH_AND_GIFT_RECIPIENT_SEARCH,NOT_REVIEWED,no,unknown,no,LIVE_AUTH_ONLY,P0,"Keep authenticated exposure; mobile active caller uses this production contract; dashboard and web actual package roots have no search caller",DBSURF-P0-SEARCH-DRIFT,"Authenticated grant rollback required only if changed in a separately authorized DB wave",KEEP_EXPOSED,"10a result confirmed but raw export missing; production ACL preserved: PUBLIC=false, anon=false, authenticated=true, service_role=true; mobile operator-attested UAT PASS"
+search,rpc,public,search_users_v1,"public.search_users_v1(text, integer)",PROD_ABSENT_IN_02_EXPORT,,,,,,NOT_TARGETED_BY_08F,,"inactive root source copy only: joinfolk-web/lib/ticket-claims.v1.ts",ROOT_DUPLICATE_SOURCE_PRUNING,LOCAL_PROVENANCE_MISSING,no,unknown,no,NOT_ACTIVE_RUNTIME,P1,"Treat root source only as a stale/pruning candidate until a dedicated pruning audit is complete; no launch blocker remains",ROOT_DUPLICATE_SOURCE_PRUNING,"No production or source rollback required; attempted root patch commit 84ab737 was not pushed and was removed by reset to 524c642",P1_DEFERRED,"stale/pruning-candidate root copy, not active mobile/dashboard/web runtime"
 dm,table_family,public,dm_relations,"public.dm_conversations; public.dm_messages; public.dm_participants; public.dm_conversations_pkey; public.dm_messages_pkey; public.dm_participants_pkey",LIVE_PROD,,,,,,true,COMPLETE_VALIDATED,,"mobile direct table references exist for dm_participants; dashboard DM callers depend on family RPCs",MOBILE_AND_DASHBOARD_DM,NOT_APPLICABLE,internal_ri_only,unknown,push_indirect,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"Preserve DM backend state; exact relations, RLS state, authenticated-only policies, and RI-only trigger structure are production-validated, and RPC body authorization is now production-validated separately for the DM RPC family",DBSURF-P0-DM-AUTHORITY,"RLS or policy rollback required only in a separate authorized wave",KEEP_BACKEND_ONLY,"10d COMPLETE_VALIDATED: exact live DM tables and primary-key indexes confirmed; 10f COMPLETE_VALIDATED: authenticated-only participant-scoped policies confirmed; 10g COMPLETE_VALIDATED: no custom JoinFolk DM trigger helper observed; 11a COMPLETE_VALIDATED: exact live DM RPC bodies reviewed"
 dm,rpc_family,public,dm_rpcs,"public.dm_archive_conversation_v1(uuid,text); public.dm_delete_message_v1(uuid); public.dm_get_conversations_v1(text,integer,integer); public.dm_get_messages_v1(uuid,integer,timestamp with time zone); public.dm_get_or_create_conversation_v1(uuid,text,text); public.dm_get_unread_count_v1(text); public.dm_mark_read_v1(uuid,text); public.dm_send_message_v1(uuid,text,text)",LIVE_PROD,true,false,false,true,true,,OBSERVED_IN_08F,"archive=0; delete=1; get_conversations=694; get_messages=494; get_or_create=45; unread=35589; mark_read=330; send=171","hostos/apps/mobile/lib/dm.v1.ts calls all eight RPCs; joinfolk-web/dashboard/src/lib/dm.ts calls get_conversations, get_messages, send_message, mark_read, and get_unread_count",MOBILE_AND_DASHBOARD_DM,PROD_BODY_VALIDATED,no,policy_linked,push_indirect,LIVE_AUTH_ONLY,P0,"All eight exact live bodies explicitly acquire auth.uid(), reject unauthenticated callers, and current active callers match the production bodies. Exact-signature anon EXECUTE containment is applied and verified with authenticated and service-role grants preserved.",DBSURF-P0-DM-AUTHORITY,"Rollback pack exists for exact anon-only grant restoration; rollback not used",KEEP_EXPOSED,"10e COMPLETE_VALIDATED and 11a COMPLETE_VALIDATED; migration 20260714223000 from commit 40e804b6 applied; remote migration history row present; exact ACL postcondition PASS 8/8: anon=false, authenticated=true, service_role=true, PUBLIC=false; mobile and dashboard authenticated operator-attested manual UAT: PASS; not automated test evidence"
 push,table,public,notification_push_deliveries_v1,"public.notification_push_deliveries_v1",LIVE_PROD,,,,,,true,RESULT_CONFIRMED_ONLY,,"hostos/supabase/functions/push-dispatch/index.ts consumes push RPCs",BACKEND_PUSH_OUTBOX,NOT_APPLICABLE,trigger_source,unknown,edge_and_cron,SERVICE_ONLY_LIVE,P1,"Keep backend-only outbox; confirm final contract with remaining 10h through 10j evidence",DBSURF-P1-PUSH-RUNTIME,"Table privilege rollback required in a separate authorized DB wave only",KEEP_BACKEND_ONLY,"07d cron linkage confirmed; 10h through 10j remain pending"
@@ -189,13 +189,28 @@ Runtime confirms purchase family function names and reservation function names, 
 
 Canonicalization therefore remains open.
 
-### 10.4 Search drift is concrete and implementation-ready as a bug-fix candidate
+### 10.4 Search caller drift is closed as not active runtime
 
-Current production contains `search_users_v2(text, integer)` with authenticated and service-role execute only, and it is observed at runtime.
+Current production contains `search_users_v2(text, integer)` with PUBLIC=false, anon=false, authenticated=true, and service_role=true, and it is observed at runtime.
 
-Current static source still contains a `search_users_v1` caller in `joinfolk-web/lib/ticket-claims.v1.ts:304`.
+Runtime ownership was reconciled:
 
-This remains a concrete production or source drift bug. Migration toward the production `v2` contract is a candidate once response compatibility is verified.
+- the real mobile runtime is `C:\dev\hostos\apps\mobile`, launched with `npx expo start -c`
+- mobile active-source search has no RPC caller of `search_users_v1`
+- mobile `lib/friends.v1.ts` calls `search_users_v2`
+- mobile operator-attested manual UAT passed for global user search, correct user identity/navigation, gift-recipient search, and successful gift send
+- the real dashboard runtime is `C:\dev\joinfolk-web\dashboard`
+- the actual web package is `C:\dev\joinfolk-web\web`
+- static search under dashboard and web found no `search_users_v1` or `search_users_v2` caller
+- the `C:\dev\joinfolk-web` root has no `index.html` or Vite entry and is not the verified deployed/runtime surface
+- root `lib/friends.v1.ts` and `lib/ticket-claims.v1.ts` are physically separate from the mobile copies, are not symlinks or junctions, have different SHA256 values, and are not imported by the mobile runtime
+- attempted root-source patch commit `84ab737 fix(search): align user callers with v2 contract` was never pushed and was removed before push with `git reset --hard 524c642`
+
+The earlier blocker was based on incorrect runtime ownership. No production database or source patch was required for launch-blocker closure. Historical SQL definitions remain untouched.
+
+Non-blocking follow-up:
+
+- `ROOT_DUPLICATE_SOURCE_PRUNING`: P1 / DEFERRED. Root app/lib copies may be stale, but they must not be deleted without a dedicated repo-topology and deployment-ownership audit. This is not an active launch blocker.
 
 ### 10.5 DM is active, and anon containment is applied and verified
 

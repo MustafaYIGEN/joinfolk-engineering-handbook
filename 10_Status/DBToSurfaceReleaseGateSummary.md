@@ -5,7 +5,7 @@
 - Status: Draft
 - Version: 0.3
 - Owner: Mustafa / JoinFolk
-- Last reviewed: 2026-07-14
+- Last reviewed: 2026-07-16
 - canonical: false
 
 ## 2. Purpose
@@ -25,7 +25,7 @@ This record summarizes the binding release-gate state for the JoinFolk DB-to-sur
 | CHECKIN_LEGACY_COMPATIBILITY | BLOCKER | Legacy `check_in_ticket` remains live, observed, and not yet reviewed for compatibility. |
 | PURCHASE_RPC_CANONICALIZATION | BLOCKER | Purchase family function names are observed, but exact overload-level runtime use remains unresolved and exact-signature canonicalization remains open. |
 | RESERVATION_RPC_CANONICALIZATION | BLOCKER | All three reservation exact signatures are live; reservation function names are observed, but exact `create_reservation_v2` overload-level runtime use remains unresolved. |
-| SEARCH_USERS_CALLER_DRIFT | BLOCKER | Stale `search_users_v1` caller drift remains unresolved while `search_users_v2` is live and observed. |
+| SEARCH_USERS_CALLER_DRIFT | CLOSED / NOT_ACTIVE_RUNTIME | Runtime ownership was reconciled. Mobile active source uses `search_users_v2` and passed operator-attested UAT; dashboard and web actual package roots have no search caller; the stale `search_users_v1` reference belonged to an inactive root source copy. No production database or source patch was required. |
 | DM_CONTRACT_STRUCTURE | PASS | `10d` through `10g` are `COMPLETE_VALIDATED`: exact live DM relations, eight RPC signatures, twelve authenticated-only table policies, and RI-only trigger inventory are now production-backed. |
 | DM_BODY_AUTHORIZATION | PASS | `11a` is `COMPLETE_VALIDATED`: all eight exact live DM RPC bodies were reviewed in production, all explicitly acquire `auth.uid()`, reject unauthenticated callers, use fixed `search_path = public`, and contain no dynamic SQL. No confirmed body-authorization vulnerability was found. |
 | DM_STATIC_CALLER_PARITY | PASS_WITH_NOTES | Mobile and dashboard active callers match the reviewed production bodies. Wrapper-only `dm_archive_conversation_v1` and `dm_delete_message_v1` have no confirmed active UI caller; direct `dm_participants` reads still exist; some wrappers may run before explicit session resolution; fail-soft wrappers can hide auth errors. These are stabilization notes, not blockers for exact anon containment. |
@@ -59,13 +59,13 @@ BLOCKER:
 - legacy check-in compatibility review
 - purchase family exact-signature canonicalization
 - reservation family exact-signature canonicalization
-- search caller drift
 - DM anon execute containment is applied and verified
 
 RISK:
 
 - archive/delete wrappers have no confirmed active UI callers; direct `dm_participants` reads remain; some wrappers may execute before explicit session readiness; fail-soft wrappers may obscure authentication errors. These remain non-blocking stabilization notes, not reopened body-authorization or caller-parity blockers.
 - purchase and reservation runtime evidence is name-level rather than exact overload-level
+- ROOT_DUPLICATE_SOURCE_PRUNING is P1 / DEFERRED: root app/lib copies may be stale, but they must not be deleted without a dedicated repo-topology and deployment-ownership audit; this is not an active launch blocker.
 
 DECISION REQUIRED:
 

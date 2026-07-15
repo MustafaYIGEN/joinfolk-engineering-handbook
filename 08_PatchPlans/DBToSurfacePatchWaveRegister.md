@@ -5,7 +5,7 @@
 - Status: Draft
 - Version: 0.3
 - Owner: Mustafa / JoinFolk
-- Last reviewed: 2026-07-14
+- Last reviewed: 2026-07-16
 - Source confidence: Audit synthesis only
 - canonical: false
 - Implementation status: DM anon containment applied and verified; further implementation not authorized
@@ -24,11 +24,12 @@ It does not authorize implementation.
 | DBSURF-P0-CHECKIN-COMPAT | legacy `check_in_ticket`, `checkin_ticket_v2`, `checkin_ticket_by_id_v2`, unsafe wrappers | compatibility and caller audit completed; exact body review completed; canonicalization of `10c` evidence or equivalent reviewed; rollback pack written | BLOCKED |
 | DBSURF-P0-PURCHASE-CANONICALIZATION | `purchase_event_ticket_v2` through `v5` exact signatures | exact-signature static caller comparison; exact-signature body parity review; `09` family evidence reviewed; `10c` purchase evidence reviewed; purchase family function-name runtime evidence reviewed; exact overload-level runtime ambiguity recorded; rollback pack written | BLOCKED |
 | DBSURF-P0-RESERVATION-CANONICALIZATION | `create_reservation_v1` and both `create_reservation_v2` signatures | exact-signature static caller comparison; exact-signature body parity review; `09` family evidence reviewed; `10c` reservation evidence reviewed; reservation function-name runtime evidence reviewed; exact `v2` overload ambiguity recorded; rollback pack written | BLOCKED |
-| DBSURF-P0-SEARCH-DRIFT | stale `search_users_v1` callers to production `search_users_v2(text, integer)` | `10a` search evidence reviewed; response compatibility verified; caller migration plan and rollback plan written | BLOCKED |
+| DBSURF-P0-SEARCH-DRIFT | `SEARCH_USERS_CALLER_DRIFT` runtime-ownership reconciliation | mobile runtime ownership proven under `C:\dev\hostos\apps\mobile`; dashboard runtime proven under `C:\dev\joinfolk-web\dashboard`; web package proven under `C:\dev\joinfolk-web\web`; stale root `search_users_v1` reference classified as inactive root source copy; production `search_users_v2(text, integer)` contract preserved | CLOSED / NOT_ACTIVE_RUNTIME |
 | DBSURF-P0-DM-AUTHORITY | DM exact-signature anon containment with no body, RLS, policy, or caller change | `10d` through `10g` reviewed as `COMPLETE_VALIDATED`; `11a` reviewed as `COMPLETE_VALIDATED`; exact live function-body authorization review completed; exact rollback grants written; production migration version `20260714223000` applied from commit `40e804b6`; remote migration history row present; exact ACL postcondition PASS 8/8; mobile and dashboard authenticated operator-attested manual UAT: PASS; rollback not used | APPLIED_AND_VERIFIED / CLOSED |
 | DBSURF-P1-PUSH-RUNTIME | cron, outbox, dispatcher, and push contract closure | `07d` result reviewed; `10h` through `10j` completed; final caller map completed; rollback pack written | OPEN |
 | DBSURF-P1-STORAGE-CONTRACT | bucket exposure, route ownership, and parity decisions | canonical `06a_buckets.csv` installed; owner decision on bucket exposure; rollback pack written | OPEN |
 | DBSURF-P1-POLLING-CONTRACT-VERIFICATION | verify app-start refresh, foreground/resume refresh, post-mutation refresh, DM unread polling, notification polling, timer pause or stop behavior, duplicate-loop prevention, polling intervals, error and backoff behavior, and explicit refresh | no product decision remains open; test plan and surface inventory prepared | TECHNICAL_VERIFICATION |
+| ROOT_DUPLICATE_SOURCE_PRUNING | root app/lib duplicate source topology and deployment ownership | dedicated repo-topology and deployment-ownership audit; prove ownership before any deletion; preserve rollback and source provenance | P1 / DEFERRED |
 | DBSURF-P2-PRUNING-OBSERVATION | deprecation observation, retention, and later removals | dependency closure complete; retention review complete; approved runtime observation window complete; rollback or recreation definitions preserved | BLOCKED |
 | DBSURF-POSTLAUNCH-REALTIME-ENHANCEMENT | publication membership design, subscription lifecycle, reconnect handling, duplicate-delivery handling, polling fallback retention, rollout and rollback plan | separate product approval; RLS compatibility audit; subscription lifecycle design; rollback plan; production verification plan | DEFERRED_POST_LAUNCH |
 
