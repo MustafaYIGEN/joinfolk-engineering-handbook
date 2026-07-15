@@ -29,8 +29,8 @@ This record summarizes the binding release-gate state for the JoinFolk DB-to-sur
 | DM_CONTRACT_STRUCTURE | PASS | `10d` through `10g` are `COMPLETE_VALIDATED`: exact live DM relations, eight RPC signatures, twelve authenticated-only table policies, and RI-only trigger inventory are now production-backed. |
 | DM_BODY_AUTHORIZATION | PASS | `11a` is `COMPLETE_VALIDATED`: all eight exact live DM RPC bodies were reviewed in production, all explicitly acquire `auth.uid()`, reject unauthenticated callers, use fixed `search_path = public`, and contain no dynamic SQL. No confirmed body-authorization vulnerability was found. |
 | DM_STATIC_CALLER_PARITY | PASS_WITH_NOTES | Mobile and dashboard active callers match the reviewed production bodies. Wrapper-only `dm_archive_conversation_v1` and `dm_delete_message_v1` have no confirmed active UI caller; direct `dm_participants` reads still exist; some wrappers may run before explicit session resolution; fail-soft wrappers can hide auth errors. These are stabilization notes, not blockers for exact anon containment. |
-| DM_BODY_AND_AUTHORITY_REVIEW | CLOSED | Exact live body review and caller-body parity review are complete. The review is closed; the approved future patch scope remains the exact-signature anon-only containment wave. |
-| DM_ANON_EXECUTE_CONTAINMENT | BLOCKER_UNTIL_APPLIED | The exact-signature `anon` EXECUTE revoke has not yet been applied or verified in production. This is the remaining launch-blocking implementation step until the future patch is executed and post-apply verification succeeds. |
+| DM_BODY_AND_AUTHORITY_REVIEW | CLOSED | Exact live body review and caller-body parity review are complete. The review remains closed and is not reopened by the containment closure. |
+| DM_ANON_EXECUTE_CONTAINMENT | APPLIED_AND_VERIFIED | Migration `20260714223000_p0_dm_anon_execute_containment` from commit `40e804b6` is applied and present in remote migration history. Exact ACL postcondition is PASS 8/8: anon false, authenticated true, service_role true, PUBLIC false. Mobile and dashboard authenticated operator-attested manual UAT: PASS; rollback was not used. |
 | PUSH_FINAL_CONTRACT_CLOSURE | OPEN | cron job linkage is confirmed; `10h` through `10j` remain pending. |
 | STORAGE_BUCKET_RAW_EXPORT_HYGIENE | OPEN | Production bucket state is result-confirmed, canonical raw `06a` remains missing, and no storage mutation is authorized. |
 | REALTIME_PRODUCT_CONTRACT | DECIDED | `POLLING_FIRST_V1`; launch non-blocking; realtime is post-launch only. |
@@ -60,11 +60,11 @@ BLOCKER:
 - purchase family exact-signature canonicalization
 - reservation family exact-signature canonicalization
 - search caller drift
-- DM anon execute containment remains an implementation blocker until the exact-signature revoke is applied and verified
+- DM anon execute containment is applied and verified
 
 RISK:
 
-- authenticated-only DM table policies currently coexist with anon-executable SECURITY DEFINER DM RPCs; this remains redundant privilege surface, not a proven exploit, and the only remaining blocker is implementation of the approved anon-containment wave
+- archive/delete wrappers have no confirmed active UI callers; direct `dm_participants` reads remain; some wrappers may execute before explicit session readiness; fail-soft wrappers may obscure authentication errors. These remain non-blocking stabilization notes, not reopened body-authorization or caller-parity blockers.
 - purchase and reservation runtime evidence is name-level rather than exact overload-level
 
 DECISION REQUIRED:
@@ -77,7 +77,7 @@ The next authorized audit actions are:
 
 1. normalize existing raw Downloads evidence into canonical exports where available for `08c`, `08f`, and `09`
 2. normalize or capture result-confirmed but raw-missing evidence for `07d` and `10a` through `10c`
-3. prepare the exact-signature DM anon-containment patch pack and verification matrix without changing function bodies, RLS, policies, authenticated grants, or service-role grants
+3. preserve the closed DM containment record without reopening body authorization, caller parity, or service_role minimization
 4. execute `10h` through `10j`
 5. run the polling-contract technical verification wave
 

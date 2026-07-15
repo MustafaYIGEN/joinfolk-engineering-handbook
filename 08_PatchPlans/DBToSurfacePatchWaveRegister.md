@@ -8,7 +8,7 @@
 - Last reviewed: 2026-07-14
 - Source confidence: Audit synthesis only
 - canonical: false
-- Implementation status: Not authorized
+- Implementation status: DM anon containment applied and verified; further implementation not authorized
 
 ## 2. Purpose
 
@@ -25,7 +25,7 @@ It does not authorize implementation.
 | DBSURF-P0-PURCHASE-CANONICALIZATION | `purchase_event_ticket_v2` through `v5` exact signatures | exact-signature static caller comparison; exact-signature body parity review; `09` family evidence reviewed; `10c` purchase evidence reviewed; purchase family function-name runtime evidence reviewed; exact overload-level runtime ambiguity recorded; rollback pack written | BLOCKED |
 | DBSURF-P0-RESERVATION-CANONICALIZATION | `create_reservation_v1` and both `create_reservation_v2` signatures | exact-signature static caller comparison; exact-signature body parity review; `09` family evidence reviewed; `10c` reservation evidence reviewed; reservation function-name runtime evidence reviewed; exact `v2` overload ambiguity recorded; rollback pack written | BLOCKED |
 | DBSURF-P0-SEARCH-DRIFT | stale `search_users_v1` callers to production `search_users_v2(text, integer)` | `10a` search evidence reviewed; response compatibility verified; caller migration plan and rollback plan written | BLOCKED |
-| DBSURF-P0-DM-AUTHORITY | DM exact-signature anon containment with no body, RLS, policy, or caller change | `10d` through `10g` reviewed as `COMPLETE_VALIDATED`; `11a` reviewed as `COMPLETE_VALIDATED`; exact live function-body authorization review completed; `auth.uid()`, participant-membership, persona-scope, sender or target-user authorization, mutation-impact, and exact caller-body parity review completed; exact rollback grants written; migration dry-run, live ACL snapshot, and authenticated-flow verification pack remain required before apply | PATCH_READY |
+| DBSURF-P0-DM-AUTHORITY | DM exact-signature anon containment with no body, RLS, policy, or caller change | `10d` through `10g` reviewed as `COMPLETE_VALIDATED`; `11a` reviewed as `COMPLETE_VALIDATED`; exact live function-body authorization review completed; exact rollback grants written; production migration version `20260714223000` applied from commit `40e804b6`; remote migration history row present; exact ACL postcondition PASS 8/8; mobile and dashboard authenticated operator-attested manual UAT: PASS; rollback not used | APPLIED_AND_VERIFIED / CLOSED |
 | DBSURF-P1-PUSH-RUNTIME | cron, outbox, dispatcher, and push contract closure | `07d` result reviewed; `10h` through `10j` completed; final caller map completed; rollback pack written | OPEN |
 | DBSURF-P1-STORAGE-CONTRACT | bucket exposure, route ownership, and parity decisions | canonical `06a_buckets.csv` installed; owner decision on bucket exposure; rollback pack written | OPEN |
 | DBSURF-P1-POLLING-CONTRACT-VERIFICATION | verify app-start refresh, foreground/resume refresh, post-mutation refresh, DM unread polling, notification polling, timer pause or stop behavior, duplicate-loop prevention, polling intervals, error and backoff behavior, and explicit refresh | no product decision remains open; test plan and surface inventory prepared | TECHNICAL_VERIFICATION |
@@ -38,9 +38,9 @@ It does not authorize implementation.
 - No wave above may proceed to implementation until its preconditions are met and a separate owner-approved implementation prompt exists.
 - Realtime is not a V1 launch requirement and belongs only to the deferred post-launch enhancement wave.
 
-## 5. DM Patch-Ready Scope
+## 5. DM Applied And Verified Scope
 
-`DBSURF-P0-DM-AUTHORITY` is patch-ready only for this exact future DB wave:
+`DBSURF-P0-DM-AUTHORITY` is closed for this exact applied DB wave:
 
 - `REVOKE EXECUTE ON FUNCTION public.dm_archive_conversation_v1(uuid,text) FROM anon;`
 - `REVOKE EXECUTE ON FUNCTION public.dm_delete_message_v1(uuid) FROM anon;`
@@ -51,18 +51,22 @@ It does not authorize implementation.
 - `REVOKE EXECUTE ON FUNCTION public.dm_mark_read_v1(uuid,text) FROM anon;`
 - `REVOKE EXECUTE ON FUNCTION public.dm_send_message_v1(uuid,text,text) FROM anon;`
 
-Required preservation rules for that future wave:
+Applied preservation results:
 
-- keep `authenticated` EXECUTE unchanged
-- keep `service_role` EXECUTE unchanged
-- keep `PUBLIC` EXECUTE absent
-- keep function bodies unchanged
-- keep `search_path` unchanged
-- keep RLS and policies unchanged
-- keep callers unchanged in the same patch
-- do not remove any DM RPC
+- `anon` EXECUTE is now false for all eight exact signatures
+- `authenticated` EXECUTE remains true for all eight exact signatures
+- `service_role` EXECUTE remains true for all eight exact signatures
+- `PUBLIC` EXECUTE remains false for all eight exact signatures
+- function bodies remained unchanged
+- RLS and policies remained unchanged
+- callers remained unchanged
+- no DM RPC was removed
+- production migration history contains version `20260714223000`
+- platform commit: `40e804b6 fix(security): contain anonymous DM RPC execution`
+- production apply: PASS
+- rollback: not used
 
-Exact rollback contract for that future wave:
+Exact rollback contract retained but not used:
 
 - `GRANT EXECUTE ON FUNCTION public.dm_archive_conversation_v1(uuid,text) TO anon;`
 - `GRANT EXECUTE ON FUNCTION public.dm_delete_message_v1(uuid) TO anon;`
@@ -73,32 +77,29 @@ Exact rollback contract for that future wave:
 - `GRANT EXECUTE ON FUNCTION public.dm_mark_read_v1(uuid,text) TO anon;`
 - `GRANT EXECUTE ON FUNCTION public.dm_send_message_v1(uuid,text,text) TO anon;`
 
-Required verification before any future production apply:
+Applied verification record:
 
-- migration dry-run
-- exact precondition check for all eight signatures
-- current live ACL snapshot
-- authenticated mobile DM flows:
-  create or open conversation
-  send message
-  load conversations
-  load messages
-  mark read
-  unread count
-- dashboard host DM flows:
-  inbox
-  message load
-  send
-  mark read
-  unread count
-- unauthenticated direct RPC calls fail at the privilege boundary
-- no body replacement
-- no caller change
-- no unexpected service-role regression
-- rollback SQL prepared and validated
+- migration dry-run: PASS
+- production apply: PASS
+- exact ACL postcondition: PASS 8/8
+- migration history: PASS
+- mobile authenticated manual UAT: PASS
+  - conversation list: PASS
+  - message load: PASS
+  - message send and refresh: PASS
+  - mark-read/unread update: PASS
+  - create/open conversation from user profile: PASS
+- dashboard authenticated host manual UAT: PASS
+  - inbox: PASS
+  - message load: PASS
+  - message send: PASS
+  - mark read: PASS
+  - Sidebar/Overview unread count: PASS
+- no permission denied, `42501`, `AUTH_REQUIRED`, missing-function, or RPC failure was observed in the manual UAT
+- these UI checks are operator-attested manual UAT, not automated test evidence
 
-Expected failure-mode change for that future wave:
+Applied failure-mode change:
 
 - before: anon can enter the function and receives function-level `AUTH_REQUIRED`
 - after: anon is denied `EXECUTE` before function entry
-- this is expected and acceptable because no legitimate unauthenticated DM caller was confirmed
+- this is expected and accepted because no legitimate unauthenticated DM caller was confirmed

@@ -22,7 +22,6 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 | PURCHASE_RPC_CANONICALIZATION | BLOCKER | Purchase family function names are runtime-observed, but exact purchase-signature canonicalization remains unresolved, including the two `v4` overloads. |
 | RESERVATION_RPC_CANONICALIZATION | BLOCKER | All three reservation exact signatures are live; reservation function names are runtime-observed, but exact five-argument versus six-argument `v2` use remains unresolved. |
 | SEARCH_USERS_CALLER_DRIFT | BLOCKER | A stale `search_users_v1` caller remains in source while production evidence points to observed `search_users_v2(text, integer)` as the live contract. |
-| DM_ANON_EXECUTE_CONTAINMENT | BLOCKER_UNTIL_APPLIED | Exact live DM bodies are validated and anon EXECUTE is known redundant, but the exact-signature revoke has not yet been applied or verified in production. |
 | PUSH_FINAL_CONTRACT_CLOSURE | OPEN | Cron production linkage is confirmed, but push contract exports `10h` through `10j` remain open. This is P1 stabilization, not a duplicate P0 blocker. |
 | STORAGE_BUCKET_RAW_EXPORT_HYGIENE | OPEN | Production bucket state is result-confirmed: `avatars`, `posters`, `venue-media`, and `venue-posters` are public, while `event-media` and `event-videos` are private. Canonical raw `06a` export remains missing. No storage mutation is authorized. |
 | WAVE_07D_CRON_RAW_EXPORT_HYGIENE | OPEN | `07d` result is confirmed, but canonical raw export status still needs evidence normalization. This is not a control-path blocker. |
@@ -33,6 +32,7 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 | Decision | State | Notes |
 | --- | --- | --- |
 | V1_LIVE_UPDATE_POLLING_FIRST | CLOSED / DECIDED | V1 authority is polling-first, realtime is post-launch, polling fallback remains required, empty `supabase_realtime` application membership is non-blocking, and no publication mutation is authorized. |
+| DM_ANON_EXECUTE_CONTAINMENT | CLOSED / APPLIED_AND_VERIFIED | Migration `20260714223000_p0_dm_anon_execute_containment` was applied in production from platform commit `40e804b6`; remote migration history row is present; exact ACL postcondition is PASS 8/8 with anon EXECUTE false, authenticated true, service_role true, and PUBLIC false. |
 
 ## 5. Binding Rule
 
@@ -43,9 +43,17 @@ Launch-ready status must remain blocked until every `BLOCKER` item is either:
 
 Evidence-hygiene `OPEN` items do not become P0 launch blockers merely because a canonical raw CSV is still missing when the production result itself is already confirmed.
 
-DM authority is no longer a review blocker in this register:
+DM authority and anon EXECUTE containment are no longer active blockers in this register:
 
 - `11a` exact production-body evidence is `COMPLETE_VALIDATED`
 - all eight live DM RPC bodies explicitly reject unauthenticated callers
 - no active caller-body mismatch was confirmed
-- the remaining DM work is the exact-signature anon-containment implementation step, which is launch-blocking until applied and verified
+- `DM_CONTRACT_STRUCTURE` remains `PASS`
+- `DM_BODY_AUTHORIZATION` remains `PASS`
+- `DM_STATIC_CALLER_PARITY` remains `PASS_WITH_NOTES`
+- `DM_BODY_AND_AUTHORITY_REVIEW` remains `CLOSED`
+- `DM_ANON_EXECUTE_CONTAINMENT` is `APPLIED_AND_VERIFIED`
+- production migration version `20260714223000` is present in remote history
+- migration commit `40e804b6` applied the exact anon-only ACL containment
+- rollback was not used
+- mobile and dashboard authenticated manual UAT passed as operator-attested manual evidence, not automated test evidence

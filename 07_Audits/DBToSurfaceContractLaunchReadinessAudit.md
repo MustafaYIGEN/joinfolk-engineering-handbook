@@ -9,7 +9,7 @@
 - Source confidence: Handbook decisions + canonical production exports through wave 06 + production-result confirmations through wave 10g + read-only local source inspection
 - canonical: false
 - Implementation status: Not authorized
-- Production mutation status: Not executed
+- Production mutation status: DM anon containment migration applied and verified; no other mutation authorized by this audit
 
 ## 2. Purpose
 
@@ -109,7 +109,7 @@ Binding states:
 | 07 | Cron / realtime | `07a` to `07c` are `RESULT_CONFIRMED_BUT_RAW_EXPORT_MISSING`; `07d` is result confirmed with canonical raw export still open | Cron linkage is confirmed; realtime publication facts are confirmed; raw-export hygiene remains open. |
 | 08 | Runtime statistics | `08a`, `08b`, `08d`, and `08e` are result confirmed; `08c` and `08f` raw CSVs exist in Downloads but are not canonically installed | Runtime evidence now exists with limitations; zero function-stat rows are expected because `track_functions = none`. |
 | 09 | Versioned RPC families | result confirmed; raw CSV exists in Downloads but is not canonically installed | Version splits are confirmed; no version is canonical solely by suffix. |
-| 10 | Priority contracts | `PARTIAL_RESULT_CONFIRMED` for `10a` through `10c`; `10d` through `10g` are `COMPLETE_VALIDATED`; `10h` through `10j` remain `PENDING_EXECUTION` | P0 contract evidence is materially improved; DM structural evidence is now validated and push closure remains incomplete. |
+| 10 | Priority contracts | `PARTIAL_RESULT_CONFIRMED` for `10a` through `10c`; `10d` through `10g` are `COMPLETE_VALIDATED`; `10h` through `10j` remain `PENDING_EXECUTION` | P0 contract evidence is materially improved; DM structural evidence is validated, DM anon containment is applied and verified, and push closure remains incomplete. |
 
 ## 7. Technical Interpretation Rules
 
@@ -149,7 +149,7 @@ reservation,rpc_family,public,create_reservation,"public.create_reservation_v1(u
 search,rpc,public,search_users_v2,"public.search_users_v2(text, integer)",PARTIAL_RESULT_CONFIRMED,true,false,false,true,true,,OBSERVED_IN_08F,598,"joinfolk-web/lib/friends.v1.ts:64",WEB_SOCIAL_GRAPH,NOT_REVIEWED,no,unknown,no,LIVE_AUTH_ONLY,P0,"Keep authenticated exposure; resolve all stale v1 callers toward this exact production signature",DBSURF-P0-SEARCH-DRIFT,"Authenticated grant rollback required if changed",KEEP_EXPOSED,"10a result confirmed but raw export missing; runtime supports canonical candidate status"
 search,rpc,public,search_users_v1,"public.search_users_v1(text, integer)",PROD_ABSENT_IN_02_EXPORT,,,,,,NOT_TARGETED_BY_08F,,"joinfolk-web/lib/ticket-claims.v1.ts:304",WEB_TICKET_CLAIMS,LOCAL_PROVENANCE_MISSING,no,unknown,no,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"Remove caller drift first; do not infer DB removal from export absence alone",DBSURF-P0-SEARCH-DRIFT,"If production object later appears, full rollback and compatibility plan required",DEPRECATE_OBSERVE,"production export absence only; stale caller is a technical bug"
 dm,table_family,public,dm_relations,"public.dm_conversations; public.dm_messages; public.dm_participants; public.dm_conversations_pkey; public.dm_messages_pkey; public.dm_participants_pkey",LIVE_PROD,,,,,,true,COMPLETE_VALIDATED,,"mobile direct table references exist for dm_participants; dashboard DM callers depend on family RPCs",MOBILE_AND_DASHBOARD_DM,NOT_APPLICABLE,internal_ri_only,unknown,push_indirect,AUTH_ONLY_EXPECTED_BUT_BROADER_LIVE,P0,"Preserve DM backend state; exact relations, RLS state, authenticated-only policies, and RI-only trigger structure are production-validated, and RPC body authorization is now production-validated separately for the DM RPC family",DBSURF-P0-DM-AUTHORITY,"RLS or policy rollback required only in a separate authorized wave",KEEP_BACKEND_ONLY,"10d COMPLETE_VALIDATED: exact live DM tables and primary-key indexes confirmed; 10f COMPLETE_VALIDATED: authenticated-only participant-scoped policies confirmed; 10g COMPLETE_VALIDATED: no custom JoinFolk DM trigger helper observed; 11a COMPLETE_VALIDATED: exact live DM RPC bodies reviewed"
-dm,rpc_family,public,dm_rpcs,"public.dm_archive_conversation_v1(uuid, text); public.dm_delete_message_v1(uuid); public.dm_get_conversations_v1(text, integer, integer); public.dm_get_messages_v1(uuid, integer, timestamp with time zone); public.dm_get_or_create_conversation_v1(uuid, text, text); public.dm_get_unread_count_v1(text); public.dm_mark_read_v1(uuid, text); public.dm_send_message_v1(uuid, text, text)",LIVE_PROD,true,false,true,true,true,,OBSERVED_IN_08F,"archive=0; delete=1; get_conversations=694; get_messages=494; get_or_create=45; unread=35589; mark_read=330; send=171","hostos/apps/mobile/lib/dm.v1.ts calls all eight RPCs; joinfolk-web/dashboard/src/lib/dm.ts calls get_conversations, get_messages, send_message, mark_read, and get_unread_count",MOBILE_AND_DASHBOARD_DM,PROD_BODY_VALIDATED,no,policy_linked,push_indirect,AUTH_REQUIRED_BUT_ANON_EXECUTE_REDUNDANT,P0,"All eight exact live bodies explicitly acquire auth.uid(), reject unauthenticated callers, and current active callers match the production bodies. Future patch scope is limited to exact-signature anon EXECUTE containment with authenticated and service-role grants preserved.",DBSURF-P0-DM-AUTHORITY,"Exact anon-only ACL rollback required on the same eight signatures before any later containment wave",KEEP_EXPOSED,"10e COMPLETE_VALIDATED: all eight live RPCs are SECURITY DEFINER, anon-executable, and zero-trigger-attached; 11a COMPLETE_VALIDATED: no exact signature remains UNKNOWN_PRODUCTION_BODY_MISSING; current anon exposure is redundant privilege surface, not a proven exploit"
+dm,rpc_family,public,dm_rpcs,"public.dm_archive_conversation_v1(uuid,text); public.dm_delete_message_v1(uuid); public.dm_get_conversations_v1(text,integer,integer); public.dm_get_messages_v1(uuid,integer,timestamp with time zone); public.dm_get_or_create_conversation_v1(uuid,text,text); public.dm_get_unread_count_v1(text); public.dm_mark_read_v1(uuid,text); public.dm_send_message_v1(uuid,text,text)",LIVE_PROD,true,false,false,true,true,,OBSERVED_IN_08F,"archive=0; delete=1; get_conversations=694; get_messages=494; get_or_create=45; unread=35589; mark_read=330; send=171","hostos/apps/mobile/lib/dm.v1.ts calls all eight RPCs; joinfolk-web/dashboard/src/lib/dm.ts calls get_conversations, get_messages, send_message, mark_read, and get_unread_count",MOBILE_AND_DASHBOARD_DM,PROD_BODY_VALIDATED,no,policy_linked,push_indirect,LIVE_AUTH_ONLY,P0,"All eight exact live bodies explicitly acquire auth.uid(), reject unauthenticated callers, and current active callers match the production bodies. Exact-signature anon EXECUTE containment is applied and verified with authenticated and service-role grants preserved.",DBSURF-P0-DM-AUTHORITY,"Rollback pack exists for exact anon-only grant restoration; rollback not used",KEEP_EXPOSED,"10e COMPLETE_VALIDATED and 11a COMPLETE_VALIDATED; migration 20260714223000 from commit 40e804b6 applied; remote migration history row present; exact ACL postcondition PASS 8/8: anon=false, authenticated=true, service_role=true, PUBLIC=false; mobile and dashboard authenticated operator-attested manual UAT: PASS; not automated test evidence"
 push,table,public,notification_push_deliveries_v1,"public.notification_push_deliveries_v1",LIVE_PROD,,,,,,true,RESULT_CONFIRMED_ONLY,,"hostos/supabase/functions/push-dispatch/index.ts consumes push RPCs",BACKEND_PUSH_OUTBOX,NOT_APPLICABLE,trigger_source,unknown,edge_and_cron,SERVICE_ONLY_LIVE,P1,"Keep backend-only outbox; confirm final contract with remaining 10h through 10j evidence",DBSURF-P1-PUSH-RUNTIME,"Table privilege rollback required in a separate authorized DB wave only",KEEP_BACKEND_ONLY,"07d cron linkage confirmed; 10h through 10j remain pending"
 push,rpc_family,public,push_delivery_functions,"public.enqueue_notification_push_delivery_v1(); public.claim_notification_push_deliveries_v1(integer, interval); public.record_notification_push_delivery_result_v1(uuid, integer, text, text); public.invoke_notification_push_dispatch_v1()",PARTIAL_RESULT_CONFIRMED,true,false,false,false,mixed,,RESULT_CONFIRMED_ONLY,,"hostos/supabase/functions/push-dispatch/index.ts:180 calls record_notification_push_delivery_result_v1",EDGE_PUSH_DISPATCH,PROVEN_LOCAL_SERVICE_INTERNAL,"enqueue trigger on notifications_v2 proven in 03a",unknown,edge_and_cron,SERVICE_ONLY_LIVE,P1,"Keep backend-only; cron jobs are confirmed and final push contract closure now depends on 10h through 10j",DBSURF-P1-PUSH-RUNTIME,"Service-role or internal rollback required if any function grant changes later",KEEP_BACKEND_ONLY,"07d result confirmed but raw export missing; 10h through 10j pending"
 storage,bucket_family,storage,public_buckets,"avatars; posters; venue-media; venue-posters public; event-media and event-videos private",RESULT_CONFIRMED_BUT_RAW_EXPORT_MISSING,,,,,,,RESULT_CONFIRMED_ONLY,,"joinfolk-web/lib/posterSnapshot.ts; joinfolk-web/lib/event-media.v1.ts; joinfolk-web/dashboard/src/lib/api.ts",MOBILE_WEB_DASHBOARD_MEDIA,NOT_APPLICABLE,no,storage_policy_evidence,possible_edge_usage,STORAGE_BUCKET_RAW_EXPORT_HYGIENE,OPEN,"Production bucket state is result-confirmed; canonical raw 06a export remains missing; no storage mutation is authorized",DBSURF-P1-STORAGE-CONTRACT,"Bucket policy rollback belongs to a separate authorized storage wave",UNKNOWN_BLOCKED,"canonical raw 06a export remains missing"
@@ -197,11 +197,28 @@ Current static source still contains a `search_users_v1` caller in `joinfolk-web
 
 This remains a concrete production or source drift bug. Migration toward the production `v2` contract is a candidate once response compatibility is verified.
 
-### 10.5 DM is active, but authority review remains blocked
+### 10.5 DM is active, and anon containment is applied and verified
 
 Runtime confirms active DM family usage, including very high `dm_get_unread_count_v1` volume.
 
-That is positive keep evidence, not proof that current anon execute is safe. `10d` through `10g` are now `COMPLETE_VALIDATED`, which narrows the remaining DM blocker to exact live function-body authorization, `auth.uid()` enforcement, participant membership, persona ownership or scope, sender or target-user authorization, mutation impact, and caller-body parity.
+`10d` through `10g` are `COMPLETE_VALIDATED`, `11a` exact live body review is `COMPLETE_VALIDATED`, and the exact-signature anon EXECUTE containment migration is applied and verified in production.
+
+Binding DM closure facts:
+
+- migration commit: `40e804b6 fix(security): contain anonymous DM RPC execution`
+- production migration version: `20260714223000`
+- migration history: PASS
+- production apply: PASS
+- exact ACL postcondition: PASS 8/8
+- anon execute: false
+- authenticated execute: true
+- service_role execute: true
+- PUBLIC execute: false
+- mobile authenticated operator-attested manual UAT: PASS
+- dashboard authenticated host operator-attested manual UAT: PASS
+- rollback: not used
+
+The manual UAT checks are operator-attested manual evidence, not automated test evidence. Archive/delete wrappers with no confirmed active UI callers, direct `dm_participants` reads, wrappers that may execute before explicit session readiness, and fail-soft wrappers remain non-blocking notes.
 
 ### 10.6 Realtime is no longer a V1 product decision blocker
 
@@ -233,7 +250,7 @@ The next authorized audit actions are:
 
 1. canonically normalize any missing raw CSVs that already exist in Downloads for `08c`, `08f`, and `09`
 2. collect or normalize result-confirmed but raw-missing evidence for `07d` and `10a` through `10c`
-3. review DM bodies and exact static caller parity against the now validated `10d` through `10g` structure
+3. preserve the closed DM authority state without reopening body authorization or caller parity
 4. execute the remaining production contract exports:
    - `10h_push_contracts`
    - `10i_push_triggers`

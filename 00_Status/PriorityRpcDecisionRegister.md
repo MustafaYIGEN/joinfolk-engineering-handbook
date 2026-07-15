@@ -5,16 +5,16 @@
 - Status: Draft
 - Version: 0.3
 - Owner: Mustafa / JoinFolk
-- Last reviewed: 2026-07-14
-- Source confidence: Production ACL export + confirmed runtime evidence through `08f` + confirmed family evidence through `09` + confirmed priority contracts through `10g` + read-only local static caller inspection
+- Last reviewed: 2026-07-15
+- Source confidence:Production ACL export + confirmed runtime evidence through `08f` + family evidence through `09` + priority contracts through `10g` + exact DM production-body evidence `11a` + production migration apply/history verification + operator-attested mobile/dashboard manual UAT
 - canonical: false
-- Implementation status: Not authorized
+- Implementation status: DM anon containment applied and verified; further implementation not authorized
 
 ## 2. Purpose
 
 This register captures the binding P0 and P1 RPC decisions that remain open for launch readiness.
 
-Implementation remains not authorized.
+Further implementation remains not authorized.
 
 ## 3. Decision Register
 
@@ -28,7 +28,7 @@ Implementation remains not authorized.
 | P0 | `purchase_event_ticket_v2` through `v5` exact live family | Multiple live versions with only partial caller proof creates unresolved authority and deprecation risk | exact-signature caller comparison; canonical raw `09` and `10c` normalization; body parity review | resolve all active callers of `v2`, `v3`, `v4` overloads, and `v5` | verify guard coverage per exact signature, not by family name | purchase family function names are `OBSERVED_IN_08F`; exact overload-level observation remains unresolved, especially the two `v4` overloads | BLOCKED | exact-signature rollback for every touched function |
 | P0 | `create_reservation_v1(uuid)` and both `create_reservation_v2` signatures live | Reservation contract is split and current static callers prove only part of the family | exact-signature caller comparison; canonical raw `09` and `10c` normalization; body parity review | resolve all mobile, web, and dashboard callers | verify body parity and cross-entitlement guard coverage for each signature | `create_reservation_v1` and `create_reservation_v2` function names are `OBSERVED_IN_08F`; exact five-argument versus six-argument `v2` observation remains unresolved | BLOCKED | exact-signature rollback required |
 | P0 | `public.search_users_v2(text, integer)` live; stale `search_users_v1` caller still present | Production or source drift can break live surfaces and confuses canonical API ownership | response compatibility check; canonical raw `10a` export | remove or migrate all `search_users_v1` callers, including ticket-claims flow | verify `search_users_v2` body authorization and intended caller scope | `OBSERVED_IN_08F` with 598 calls | BLOCKED | compatibility rollback required for caller migration |
-| P0 | live `public.dm_*` RPC family: eight exact SECURITY DEFINER signatures, anon/authenticated/service_role execute, zero trigger attachments; authenticated-only table policies, RI-only triggers, and exact live production bodies are now validated | Current live grants still include anon even though all eight exact live bodies explicitly acquire `auth.uid()`, reject unauthenticated callers, and current active mobile/dashboard callers are authenticated-session surfaces; this is now a redundant privilege surface, not a proven exploit | migration dry-run pack; exact precondition checks; live ACL snapshot; authenticated mobile and dashboard regression plan; service-role preservation proof | confirm no legitimate unauthenticated DM caller exists; preserve current authenticated and service-role contracts; keep wrapper-only archive/delete callers noted separately | no body rewrite is authorized; future patch scope is grant-only on the eight exact signatures | active family observed; exact production-body evidence is `11a COMPLETE_VALIDATED`; `dm_archive_conversation_v1` still has no positive runtime observation in the sampled window | PATCH_READY | exact anon-only ACL rollback on the same eight signatures required |
+| P0 | live `public.dm_*` RPC family: eight exact SECURITY DEFINER signatures, anon execute false, authenticated execute true, service_role execute true, PUBLIC execute false; authenticated-only table policies, RI-only triggers, and exact live production bodies are validated | The prior redundant anon EXECUTE surface is contained. All eight exact live bodies explicitly acquire `auth.uid()`, reject unauthenticated callers, and active mobile/dashboard callers are authenticated-session surfaces. | none for this containment wave; production migration version `20260714223000` is present in remote history; exact ACL postcondition PASS 8/8; mobile and dashboard operator-attested manual UAT: PASS | preserve current authenticated and service-role contracts; keep wrapper-only archive/delete callers, direct `dm_participants` reads, session-readiness wrappers, and fail-soft wrapper behavior as non-blocking notes | no body rewrite was performed or authorized; no service_role minimization is authorized by this closure | active family observed; exact production-body evidence is `11a COMPLETE_VALIDATED`; migration commit `40e804b6` applied exact anon-only containment; rollback not used | APPLIED_AND_VERIFIED / CLOSED | rollback pack exists for exact anon-only grant restoration; not used |
 | P1 | push delivery RPC family and cron helper | Push contract spans trigger, outbox, edge dispatch, and cron; `07d` linkage is now confirmed, but final contract exports remain incomplete | `10h` through `10j` remain pending; raw `07d` export not yet canonical | search all Edge, operator, and internal callers | verify scheduler helper and dispatcher linkages remain backend-only | cron linkage confirmed; helper runtime not fully export-backed | OPEN | exact ACL and scheduler rollback plan required |
 
 ## 4. Binding Outcome
