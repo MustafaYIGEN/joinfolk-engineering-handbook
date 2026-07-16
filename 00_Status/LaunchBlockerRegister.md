@@ -17,7 +17,7 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 
 | Blocker | State | Why it blocks launch readiness |
 | --- | --- | --- |
-| CHECKIN_LEGACY_COMPATIBILITY | BLOCKER | Legacy `public.check_in_ticket(text, uuid)` remains live, runtime-observed, and not yet reviewed for compatibility or body authorization. |
+| CHECKIN_LEGACY_COMPATIBILITY | APPLIED_AND_VERIFIED / CLOSED | Client-reachable legacy `public.check_in_ticket(text, uuid)` execution is contained by canonical commit `745b5846` and migration `20260716013100_p0_legacy_checkin_client_containment`; production body MD5 `a2ab9cba35208d7ec6a9e3e46e676613` and final service-role-only ACL were verified. Classification: `UNUSED_BUT_EXPOSED / HISTORICAL_COMPATIBILITY_SURFACE`; legacy objects remaining does not reopen this blocker. |
 | PURCHASE_RPC_CANONICALIZATION | BLOCKER | Purchase family function names are runtime-observed, but exact purchase-signature canonicalization remains unresolved, including the two `v4` overloads. |
 | RESERVATION_RPC_CANONICALIZATION | BLOCKER | All three reservation exact signatures are live; reservation function names are runtime-observed, but exact five-argument versus six-argument `v2` use remains unresolved. |
 | PUSH_FINAL_CONTRACT_CLOSURE | OPEN | Cron production linkage is confirmed, but push contract exports `10h` through `10j` remain open. This is P1 stabilization, not a duplicate P0 blocker. |
@@ -39,7 +39,7 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 | Note | State | Reason |
 | --- | --- | --- |
 | ROOT_DUPLICATE_SOURCE_PRUNING | P1 / DEFERRED | Root app/lib copies may be stale, but they must not be deleted without a dedicated repo-topology and deployment-ownership audit. This is not an active launch blocker. |
-| SUPABASE_MIGRATION_HISTORY_BASELINE_DRIFT | OPEN / separate operational blocker | Migration list showed many historical local migrations absent from remote history. Do not perform mass migration repair, `db push`, `--include-all`, or linked reset; this note must not reopen `PAYMENT_AUTHORITY_MARK_ORDER_PAID_V1`. |
+| SUPABASE_MIGRATION_HISTORY_BASELINE_DRIFT | OPEN / separate operational blocker | Migration list showed many historical local migrations absent from remote history. Do not perform mass migration repair, `db push`, `--include-all`, or linked reset; this note must not reopen `PAYMENT_AUTHORITY_MARK_ORDER_PAID_V1` or `CHECKIN_LEGACY_COMPATIBILITY`. |
 
 ## 6. Binding Rule
 

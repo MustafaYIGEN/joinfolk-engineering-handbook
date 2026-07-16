@@ -22,7 +22,7 @@ This record summarizes the binding release-gate state for the JoinFolk DB-to-sur
 | PROD_VERSIONED_RPC_EVIDENCE | PASS | wave `09` family evidence is confirmed; raw normalization remains open but execution is not pending. |
 | PROD_PRIORITY_CONTRACT_EVIDENCE | PARTIAL | `10a` through `10g` are confirmed, with `10d` through `10g` now `COMPLETE_VALIDATED`; `10h` through `10j` remain pending. |
 | PAYMENT_AUTHORITY_MARK_ORDER_PAID_V1 | BLOCKER | `mark_order_paid_v1` remains the immediate blocker; payment authority is not yet bound. |
-| CHECKIN_LEGACY_COMPATIBILITY | BLOCKER | Legacy `check_in_ticket` remains live, observed, and not yet reviewed for compatibility. |
+| CHECKIN_LEGACY_COMPATIBILITY | APPLIED_AND_VERIFIED / CLOSED | Legacy client EXECUTE was contained by `745b5846` / `20260716013100_p0_legacy_checkin_client_containment`; exact body and final ACL were verified. Current scanner RPCs were not changed, and legacy `event_tickets` was not merged with `tickets`. |
 | PURCHASE_RPC_CANONICALIZATION | BLOCKER | Purchase family function names are observed, but exact overload-level runtime use remains unresolved and exact-signature canonicalization remains open. |
 | RESERVATION_RPC_CANONICALIZATION | BLOCKER | All three reservation exact signatures are live; reservation function names are observed, but exact `create_reservation_v2` overload-level runtime use remains unresolved. |
 | SEARCH_USERS_CALLER_DRIFT | CLOSED / NOT_ACTIVE_RUNTIME | Runtime ownership was reconciled. Mobile active source uses `search_users_v2` and passed operator-attested UAT; dashboard and web actual package roots have no search caller; the stale `search_users_v1` reference belonged to an inactive root source copy. No production database or source patch was required. |
@@ -56,7 +56,7 @@ OPEN:
 BLOCKER:
 
 - payment authority review
-- legacy check-in compatibility review
+- legacy check-in compatibility containment is closed; future legacy-object removal is a separate dependency, data-retention, and pruning decision
 - purchase family exact-signature canonicalization
 - reservation family exact-signature canonicalization
 - DM anon execute containment is applied and verified
