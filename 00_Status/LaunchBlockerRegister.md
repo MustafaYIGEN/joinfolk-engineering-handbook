@@ -17,7 +17,6 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 
 | Blocker | State | Why it blocks launch readiness |
 | --- | --- | --- |
-| PAYMENT_AUTHORITY_MARK_ORDER_PAID_V1 | BLOCKER | `public.mark_order_paid_v1(uuid)` is live with PUBLIC, anon, authenticated, and service-role execute while payment authority, body review, and caller review remain unresolved. |
 | CHECKIN_LEGACY_COMPATIBILITY | BLOCKER | Legacy `public.check_in_ticket(text, uuid)` remains live, runtime-observed, and not yet reviewed for compatibility or body authorization. |
 | PURCHASE_RPC_CANONICALIZATION | BLOCKER | Purchase family function names are runtime-observed, but exact purchase-signature canonicalization remains unresolved, including the two `v4` overloads. |
 | RESERVATION_RPC_CANONICALIZATION | BLOCKER | All three reservation exact signatures are live; reservation function names are runtime-observed, but exact five-argument versus six-argument `v2` use remains unresolved. |
@@ -32,6 +31,7 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 | --- | --- | --- |
 | V1_LIVE_UPDATE_POLLING_FIRST | CLOSED / DECIDED | V1 authority is polling-first, realtime is post-launch, polling fallback remains required, empty `supabase_realtime` application membership is non-blocking, and no publication mutation is authorized. |
 | DM_ANON_EXECUTE_CONTAINMENT | CLOSED / APPLIED_AND_VERIFIED | Migration `20260714223000_p0_dm_anon_execute_containment` was applied in production from platform commit `40e804b6`; remote migration history row is present; exact ACL postcondition is PASS 8/8 with anon EXECUTE false, authenticated true, service_role true, and PUBLIC false. |
+| PAYMENT_AUTHORITY_MARK_ORDER_PAID_V1 | APPLIED_AND_VERIFIED / CLOSED | The client payment-authority bypass in `public.mark_order_paid_v1(uuid)` is contained by canonical platform commit `35dc24ba` and migration `20260716013000_p0_mark_order_paid_client_containment`; remote migration history contains the version. Exact body MD5 remains `5cbb9851788530daf956a0b283e581b3`; final ACL is PUBLIC=false, anon=false, authenticated=false, service_role=true with explicit service_role EXECUTE=true. No function-body, table, RLS, policy, trigger, UI, Edge Function, or schema change was made; `confirm_order_payment_v1` was not modified; `ticket_orders` and `commerce_orders` contracts were not merged; rollback was not required. |
 | SEARCH_USERS_CALLER_DRIFT | CLOSED / NOT_ACTIVE_RUNTIME | Runtime ownership was reconciled: the real mobile runtime is `C:\dev\hostos\apps\mobile` and uses `search_users_v2`; dashboard runtime is `C:\dev\joinfolk-web\dashboard`; web runtime is `C:\dev\joinfolk-web\web`; dashboard and web package roots have no `search_users_v1` or `search_users_v2` caller. The stale `search_users_v1` reference belonged to an inactive root source copy, not the mobile, dashboard, or web runtime. No production database or source patch was required; attempted root-source patch commit `84ab737` was not pushed and was removed before push by resetting to `524c642`. |
 
 ## 5. Non-Blocking Notes
@@ -39,6 +39,7 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 | Note | State | Reason |
 | --- | --- | --- |
 | ROOT_DUPLICATE_SOURCE_PRUNING | P1 / DEFERRED | Root app/lib copies may be stale, but they must not be deleted without a dedicated repo-topology and deployment-ownership audit. This is not an active launch blocker. |
+| SUPABASE_MIGRATION_HISTORY_BASELINE_DRIFT | OPEN / separate operational blocker | Migration list showed many historical local migrations absent from remote history. Do not perform mass migration repair, `db push`, `--include-all`, or linked reset; this note must not reopen `PAYMENT_AUTHORITY_MARK_ORDER_PAID_V1`. |
 
 ## 6. Binding Rule
 
