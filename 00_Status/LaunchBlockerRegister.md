@@ -19,6 +19,11 @@ This register tracks exact DB-to-surface launch blockers exposed by the current 
 | --- | --- | --- |
 | CHECKIN_LEGACY_COMPATIBILITY | APPLIED_AND_VERIFIED / CLOSED | Client-reachable legacy `public.check_in_ticket(text, uuid)` execution is contained by canonical commit `745b5846` and migration `20260716013100_p0_legacy_checkin_client_containment`; production body MD5 `a2ab9cba35208d7ec6a9e3e46e676613` and final service-role-only ACL were verified. Classification: `UNUSED_BUT_EXPOSED / HISTORICAL_COMPATIBILITY_SURFACE`; legacy objects remaining does not reopen this blocker. |
 | PURCHASE_RPC_CANONICALIZATION | BLOCKER | Purchase family function names are runtime-observed, but exact purchase-signature canonicalization remains unresolved, including the two `v4` overloads. |
+| PURCHASE_LEGACY_DIRECT_ISSUANCE_SURFACE | APPLIED_AND_VERIFIED / CLOSED | Legacy direct-issuance `purchase_event_ticket_v3`, both `v4` overloads, and `v5` are client-contained by `20260716013200_p0_purchase_legacy_client_containment`; mobile now uses `createOrder` / `create_commerce_order_v1` as the sole active purchase mutation. This closes only the direct-issuance wave, not `PURCHASE_RPC_CANONICALIZATION`. |
+| COMMERCE_ISSUANCE_REPLAY_GAP | P0 / OPEN | Issuance replay/idempotency remains a separate purchase authority decision. |
+| INVENTORY_RACE_RISK | P0 / OPEN | Capacity and concurrency behavior remains a separate purchase authority decision. |
+| SECTION_PRICE_AUTHORITY_GAP | OPEN | Section-price authority remains unresolved. |
+| GIFT_COMMERCE_CONTRACT_DRIFT | OPEN | Gift commerce contract parity remains unresolved. |
 | RESERVATION_RPC_CANONICALIZATION | BLOCKER | All three reservation exact signatures are live; reservation function names are runtime-observed, but exact five-argument versus six-argument `v2` use remains unresolved. |
 | PUSH_FINAL_CONTRACT_CLOSURE | OPEN | Cron production linkage is confirmed, but push contract exports `10h` through `10j` remain open. This is P1 stabilization, not a duplicate P0 blocker. |
 | STORAGE_BUCKET_RAW_EXPORT_HYGIENE | OPEN | Production bucket state is result-confirmed: `avatars`, `posters`, `venue-media`, and `venue-posters` are public, while `event-media` and `event-videos` are private. Canonical raw `06a` export remains missing. No storage mutation is authorized. |

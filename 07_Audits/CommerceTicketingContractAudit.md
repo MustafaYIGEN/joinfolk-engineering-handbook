@@ -15,6 +15,14 @@ This document is a commerce and ticketing contract audit for JoinFolk. It maps o
 
 This is not a patch plan, cleanup plan, migration plan, or implementation plan. It does not authorize adding, removing, or changing features. It does not authorize modifying backend/RPC/RLS/storage/auth, any Supabase tree, or application code.
 
+## Verified Containment Update
+
+`PURCHASE_LEGACY_DIRECT_ISSUANCE_SURFACE` is `APPLIED_AND_VERIFIED / CLOSED`. Platform commits `b7e49aad` and `b1ff8d12` delivered canonical migration `20260716013200_p0_purchase_legacy_client_containment`; production dry-run, apply, postcondition, and migration-history alignment passed. `purchase_event_ticket_v3`, both `v4` overloads, and `v5` are service-role-only. `create_commerce_order_v1` remains authenticated and service-role executable.
+
+Mobile commit `aff0c2a` removed the active `purchase_event_ticket_v3` fallback. `buy-ticket.tsx` and `seat-picker.tsx` now use `createOrder` / `create_commerce_order_v1` as the sole active purchase mutation; typecheck, scoped lint with zero errors, reserved-seat UAT, standing UAT, and runtime observation passed.
+
+This update does not close `PURCHASE_RPC_CANONICALIZATION`. `COMMERCE_ISSUANCE_REPLAY_GAP / P0`, `INVENTORY_RACE_RISK / P0`, `SECTION_PRICE_AUTHORITY_GAP / OPEN`, and `GIFT_COMMERCE_CONTRACT_DRIFT / OPEN` remain separate. Function bodies, MD5s, SECURITY DEFINER metadata, search_path, tables, data, RLS, policies, and triggers were unchanged.
+
 ## 3. Audit Scope
 
 Read-only evidence was drawn from the engineering handbook and local source trees for the handbook, platform/backend, web/dashboard, and mobile app. The audit focused on commerce and participation surfaces:
