@@ -39,6 +39,7 @@ This does not authorize private row inspection or storage object listing.
 | --- | --- | --- | --- | --- |
 | `00_Status/OperatorConfirmedReadOnlySupabaseProductionAccessProtocol.md` | Read-only access protocol | Records operator-confirmed production read-only access boundaries and evidence handling expectations | Not authorized | Governs evidence discipline; does not authorize implementation, mutation, or private data extraction. |
 | `00_Status/P0AnonRpcContainmentProductionExecutionAndVerificationReport.md` | Production execution & verification report | Records P0 anon RPC surface containment target-only production apply and post-apply verification evidence | Applied & Verified | Gate: P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED (CLOSED / PASSED). |
+| `00_Status/P1AuthenticatedOnlyRpcSurfaceProductionExecutionAndVerificationReport.md` | Production execution & verification report | Records P1 authenticated-only RPC surface containment target-only production apply and post-apply verification evidence | Applied & Verified | Gate: P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED (CLOSED / PASSED). |
 | `00_Status/PP01EvidenceGapClassificationReport.md` | Evidence gap classification report | Classifies PP-01 production metadata evidence gaps and follow-up priorities | Not authorized | Reports/classifies evidence; does not mark PP-01 fully resolved. |
 | `00_Status/PP01ProductionVerificationExecutionReport.md` | Production verification execution report | Records partial PP-01 production metadata verification evidence and unresolved areas | Not authorized | Evidence report only; does not authorize implementation or claim full production verification. |
 | `00_Status/ReleaseHardeningPatchPlanCompletionReport.md` | Release hardening status report | Records hardening patch plan completion status within its evidence boundary | Not authorized | Release/hardening status artifact; does not independently mark the platform launch-ready. |
@@ -49,7 +50,7 @@ This does not authorize private row inspection or storage object listing.
 | `00_Status/SecurityDefinerFunctionGrantMetadataCollectionApprovalGate.md` | Metadata collection approval gate | Conditionally approves bounded read-only sanitized metadata collection under strict boundaries | Not authorized | Does not authorize implementation, mutation, private row inspection, storage object listing, or RPC/function invocation. |
 | `00_Status/SupabaseModelBOperatorProvisioningConfirmationPackage.md` | Operator provisioning confirmation package | Records Model B verifier provisioning confirmation and safety evidence | Not authorized | Read-only provisioning/evidence artifact; does not authorize implementation or mutation. |
 | `00_Status/SupabaseModelBReadOnlyVerifierRoleProvisioningRunbook.md` | Read-only verifier provisioning runbook | Defines Model B read-only verifier role provisioning workflow and safeguards | Not authorized | Runbook for bounded verification access; does not authorize private data extraction or implementation. |
-| `00_Status/EvidenceRegistry.md` | Central evidence registry | Tracks verified production gates, platform commits, migration versions, SHA256 hashes, and evidence file paths | Active Registry | Gate: P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED (CLOSED / PASSED). |
+| `00_Status/EvidenceRegistry.md` | Central evidence registry | Tracks verified production gates, platform commits, migration versions, SHA256 hashes, and evidence file paths | Active Registry | Gate: P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED (CLOSED / PASSED). |
 
 ## 4. SecurityDefiner / Function Grant Status Chain
 
@@ -63,14 +64,14 @@ This does not authorize private row inspection or storage object listing.
 8. `07_Audits/SecurityDefinerFunctionGrantCollectedMetadataReport.md`
 9. `00_Status/SecurityDefinerFunctionGrantLocalEvidenceOwnerReview.md`
 10. `00_Status/P0AnonRpcContainmentProductionExecutionAndVerificationReport.md`
+11. `00_Status/P1AuthenticatedOnlyRpcSurfaceProductionExecutionAndVerificationReport.md`
 
-Current state: P0 Anon RPC Surface Containment is CLOSED / PASSED in production (`20260725140000_p0_anon_rpc_surface_containment.sql`).
+Current state: Both P0 Anon RPC Surface Containment (`20260725140000_p0_anon_rpc_surface_containment.sql`) and P1 Authenticated-Only RPC Surface Containment (`20260725193000_p1_authenticated_rpc_surface_containment.sql`) are **CLOSED / PASSED** in production.
 
-21 P0 canonical signatures contained (anon execute = 0, service_role execute = 21, authenticated direct = 4, public allowlist = 12).
-
-Target-only production apply executed and verified with tracking row in `supabase_migrations.schema_migrations`.
-
-Next gate: P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW (NOT STARTED).
+- 21 P0 canonical signatures contained.
+- 13 P1 canonical signatures contained (authenticated execute = 0, service_role execute = 13).
+- 53 P1 functions retained authenticated execute privileges after verified caller and body safety audits.
+- Target-only production apply executed and verified with tracking rows in `supabase_migrations.schema_migrations`.
 
 ## 5. PP-01 / Production Verification Status Chain
 
@@ -123,19 +124,18 @@ Open gaps must remain tracked until verified, patched, deferred, or accepted by 
 
 ## 9. Current Overall Status
 
-- Gate: `P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED` (Marker: `JOINFOLK_P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED`, Status: `CLOSED / PASSED`).
+- Gate: `P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED` (Marker: `JOINFOLK_P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED`, Status: `CLOSED / PASSED`).
 - Production applied: `true`, Tracking row verified: `true`.
-- 21 canonical P0 RPC signatures contained (anon execute after apply = 0, service_role execute = 21).
-- 4 direct client RPCs authenticated execute = 4, 12 public allowlist signatures anon execute = 12.
-- Migration version `20260725140000` applied via single-target apply wrapper with commit `d8828f5a` metadata.
-- Next technical gate: `P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW` (Status: `NOT STARTED`).
+- 13 canonical P1 RPC signatures contained (authenticated execute after apply = 0, service_role execute = 13).
+- 53 excluded functions retain authenticated execute privileges.
+- Migration version `20260725193000` applied via single-target apply wrapper with commit `c6a80d10` metadata.
 
 ## 10. Required Next Gates
 
 | Workstream | Next gate | Status |
 | --- | --- | --- |
 | P0 Anon RPC Containment | Production Gate Closure | CLOSED / PASSED (`P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED`) |
-| P1 Authenticated-Only RPC Surface | `P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW` | NOT STARTED |
+| P1 Authenticated-Only RPC Surface | Production Gate Closure | CLOSED / PASSED (`P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED`) |
 | SecurityDefiner/function grants | Sanitized production metadata output | Required |
 | SecurityDefiner/function grants | Owner review of production metadata | Required |
 | Release readiness | Gap-by-gap verification or owner deferral/acceptance | Required |
@@ -185,4 +185,5 @@ Open gaps must remain tracked until verified, patched, deferred, or accepted by 
 1. Read `00_Governance/HandbookOperatingModel.md`
 2. Read `00_Status/StatusIndex.md`
 3. Read `00_Status/EvidenceRegistry.md`
-4. Then start `P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW` as read-only inventory/classification only.
+4. P0 and P1 RPC surface containment gates are both CLOSED and verified in production. Wait for owner instruction on the next workstream gate.
+
