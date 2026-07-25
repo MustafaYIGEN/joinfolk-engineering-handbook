@@ -38,6 +38,7 @@ This does not authorize private row inspection or storage object listing.
 | Artifact | Type | Status meaning | Implementation status | Notes |
 | --- | --- | --- | --- | --- |
 | `00_Status/OperatorConfirmedReadOnlySupabaseProductionAccessProtocol.md` | Read-only access protocol | Records operator-confirmed production read-only access boundaries and evidence handling expectations | Not authorized | Governs evidence discipline; does not authorize implementation, mutation, or private data extraction. |
+| `00_Status/P0AnonRpcContainmentProductionExecutionAndVerificationReport.md` | Production execution & verification report | Records P0 anon RPC surface containment target-only production apply and post-apply verification evidence | Applied & Verified | Gate: P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED (CLOSED / PASSED). |
 | `00_Status/PP01EvidenceGapClassificationReport.md` | Evidence gap classification report | Classifies PP-01 production metadata evidence gaps and follow-up priorities | Not authorized | Reports/classifies evidence; does not mark PP-01 fully resolved. |
 | `00_Status/PP01ProductionVerificationExecutionReport.md` | Production verification execution report | Records partial PP-01 production metadata verification evidence and unresolved areas | Not authorized | Evidence report only; does not authorize implementation or claim full production verification. |
 | `00_Status/ReleaseHardeningPatchPlanCompletionReport.md` | Release hardening status report | Records hardening patch plan completion status within its evidence boundary | Not authorized | Release/hardening status artifact; does not independently mark the platform launch-ready. |
@@ -60,14 +61,15 @@ This does not authorize private row inspection or storage object listing.
 7. `00_Status/SecurityDefinerFunctionGrantMetadataCollectionApprovalGate.md`
 8. `07_Audits/SecurityDefinerFunctionGrantCollectedMetadataReport.md`
 9. `00_Status/SecurityDefinerFunctionGrantLocalEvidenceOwnerReview.md`
+10. `00_Status/P0AnonRpcContainmentProductionExecutionAndVerificationReport.md`
 
-Current state: local-only evidence accepted as investigation narrowing.
+Current state: P0 Anon RPC Surface Containment is CLOSED / PASSED in production (`20260725140000_p0_anon_rpc_surface_containment.sql`).
 
-Production metadata collection is still required before implementation.
+21 P0 canonical signatures contained (anon execute = 0, service_role execute = 21, authenticated direct = 4, public allowlist = 12).
 
-Rollback plan and verification plan remain required.
+Target-only production apply executed and verified with tracking row in `supabase_migrations.schema_migrations`.
 
-Implementation remains blocked.
+Next gate: P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW (NOT STARTED).
 
 ## 5. PP-01 / Production Verification Status Chain
 
@@ -120,22 +122,21 @@ Open gaps must remain tracked until verified, patched, deferred, or accepted by 
 
 ## 9. Current Overall Status
 
-- SecurityDefiner/function grant workstream is in pre-implementation evidence review.
-- Local-only evidence review is complete as a narrowing step.
-- Production metadata remains required.
-- Implementation remains not authorized.
-- Launch-ready claim is not made.
-- Security hardened claim is not made.
+- Gate: `P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED` (Marker: `JOINFOLK_P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED`, Status: `CLOSED / PASSED`).
+- Production applied: `true`, Tracking row verified: `true`.
+- 21 canonical P0 RPC signatures contained (anon execute after apply = 0, service_role execute = 21).
+- 4 direct client RPCs authenticated execute = 4, 12 public allowlist signatures anon execute = 12.
+- Migration version `20260725140000` applied via single-target apply wrapper with commit `d8828f5a` metadata.
+- Next technical gate: `P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW` (Status: `NOT STARTED`).
 
 ## 10. Required Next Gates
 
 | Workstream | Next gate | Status |
 | --- | --- | --- |
+| P0 Anon RPC Containment | Production Gate Closure | CLOSED / PASSED (`P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED`) |
+| P1 Authenticated-Only RPC Surface | `P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW` | NOT STARTED |
 | SecurityDefiner/function grants | Sanitized production metadata output | Required |
 | SecurityDefiner/function grants | Owner review of production metadata | Required |
-| SecurityDefiner/function grants | Rollback plan | Required |
-| SecurityDefiner/function grants | Verification plan | Required |
-| SecurityDefiner/function grants | Implementation prompt | Not authorized |
 | Release readiness | Gap-by-gap verification or owner deferral/acceptance | Required |
 | Runtime feature audits | Runtime/manual test evidence | Required |
 
