@@ -49,6 +49,7 @@ This does not authorize private row inspection or storage object listing.
 | `00_Status/SecurityDefinerFunctionGrantMetadataCollectionApprovalGate.md` | Metadata collection approval gate | Conditionally approves bounded read-only sanitized metadata collection under strict boundaries | Not authorized | Does not authorize implementation, mutation, private row inspection, storage object listing, or RPC/function invocation. |
 | `00_Status/SupabaseModelBOperatorProvisioningConfirmationPackage.md` | Operator provisioning confirmation package | Records Model B verifier provisioning confirmation and safety evidence | Not authorized | Read-only provisioning/evidence artifact; does not authorize implementation or mutation. |
 | `00_Status/SupabaseModelBReadOnlyVerifierRoleProvisioningRunbook.md` | Read-only verifier provisioning runbook | Defines Model B read-only verifier role provisioning workflow and safeguards | Not authorized | Runbook for bounded verification access; does not authorize private data extraction or implementation. |
+| `00_Status/EvidenceRegistry.md` | Central evidence registry | Tracks verified production gates, platform commits, migration versions, SHA256 hashes, and evidence file paths | Active Registry | Gate: P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED (CLOSED / PASSED). |
 
 ## 4. SecurityDefiner / Function Grant Status Chain
 
@@ -177,3 +178,11 @@ Open gaps must remain tracked until verified, patched, deferred, or accepted by 
 - No credentials, hostnames, full project refs, service_role keys, database passwords, connection strings, webhook secrets, API keys, environment variable values, or secrets were included.
 - No files were staged or committed.
 - Only `00_Status/StatusIndex.md` was created/modified.
+
+## 14. Next Session Resume Instructions
+
+**NEXT SESSION RESUME:**
+1. Read `00_Governance/HandbookOperatingModel.md`
+2. Read `00_Status/StatusIndex.md`
+3. Read `00_Status/EvidenceRegistry.md`
+4. Then start `P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW` as read-only inventory/classification only.
