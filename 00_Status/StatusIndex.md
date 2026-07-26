@@ -40,6 +40,7 @@ This does not authorize private row inspection or storage object listing.
 | `00_Status/OperatorConfirmedReadOnlySupabaseProductionAccessProtocol.md` | Read-only access protocol | Records operator-confirmed production read-only access boundaries and evidence handling expectations | Not authorized | Governs evidence discipline; does not authorize implementation, mutation, or private data extraction. |
 | `00_Status/P0AnonRpcContainmentProductionExecutionAndVerificationReport.md` | Production execution & verification report | Records P0 anon RPC surface containment target-only production apply and post-apply verification evidence | Applied & Verified | Gate: P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED (CLOSED / PASSED). |
 | `00_Status/P1AuthenticatedOnlyRpcSurfaceProductionExecutionAndVerificationReport.md` | Production execution & verification report | Records P1 authenticated-only RPC surface containment target-only production apply and post-apply verification evidence | Applied & Verified | Gate: P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED (CLOSED / PASSED). |
+| `00_Status/A01UnexpectedAnonPublicRpcContainmentProductionCloseout.md` | Production execution & verification report | Records A01 unexpected anon/public RPC containment closeout | Applied & Verified | 40 targets; anon/PUBLIC/authenticated execute = 0; service_role = 40; product smoke remains separate. |
 | `00_Status/PP01EvidenceGapClassificationReport.md` | Evidence gap classification report | Classifies PP-01 production metadata evidence gaps and follow-up priorities | Not authorized | Reports/classifies evidence; does not mark PP-01 fully resolved. |
 | `00_Status/PP01ProductionVerificationExecutionReport.md` | Production verification execution report | Records partial PP-01 production metadata verification evidence and unresolved areas | Not authorized | Evidence report only; does not authorize implementation or claim full production verification. |
 | `00_Status/ReleaseHardeningPatchPlanCompletionReport.md` | Release hardening status report | Records hardening patch plan completion status within its evidence boundary | Not authorized | Release/hardening status artifact; does not independently mark the platform launch-ready. |
@@ -186,4 +187,3 @@ Open gaps must remain tracked until verified, patched, deferred, or accepted by 
 2. Read `00_Status/StatusIndex.md`
 3. Read `00_Status/EvidenceRegistry.md`
 4. P0 and P1 RPC surface containment gates are both CLOSED and verified in production. Wait for owner instruction on the next workstream gate.
-
