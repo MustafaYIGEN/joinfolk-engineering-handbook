@@ -23,3 +23,21 @@ The post-commit verifier initially failed after COMMIT because of a read-only ag
 Current status: DB ACL containment is production closed; the platform migration is committed and pushed. Product smoke validation remains separate and is not claimed complete.
 
 Next gate: A02 unexpected anon/public RPC containment planning/dry-run, or product smoke validation if launch-risk validation is prioritized.
+
+## A01 Migration History Reconciliation - Closed
+
+- Previous state: `A01_MANUAL_EFFECT_CONFIRMED_NOT_HISTORY_TRACKED`
+- Final state: `A01_HISTORY_TRACKED_AND_EFFECT_CONFIRMED`
+- Repair method: `SUPPORTED_SUPABASE_MIGRATION_REPAIR`
+- Command executed once: `npx --no-install supabase migration repair --linked --status applied 20260725213000`
+- Scope: A01 only; migration SQL was not executed, `supabase db push` was not used, and no manual history insert was used.
+- Post-repair history row: `20260725213000|unexpected_anon_public_execute_batch_a01`
+- Post-repair history count: `10`
+- Post-repair ACL effect: anon/PUBLIC/authenticated `0/0/0`; service_role `40`; allowlist `2` anon / `2` public; `issue_codes=[]`
+- Execution summary SHA256: `BB4499A7205B6AB2CDA271D12CB25E73E799796C78338299397D54C096853A77`
+- Execution report SHA256: `808801AE9B378BBAA7A12523DB9B9F6019B2B6CAB21D8194016C2399BF4A7D05`
+- Repair execution log SHA256: `61F17499DFD67E2D691CA589317911C356881E81FFE6FF7A0CFFF31BBE04E0B2`
+- Post-repair history log SHA256: `28BB5A626B334C1840E01D2C853C441BE26799CDCB3D951FB0A0C6461C5D8694`
+- Post-repair effect log SHA256: `99AD459D6B43E33C5B8B2D49E985E70667218B34F97CBD9C401C98E02429A8F1`
+
+Current A01 status: production ACL containment closed, repo-tracked, and Supabase migration-history tracked.

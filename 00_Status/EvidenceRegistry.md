@@ -18,6 +18,25 @@
 | **`P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED`** | `JOINFOLK_P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED` | `c6a80d10` | `68e2062` | `20260725193000` | `AB11549675A6CD90CDD0A8F809E2A068C217210B2395CDF89D622B1D63882751` | `C:\dev\joinfolk-evidence\db-surface-audit\p1-authenticated-only-rpc-surface-v1\phase7-target-only-apply-v1\` | `p1_phase7_target_only_apply_final_evidence.json` | **CLOSED / PASSED** | `TBD` |
 | **`A01_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_PRODUCTION_CLOSED`** | `JOINFOLK_A01_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_REPO_COMMITTED_AND_PUSHED` | `e7b099e4` | `TBD` | `20260725213000` | `7E252D9A3DB7BF7C846768618F4A08A60A088FD39CC1605189467654A63998BF` | `C:\dev\joinfolk-evidence\db-surface-audit\unexpected-anon-public-execute-containment-v1\phase6r-batch-a01-target-only-production-apply\` | `phase6r_a01_target_only_production_apply_final_evidence.json` | **CLOSED / PASSED** | `A02 planning or product smoke validation` |
 
+### A01 Migration History Reconciliation
+
+- Gate: `A01_SUPPORTED_MIGRATION_HISTORY_REPAIR_EXECUTION_V1`
+- Version: `20260725213000`
+- Method: `SUPPORTED_SUPABASE_MIGRATION_REPAIR`
+- Scope: A01 only
+- Before classification: `A01_MANUAL_EFFECT_CONFIRMED_NOT_HISTORY_TRACKED`
+- After classification: `A01_HISTORY_TRACKED_AND_EFFECT_CONFIRMED`
+- Platform commit: `e7b099e4`
+- Migration: `supabase/migrations/20260725213000_unexpected_anon_public_execute_batch_a01.sql`
+- Migration SHA256: `7E252D9A3DB7BF7C846768618F4A08A60A088FD39CC1605189467654A63998BF`
+- Execution summary SHA256: `BB4499A7205B6AB2CDA271D12CB25E73E799796C78338299397D54C096853A77`
+- Execution report SHA256: `808801AE9B378BBAA7A12523DB9B9F6019B2B6CAB21D8194016C2399BF4A7D05`
+- Repair execution log SHA256: `61F17499DFD67E2D691CA589317911C356881E81FFE6FF7A0CFFF31BBE04E0B2`
+- Post-repair history log SHA256: `28BB5A626B334C1840E01D2C853C441BE26799CDCB3D951FB0A0C6461C5D8694`
+- Post-repair effect log SHA256: `99AD459D6B43E33C5B8B2D49E985E70667218B34F97CBD9C401C98E02429A8F1`
+- Status: **CLOSED / PASSED**
+- Notes: History count increased from 9 to 10; migration SQL was not rerun and product smoke remains separate.
+
 ---
 
 ## 3. Detailed Evidence Specifications

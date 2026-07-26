@@ -133,6 +133,8 @@ Open gaps must remain tracked until verified, patched, deferred, or accepted by 
 
 ## 10. Required Next Gates
 
+A01 unexpected anon/public RPC containment is fully closed. A01 migration-history reconciliation is also closed. Remaining open items are A02 unexpected anon/public RPC containment, broader reconciliation of 20 local-only migrations before launch, MEDIUM duplicate/stale SQL cleanup risk, and separate product smoke validation (not complete).
+
 | Workstream | Next gate | Status |
 | --- | --- | --- |
 | P0 Anon RPC Containment | Production Gate Closure | CLOSED / PASSED (`P0_ANON_RPC_CONTAINMENT_PRODUCTION_CLOSED`) |
