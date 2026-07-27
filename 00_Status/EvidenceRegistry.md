@@ -118,3 +118,15 @@
 - Migration history: `20260726003000` Local/Remote applied
 - Closeout document: `00_Status/B01UnexpectedAnonPublicRpcContainmentProductionCloseout.md`
 - Status: production effect confirmed via post-commit recovery verifier; wrapper caveat documented, not an open production blocker
+
+### Gate: `B02_FULLY_CLOSED`
+- Platform commit: `af6511e7`
+- Migration: `20260726013000_unexpected_anon_public_execute_batch_b02.sql`
+- Migration SHA256: `6992D8A46EC7CAE3F13D72B715F72CEF46BE08706CA2F7AD608D7EFD5826D040`
+- Production classification: `B02_PHASE6R_PRODUCTION_EFFECT_CLOSED_VIA_READONLY_POST_COMMIT_RECOVERY`
+- Production effect: target/resolved `40/40`; anon/public/authenticated after `0/0/0`; service_role `40`; allowlist `2/2`
+- Phase6R recovered final evidence SHA256: `CFE055B0A0B10F70352C72D20191CD5A1275A0D1EBEA1177777C25F0DC504673`
+- Recovered post-commit log SHA256: `76E97308EBBA47DF6C6B175EC551CA2716FFA5A6AFB559F697A48481DAD415B4`
+- Migration history: `20260726013000` Local/Remote applied
+- Closeout document: `00_Status/B02UnexpectedAnonPublicRpcContainmentProductionCloseout.md`
+- Status: production effect confirmed via read-only post-commit recovery evidence; wrapper path caveat documented, not a production blocker

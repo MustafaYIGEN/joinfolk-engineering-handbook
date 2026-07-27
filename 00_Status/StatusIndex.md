@@ -210,3 +210,10 @@ A01 unexpected anon/public RPC containment is fully closed. A01 migration-histor
 - Classification: `B01_FULLY_CLOSED`
 - Production classification: `B01_PHASE6R_PRODUCTION_EFFECT_CLOSED_VIA_POST_COMMIT_RECOVERY`
 - No additional production apply is authorized or needed
+
+## B02 unexpected anon/public RPC containment
+
+- Status: CLOSED - production effect confirmed via read-only post-commit recovery evidence, repo committed, migration history tracked
+- Classification: `B02_FULLY_CLOSED`
+- Production classification: `B02_PHASE6R_PRODUCTION_EFFECT_CLOSED_VIA_READONLY_POST_COMMIT_RECOVERY`
+- No further B02 production apply is authorized
