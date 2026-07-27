@@ -189,3 +189,9 @@ A01 unexpected anon/public RPC containment is fully closed. A01 migration-histor
 2. Read `00_Status/StatusIndex.md`
 3. Read `00_Status/EvidenceRegistry.md`
 4. P0 and P1 RPC surface containment gates are both CLOSED and verified in production. Wait for owner instruction on the next workstream gate.
+
+## A02 unexpected anon/public RPC containment
+
+- Status: CLOSED — production applied, repo committed, migration history tracked, effect confirmed
+- Classification: `A02_HISTORY_TRACKED_AND_EFFECT_CONFIRMED`
+- Next gate: `A03_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_PHASE4_MIGRATION_DRAFT_V1`

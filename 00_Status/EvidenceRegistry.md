@@ -80,3 +80,15 @@
   - `C:\dev\joinfolk-evidence\db-surface-audit\p1-authenticated-only-rpc-surface-v1\phase7-target-only-apply-v1\p1_phase7_target_only_apply.log` (`A5396A0917B498AAB5E32553167FD27E9D2F672165BD1DEA4B393856D3A6F446`)
   - `C:\dev\joinfolk-evidence\db-surface-audit\p1-authenticated-only-rpc-surface-v1\phase7-target-only-apply-v1\p1_phase7_target_only_post_apply_verify.log` (`B60379F672D8EA6890EF927DD32238EB28E9BEC9D6DA3FE31AFE01560F7F3162`)
   - `C:\dev\joinfolk-evidence\db-surface-audit\p1-authenticated-only-rpc-surface-v1\phase7-target-only-apply-v1\p1_phase7_target_only_apply_final_evidence.json` (`2C7D011E4CA141043E084FE826BDFA97B6BCD2FF49F6A58E3B4BE69978527F8D`)
+
+### Gate: `A02_HISTORY_TRACKED_AND_EFFECT_CONFIRMED`
+- Platform commit: `3df55c0f`
+- Migration: `20260725223000_unexpected_anon_public_execute_batch_a02.sql`
+- Migration SHA256: `FBAD756FCF79A48DA77849C2D9BAA55239CC7BCF0E36EB2B634063D47A116887`
+- Apply log SHA256: `47984DB3AE7F57F0060B95D7F86C4C2163BD12CD104C1A58A5EF681040EA9F25`
+- Post-commit verify log SHA256: `6142A2DED2A9B19D02872CC177DF1BE2A671B4DB4E40CF01DDFD66406541B152`
+- Final evidence SHA256: `E9C3F0FDF0AF27A6E41A7BBBCC6E947903D24759054AB2F28250C6E04879A236`
+- History row: `20260725223000|unexpected_anon_public_execute_batch_a02`
+- Repair: supported Supabase migration repair, A02-only, executed once
+- Status: production applied, repo committed, migration history tracked, effect confirmed
+- Notes: no db push, migration SQL rerun, or manual history insert; product smoke remains separate.
