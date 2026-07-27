@@ -92,3 +92,16 @@
 - Repair: supported Supabase migration repair, A02-only, executed once
 - Status: production applied, repo committed, migration history tracked, effect confirmed
 - Notes: no db push, migration SQL rerun, or manual history insert; product smoke remains separate.
+
+### Gate: `A03_FULLY_CLOSED`
+- Platform commit: `297ec584`
+- Migration: `20260725233000_unexpected_anon_public_execute_batch_a03.sql`
+- Migration SHA256: `4139DC356E35580EE5E891EA0F653F24C8DD784763711109E20582F2C725167F`
+- Production effect: target/resolved `40/40`; anon/public/authenticated `0/0/0`; service_role `40`; allowlist `2/2`
+- Recovery final evidence SHA256: `D1488B6E4D5378279CE34F3930E6F55FB312ED14234AB9FCA187E54A45380296`
+- Apply log SHA256: `DC04B6596A5620435F2B1B391878A38A459A8F9C8FFC8B0410DE52E458D91082`
+- Recovery post-commit verify log SHA256: `C3A5E527078A678307952FAB95AD34143D28F7175C9754E26470A20E4BF8B540`
+- History: `20260725233000|unexpected_anon_public_execute_batch_a03`; local equals remote
+- Closeout document: `00_Status/A03UnexpectedAnonPublicRpcContainmentProductionCloseout.md`
+- Status: production applied, repo committed, migration history tracked, effect confirmed; recovery used after post-COMMIT wrapper evidence failure
+- Next gate: `B01_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_PHASE4_MIGRATION_DRAFT_V1`

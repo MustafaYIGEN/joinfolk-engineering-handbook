@@ -195,3 +195,11 @@ A01 unexpected anon/public RPC containment is fully closed. A01 migration-histor
 - - Status: CLOSED - production applied, repo committed, migration history tracked, effect confirmed
 - Classification: `A02_HISTORY_TRACKED_AND_EFFECT_CONFIRMED`
 - Next gate: `A03_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_PHASE4_MIGRATION_DRAFT_V1`
+
+## A03 unexpected anon/public RPC containment
+
+- Status: CLOSED - production applied, repo committed, migration history tracked, effect confirmed
+- Classification: `A03_FULLY_CLOSED`
+- Recovery used because wrapper failed after COMMIT before normal final evidence
+- Apply rerun: not authorized and not needed
+- Next gate: `B01_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_PHASE4_MIGRATION_DRAFT_V1`
