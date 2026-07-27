@@ -1,9 +1,9 @@
-﻿# A02 Unexpected Anon/Public RPC Containment — Production Closeout
+# A02 Unexpected Anon/Public RPC Containment - Production Closeout
 
 - Gate: `A02` unexpected anon/public RPC containment
 - Final classification: `A02_HISTORY_TRACKED_AND_EFFECT_CONFIRMED`
 - Production apply: `PHASE6R_A02_TARGET_ONLY_PRODUCTION_APPLY_CLOSED`
-- Platform commit: `3df55c0f` — fix(db): contain unexpected anon public RPC batch A02
+- Platform commit: `3df55c0f` - fix(db): contain unexpected anon public RPC batch A02
 - Migration: `20260725223000_unexpected_anon_public_execute_batch_a02.sql`
 - Migration SHA256: `FBAD756FCF79A48DA77849C2D9BAA55239CC7BCF0E36EB2B634063D47A116887`
 
