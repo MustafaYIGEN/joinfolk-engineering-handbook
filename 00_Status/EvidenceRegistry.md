@@ -105,3 +105,16 @@
 - Closeout document: `00_Status/A03UnexpectedAnonPublicRpcContainmentProductionCloseout.md`
 - Status: production applied, repo committed, migration history tracked, effect confirmed; recovery used after post-COMMIT wrapper evidence failure
 - Next gate: `B01_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_PHASE4_MIGRATION_DRAFT_V1`
+
+### Gate: `B01_FULLY_CLOSED`
+- Platform commit: `4dadb310`
+- Migration: `20260726003000_unexpected_anon_public_execute_batch_b01.sql`
+- Migration SHA256: `6DC3F3520FDF6C6354433FDBE220F09D67A057D569710A154262D5AEA428D91E`
+- Production effect: target/resolved `40/40`; anon/public/authenticated after `0/0/0`; service_role `40`; allowlist `2/2`
+- Production classification: `B01_PHASE6R_PRODUCTION_EFFECT_CLOSED_VIA_POST_COMMIT_RECOVERY`
+- Recovery apply log SHA256: `7B7A99556BD7F6C17F3088BCD9F5B783BDE9C2A0964807C1C4D92852F3BE9A67`
+- Recovered verifier log SHA256: `B0258C2137FFAB295CC954703FB77C0E342F5F50866FC521754A11F01C19363B`
+- Final evidence SHA256: `C1A27FBF3CAAC6B3416429797FE5FC36057B624DCE13FB63D8FD15128C0330A9`
+- Migration history: `20260726003000` Local/Remote applied
+- Closeout document: `00_Status/B01UnexpectedAnonPublicRpcContainmentProductionCloseout.md`
+- Status: production effect confirmed via post-commit recovery verifier; wrapper caveat documented, not an open production blocker

@@ -203,3 +203,10 @@ A01 unexpected anon/public RPC containment is fully closed. A01 migration-histor
 - Recovery used because wrapper failed after COMMIT before normal final evidence
 - Apply rerun: not authorized and not needed
 - Next gate: `B01_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_PHASE4_MIGRATION_DRAFT_V1`
+
+## B01 unexpected anon/public RPC containment
+
+- Status: CLOSED - production effect confirmed via post-commit recovery verifier, repo committed, migration history tracked
+- Classification: `B01_FULLY_CLOSED`
+- Production classification: `B01_PHASE6R_PRODUCTION_EFFECT_CLOSED_VIA_POST_COMMIT_RECOVERY`
+- No additional production apply is authorized or needed
