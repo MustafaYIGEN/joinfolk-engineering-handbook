@@ -18,6 +18,9 @@
 | **`P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED`** | `JOINFOLK_P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED` | `c6a80d10` | `68e2062` | `20260725193000` | `AB11549675A6CD90CDD0A8F809E2A068C217210B2395CDF89D622B1D63882751` | `C:\dev\joinfolk-evidence\db-surface-audit\p1-authenticated-only-rpc-surface-v1\phase7-target-only-apply-v1\` | `p1_phase7_target_only_apply_final_evidence.json` | **CLOSED / PASSED** | `TBD` |
 | **`A01_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_PRODUCTION_CLOSED`** | `JOINFOLK_A01_UNEXPECTED_ANON_PUBLIC_RPC_CONTAINMENT_REPO_COMMITTED_AND_PUSHED` | `e7b099e4` | `TBD` | `20260725213000` | `7E252D9A3DB7BF7C846768618F4A08A60A088FD39CC1605189467654A63998BF` | `C:\dev\joinfolk-evidence\db-surface-audit\unexpected-anon-public-execute-containment-v1\phase6r-batch-a01-target-only-production-apply\` | `phase6r_a01_target_only_production_apply_final_evidence.json` | **CLOSED / PASSED** | `A02 planning or product smoke validation` |
 
+| **`C07_RPC_ACL_POST_APPLY_PRODUCTION_VERIFY_CLOSED`** | `JOINFOLK_C07_RPC_ACL_POST_APPLY_PRODUCTION_VERIFY_V1_PASS` | `local-source-capture` | `local-handbook-candidate` | `20260803185000` | `LOCAL_SOURCE_CAPTURE` | `C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c07-rpc-acl-post-apply-production-verify-20260803_195129\` | `c07_final_result.json` | **CLOSED / PASSED** | `C07R Relic RPC Lockdown` |
+| **`C07R_RELIC_RPC_LOCKDOWN_POST_APPLY_PRODUCTION_VERIFY_CLOSED`** | `JOINFOLK_C07R_RELIC_RPC_LOCKDOWN_POST_APPLY_PRODUCTION_VERIFY_V1_PASS` | `local-source-capture` | `local-handbook-candidate` | `20260803185000` | `LOCAL_SOURCE_CAPTURE` | `C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c07r-relic-rpc-lockdown-post-apply-production-verify-20260803_203047\` | `c07r_final_result.json` | **CLOSED / PASSED** | `C08 Closeout Binding` |
+
 ### A01 Migration History Reconciliation
 
 - Gate: `A01_SUPPORTED_MIGRATION_HISTORY_REPAIR_EXECUTION_V1`

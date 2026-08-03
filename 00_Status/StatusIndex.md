@@ -53,6 +53,9 @@ This does not authorize private row inspection or storage object listing.
 | `00_Status/SupabaseModelBReadOnlyVerifierRoleProvisioningRunbook.md` | Read-only verifier provisioning runbook | Defines Model B read-only verifier role provisioning workflow and safeguards | Not authorized | Runbook for bounded verification access; does not authorize private data extraction or implementation. |
 | `00_Status/EvidenceRegistry.md` | Central evidence registry | Tracks verified production gates, platform commits, migration versions, SHA256 hashes, and evidence file paths | Active Registry | Gate: P1_AUTHENTICATED_ONLY_RPC_SURFACE_REVIEW_PRODUCTION_CLOSED (CLOSED / PASSED). |
 
+| `00_Status/C07_RPC_ACL_POST_APPLY_PRODUCTION_VERIFY_CLOSED.md` | Production verification report | Records 27 RPC ACL production patch apply and post-apply verification evidence (27/27 PASS). Production applied out-of-band; source capture added locally. | Applied & Verified | Gate: C07_RPC_ACL_POST_APPLY_PRODUCTION_VERIFY_CLOSED (CLOSED / PASSED). |
+| `00_Status/C07R_RELIC_RPC_LOCKDOWN_POST_APPLY_PRODUCTION_VERIFY_CLOSED.md` | Production verification report | Records 2 Relic RPC lockdown apply and post-apply verification evidence (2/2 PASS, service_role only). Production applied out-of-band; source capture added locally. | Applied & Verified | Gate: C07R_RELIC_RPC_LOCKDOWN_POST_APPLY_PRODUCTION_VERIFY_CLOSED (CLOSED / PASSED). |
+
 ## 4. SecurityDefiner / Function Grant Status Chain
 
 1. `00_Status/PP01ProductionVerificationExecutionReport.md`
