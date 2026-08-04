@@ -234,3 +234,40 @@ A01 unexpected anon/public RPC containment is fully closed. A01 migration-histor
 - No production SQL executed in C23
 - No db push / migration apply executed
 - No commit / push executed
+
+
+<!-- C39_ISSUE_TICKETS_FROM_ORDER_BODY_ALIGNMENT_STATUS_START -->
+## ISSUE_TICKETS_FROM_ORDER_BODY_ALIGNMENT — production verified, source closeout pending commit
+
+Generated: 2026-08-04T10:11:13.9228956Z
+
+Target RPC: public._issue_tickets_from_order_v1(uuid)
+
+Status:
+- Production apply: PASSED
+- Post-apply read-only verify: PASSED
+- Source capture: CREATED and SCOPED-STAGED in HostOS
+- Handbook closeout: REPAIRED in C39R, pending diff review and commit authorization
+
+Production state:
+- Function md5: c1e54217ce48a1c3ce21fee2d96327be
+- ACL: anon=false, authenticated=false, public=false, service_role=true
+- Security: SECURITY DEFINER with search_path public/extensions
+- Body guards: row lock, paid status, idempotency, seat conflict, issuance ledger, ledger count, ticket insert
+
+Source capture:
+- File: supabase/migrations/20260804115000_issue_tickets_from_order_body_guard_source_capture_v1.sql
+- SHA256: CFA66A795628F4C40CAC924FCA1A50633317FD49594C013B1FF489B66D4C7C37
+
+Scope boundary:
+- This closes only the _issue_tickets_from_order_v1(uuid) body-alignment production gate after commit.
+- This does not claim global launch safety.
+- This does not claim all commerce, ticketing, RPC, or RLS risks are closed.
+
+Evidence:
+- C35 production apply: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c35-issue-tickets-from-order-production-apply-20260804_113719\c35_final_result.json
+- C36 post-apply read-only verify: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c36-issue-tickets-from-order-post-apply-readonly-verify-20260804_114321\c36_final_result.json
+- C37R source capture repair: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c37r-issue-tickets-from-order-local-source-capture-repair-20260804_115251\c37r_final_result.json
+- C38 diff/untracked review: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c38-issue-tickets-from-order-diff-and-untracked-review-20260804_115649\c38_final_result.json
+- C39F forensic: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c39f-issue-tickets-from-order-scoped-add-false-negative-forensic-20260804_120819\c39f_final_result.json
+<!-- C39_ISSUE_TICKETS_FROM_ORDER_BODY_ALIGNMENT_STATUS_END -->

@@ -135,3 +135,49 @@
 - Migration history: `20260726013000` Local/Remote applied
 - Closeout document: `00_Status/B02UnexpectedAnonPublicRpcContainmentProductionCloseout.md`
 - Status: production effect confirmed via read-only post-commit recovery evidence; wrapper path caveat documented, not a production blocker
+
+
+<!-- C39_ISSUE_TICKETS_FROM_ORDER_BODY_ALIGNMENT_EVIDENCE_START -->
+## ISSUE_TICKETS_FROM_ORDER_BODY_ALIGNMENT evidence chain
+
+Generated: 2026-08-04T10:11:13.9228956Z
+
+Target RPC: public._issue_tickets_from_order_v1(uuid)
+
+Evidence classification chain:
+- C35: JOINFOLK_C35_ISSUE_TICKETS_FROM_ORDER_PRODUCTION_APPLY_V1_PASS_READY_FOR_POST_APPLY_READONLY_VERIFY
+- C36: JOINFOLK_C36_ISSUE_TICKETS_FROM_ORDER_POST_APPLY_READONLY_VERIFY_V1_PASS_READY_FOR_SOURCE_ALIGNMENT_AND_CLOSEOUT
+- C37R: JOINFOLK_C37R_ISSUE_TICKETS_FROM_ORDER_LOCAL_SOURCE_CAPTURE_REPAIR_V1_READY_FOR_DIFF_REVIEW
+- C38: JOINFOLK_C38_ISSUE_TICKETS_FROM_ORDER_DIFF_AND_UNTRACKED_REVIEW_V1_READY_FOR_SCOPED_GIT_ADD_AND_HANDBOOK_EDIT_AUTHORIZATION_WITH_OTHER_UNTRACKED_EXCLUDED
+- C39F: JOINFOLK_C39F_ISSUE_TICKETS_FROM_ORDER_SCOPED_ADD_FALSE_NEGATIVE_FORENSIC_V1_BLOCKED_MISMATCH
+- C39R: handbook block repair
+
+Production result:
+- Expected/current post md5: c1e54217ce48a1c3ce21fee2d96327be
+- C36 post_apply_current_state_ok: true
+- Strong body guard: true
+- ACL: anon=false, authenticated=false, public=false, service_role=true
+
+Source capture:
+- File: supabase/migrations/20260804115000_issue_tickets_from_order_body_guard_source_capture_v1.sql
+- SHA256: CFA66A795628F4C40CAC924FCA1A50633317FD49594C013B1FF489B66D4C7C37
+- Other HostOS untracked files are explicitly excluded from scoped add.
+
+Artifact paths:
+- C35 final: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c35-issue-tickets-from-order-production-apply-20260804_113719\c35_final_result.json
+- C36 final: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c36-issue-tickets-from-order-post-apply-readonly-verify-20260804_114321\c36_final_result.json
+- C37R final: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c37r-issue-tickets-from-order-local-source-capture-repair-20260804_115251\c37r_final_result.json
+- C38 final: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c38-issue-tickets-from-order-diff-and-untracked-review-20260804_115649\c38_final_result.json
+- C39 final: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c39-issue-tickets-from-order-scoped-git-add-handbook-edit-20260804_120110\c39_final_result.json
+- C39F final: C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c39f-issue-tickets-from-order-scoped-add-false-negative-forensic-20260804_120819\c39f_final_result.json
+
+Restrictions preserved:
+- No production SQL in C39
+- No production SQL in C39R
+- No DB push
+- No migration apply
+- No git add in C39R
+- No git commit
+- No git push
+- No global launch-safe claim
+<!-- C39_ISSUE_TICKETS_FROM_ORDER_BODY_ALIGNMENT_EVIDENCE_END -->
