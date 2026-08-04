@@ -220,3 +220,17 @@ A01 unexpected anon/public RPC containment is fully closed. A01 migration-histor
 - Classification: `B02_FULLY_CLOSED`
 - Production classification: `B02_PHASE6R_PRODUCTION_EFFECT_CLOSED_VIA_READONLY_POST_COMMIT_RECOVERY`
 - No further B02 production apply is authorized
+
+
+## C23 confirm_order_payment_v1 service-role body guard source capture & governance
+
+- Status: ACCEPTED - C21 unintended persistent commit incident confirmed, C22 governance decision ACCEPT_CURRENT_PATCHED_STATE_NO_ROLLBACK accepted, C23 source capture migration captured locally
+- Classification: `JOINFOLK_C23_CONFIRM_ORDER_PAYMENT_SOURCE_CAPTURE_AND_HANDBOOK_LOCAL_WRITE_V1_READY_FOR_DIFF_REVIEW`
+- Target RPC: `public.confirm_order_payment_v1(uuid, text, text, jsonb)`
+- Production MD5: `0627e229dc339328ee4abd978cc99a14` (Guarded state active)
+- Pre-Incident MD5: `b0e12e324ca63d7d4e4c1cdb85cc1db1` (No-body-guard state)
+- Source capture migration: `supabase/migrations/20260804100000_confirm_order_payment_service_role_body_guard_source_capture_v1.sql`
+- No rollback performed
+- No production SQL executed in C23
+- No db push / migration apply executed
+- No commit / push executed

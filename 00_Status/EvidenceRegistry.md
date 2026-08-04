@@ -21,6 +21,8 @@
 | **`C07_RPC_ACL_POST_APPLY_PRODUCTION_VERIFY_CLOSED`** | `JOINFOLK_C07_RPC_ACL_POST_APPLY_PRODUCTION_VERIFY_V1_PASS` | `local-source-capture` | `local-handbook-candidate` | `20260803185000` | `LOCAL_SOURCE_CAPTURE` | `C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c07-rpc-acl-post-apply-production-verify-20260803_195129\` | `c07_final_result.json` | **CLOSED / PASSED** | `C07R Relic RPC Lockdown` |
 | **`C07R_RELIC_RPC_LOCKDOWN_POST_APPLY_PRODUCTION_VERIFY_CLOSED`** | `JOINFOLK_C07R_RELIC_RPC_LOCKDOWN_POST_APPLY_PRODUCTION_VERIFY_V1_PASS` | `local-source-capture` | `local-handbook-candidate` | `20260803185000` | `LOCAL_SOURCE_CAPTURE` | `C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c07r-relic-rpc-lockdown-post-apply-production-verify-20260803_203047\` | `c07r_final_result.json` | **CLOSED / PASSED** | `C08 Closeout Binding` |
 
+| **`C23_CONFIRM_ORDER_PAYMENT_SOURCE_CAPTURE_CLOSED`** | `JOINFOLK_C23_CONFIRM_ORDER_PAYMENT_SOURCE_CAPTURE_AND_HANDBOOK_LOCAL_WRITE_V1_READY_FOR_DIFF_REVIEW` | `local-source-capture` | `local-handbook-update` | `20260804100000` | `LOCAL_SOURCE_CAPTURE` | `C:\dev\joinfolk-evidence\broad-launch-readiness-audit-v1\c23-confirm-order-payment-source-capture-and-handbook-local-write-20260804_101338\` | `c23_final_result.json` | **ACCEPTED / CAPTURED** | `C24 Diff Review` |
+
 ### A01 Migration History Reconciliation
 
 - Gate: `A01_SUPPORTED_MIGRATION_HISTORY_REPAIR_EXECUTION_V1`
